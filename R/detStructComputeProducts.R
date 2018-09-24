@@ -12,7 +12,7 @@ detStructComputeProducts <- function(determinantStructure,
 
   if (getOption('ufs.debug', FALSE)) {
     message("Debugging message:\n  Extracted the following products to compute:\n",
-            multiplicables);
+            paste0(utils::capture.output(utils::str(multiplicables)), collapse="\n"), "\n");
   }
 
   ### Remove those that don't occur in both lists
@@ -30,6 +30,11 @@ detStructComputeProducts <- function(determinantStructure,
     return(varNameVectors);
   });
 
+  if (getOption('ufs.debug', FALSE)) {
+    message("Debugging message:\n  After checking for product elements that did not occur in the list, these remained:\n",
+            paste0(utils::capture.output(utils::str(actualMultiplicables)), collapse="\n"), "\n");
+  }
+
   ### Copy dataframe, but drop all variables
   resDat <- data[, FALSE];
 
@@ -42,6 +47,11 @@ detStructComputeProducts <- function(determinantStructure,
     newNames <- gsub(paste0('(.*)', names(multiplicables[[currentSetIndex]][1]), '(.*)'),
                      paste0("\\1",  productIdentifier, "\\2"),
                      actualMultiplicables[[currentSetIndex]][[1]]);
+
+    if (getOption('ufs.debug', FALSE)) {
+      message("Debugging message:\n  Set new names: ",
+              ufs::vecTxtQ(newNames), "\n");
+    }
 
     determinantStructure$Do(function(currentNode) {
       currentNode$productVarNames <- newNames;

@@ -14,7 +14,7 @@ detStructCIBER <- function(determinantStructure,
                            decreasing = NULL,
                            generateColors = list(means = c("red", "blue", "green"),
                                                  associations = c("red", "grey", "green")),
-                           strokeColors = viridis::viridis(length(targets)),
+                           strokeColors = NULL,
                            titlePrefix = "Means and associations with",
                            titleVarLabels = NULL,
                            titleSuffix = "",
@@ -37,7 +37,9 @@ detStructCIBER <- function(determinantStructure,
                                        return(x$type=='determinantVar'));
 
     targets <-
-      ufs::ifelseObj(is.null(scaleVarNames), varNames, scaleVarNames);
+      ufs::ifelseObj(is.null(scaleVarNames),
+                     varNames,
+                     scaleVarNames);
 
     currentSubQuestions <-
       ufs::ifelseObj(is.null(currentNode$subQuestions),
@@ -61,29 +63,29 @@ detStructCIBER <- function(determinantStructure,
     }
 
     currentNode$determinantImportance <-
-      CIBER(data = data,
-            determinants = determinants,
-            targets = targets,
-            conf.level = conf.level,
-            subQuestions = currentSubQuestions,
-            leftAnchors = currentLeftAnchors,
-            rightAnchors = currentRightAnchors,
-            orderBy = orderBy,
-            decreasing = decreasing,
-            generateColors = generateColors,
-            strokeColors = strokeColors,
-            titlePrefix = titlePrefix,
-            titleSuffix = titleSuffix,
-            fullColorRange = fullColorRange,
-            associationsAlpha = associationsAlpha,
-            baseSize = baseSize,
-            dotSize = dotSize,
-            titleVarLabels=varNames,
-            returnPlotOnly = TRUE,
-            drawPlot = FALSE,
-            baseFontSize=baseFontSize,
-            theme=theme,
-            ...);
+      behaviorchange::CIBER(data = data,
+                            determinants = determinants,
+                            targets = targets,
+                            conf.level = conf.level,
+                            subQuestions = currentSubQuestions,
+                            leftAnchors = currentLeftAnchors,
+                            rightAnchors = currentRightAnchors,
+                            orderBy = orderBy,
+                            decreasing = decreasing,
+                            generateColors = generateColors,
+                            strokeColors = NULL,
+                            titlePrefix = titlePrefix,
+                            titleSuffix = titleSuffix,
+                            fullColorRange = fullColorRange,
+                            associationsAlpha = associationsAlpha,
+                            baseSize = baseSize,
+                            dotSize = dotSize,
+                            titleVarLabels=varNames,
+                            returnPlotOnly = TRUE,
+                            drawPlot = FALSE,
+                            baseFontSize=baseFontSize,
+                            theme=theme,
+                            ...);
   }, traversal = 'level', filterFun = function(x)
     return((x$type=="subdeterminants") ||
            (x$type=="subdeterminantProducts"))

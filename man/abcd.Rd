@@ -4,15 +4,35 @@
 \alias{abcd}
 \title{Acyclic Behavior Change Diagram}
 \usage{
-abcd(specs, localBackup = NULL,
-  title = "Acyclic Behavior Change Diagram\\n\\n", outputFile = NULL,
-  outputWidth = 3000, outputHeight = 1500, includeColNames = TRUE,
-  maxLabelLength = 30, silent = FALSE)
+abcd(specs, specCols = c("bcps", "cnds", "apps", "sdts", "dets", "pobs",
+  "behs"), omitColOrder = c("cnds", "behs", "bcps", "apps"),
+  localBackup = NULL, title = "Acyclic Behavior Change Diagram\\n\\n",
+  outputFile = NULL, outputWidth = 3000, outputHeight = 1500,
+  includeColNames = TRUE, maxLabelLength = 30, silent = FALSE,
+  regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/")))
 }
 \arguments{
 \item{specs}{The specifications: either a google sheets URL,
 the path to a local file, a character vector with both,
 or a matrix or data frame}
+
+\item{specCols}{The order of the columns. This character vector
+specified the order of the elements of an ABCD. In the default
+order, from left to right, these are (see below for definitions
+and more details):
+\itemize{
+\item \code{bcps} = \strong{Behavior Change Principles (BCPs)};
+\item \code{cnds} = \strong{Conditions for effectiveness};
+\item \code{apps} = \strong{Applications};
+\item \code{sdts} = \strong{Sub-determinants};
+\item \code{dets} = \strong{Determinants};
+\item \code{pobs} = \strong{Performance Objectives};
+\item \code{behs} = \strong{Behaviors};
+}}
+
+\item{omitColOrder}{If not all seven columns are available in the
+specifications, this character vector specifies which columns
+are assumed to be omitted.}
 
 \item{localBackup}{Whether to write the specifications
 to a local backup}
@@ -27,13 +47,18 @@ specified, these determine its width and height (in pixels)}
 
 \item{includeColNames}{Whether to include the column names
 as titles/legend for the entities in each 'column'
-of the ABCD}
+of the ABCD.}
 
 \item{maxLabelLength}{At which width to word wrap the
-labels}
+labels.}
 
 \item{silent}{Whether to suppress (\code{TRUE}) or show
-(\code{FALSE}) more detailed information}
+(\code{FALSE}) more detailed information.}
+
+\item{regExReplacements}{A list of pairs of regular
+expressions that will be applied to the specifications
+before generating the ABCD. This can be used to sanitize
+problematic characters (e.g. ', " and ).}
 }
 \value{
 A list consisting of an \code{input}, \code{intermediate}, and
@@ -41,9 +66,79 @@ A list consisting of an \code{input}, \code{intermediate}, and
 as \code{graph}.
 }
 \description{
-This function generates an acyclic behavior change diagram (ABCD) from a specification in a google sheet or .csv file.
+This function generates an acyclic behavior change diagram (ABCD)
+from a specification in a google sheet or .csv file. An ABCD is
+a logic model that illustrates the assumptions underlying a
+behavior change intervention. Specifically, the ABCD shows the
+assumed causal and structural assumptions, thereby showing what is
+assumed to cause what (e.g. which elements of the intervention are
+assumed to influence which aspects of the target population's
+psychology?) and what is assumed to consist of what (e.g. which
+determinants are assumed to contain which specific aspects of the
+target population's psychology?).
 }
 \details{
+Specifically, a full ABCD is a model that shows the following
+elements:
+\itemize{
+\item \strong{Behavior Change Principles (BCPs)}: The specific
+psychological principles engaged to influence the relevant
+sub-determinants, usually selected using the determinants
+to which the sub-determinants 'belong'. These are also
+known as methods of behavior change in the Intervention
+Mapping framework, or behavior change techniques, BCTs,
+in the Behavior Change Wheel approach. For a list of 99
+BCPs, see Kok et al. (2016).
+\item \strong{Conditions for effectiveness}: The conditions
+that need to be met for a Behavior Change Principle (BCP) to
+be effective. These conditions depend on the specific
+underlying Evolutionary Learning Processes (ELPs) that the
+BCP engages (Crutzen & Peters, 2018). If the conditions for
+effectiveness (called \emph{parameters} for effectiveness in the
+Intervention Mapping framework) are not met, the method will
+likely not be effective, or at least, not achieve its
+maximum effectiveness.
+\item \strong{Applications}: Since BCP's describe aspects of
+human psychology in general, they are necessarily formulated
+on a generic level. Therefore, using them in an intervention
+requires translating them to the specific target population,
+culture, available means, and context. The result of this
+translation is the application of the BCP. Multiple BCPs can
+be combined into one application; and one BCP can be applied in
+multiple applications (see Kok, 2014).
+\item \strong{Sub-determinants}: Behavior change interventions
+engage specific aspects of the human psychology (ideally, they
+specifically, target those aspects found most important in
+predicting the target behavior, as can be established with
+\code{\link[behaviorchange]{CIBER}} plots. These aspects are
+called sub-determinants (the Intervention Mapping framework
+references \emph{Change Objectives}, which are sub-determinants
+formulated according to specific guidelines). In some
+theoretical traditions, sub-determinants are called \emph{beliefs}.
+\item \strong{Determinants}: The overarching psychological constructs that
+are defined as clusters of specific aspects of the human
+psychology that explain humans' behavior (and are targeted
+by behavior change interventions). Psychological theories
+contain specific definitions of such determinants, and make
+statements about how they relate to each other and to human
+behavior. There are also theories (and exists empirical
+evidence) on how these determinants can be changed (i.e. BCPs),
+so althought the sub-determinants are what is targeted in an
+intervention, the selection of feasible BCPs requires knowing
+to which determinants those sub-determinants belong.
+\item \strong{Performance objectives}: The specific sub-behaviors that often
+underlie (or make up) the ultimate target behavior. These are
+distinguished from the overarching target behavior because
+the relevant determinants of these sub-behaviors can be
+different: for example, the reasons why people do or do not
+\emph{buy} condoms can be very different from the reasons why they
+do or do not \emph{carry} condoms or why they do or do not
+\emph{negotiate} condom use with a sexual partner.
+\item \strong{Behavior}: The ultimate target behavior of the intervention,
+usually an umbrella that implicitly contains multiple
+performance objectives.
+}
+
 For details, see Peters et al. (2019).
 }
 \examples{
@@ -56,10 +151,28 @@ behaviorchange::abcd(abcd_specs_full);
 
 }
 \references{
+Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary
+learning processes as the foundation for behaviour change.
+Health Psychology Review, 12(1), 43–57.
+https://doi.org/10.1080/17437199.2017.1362569
+
+Kok, G. (2014). A practical guide to effective behavior
+change: How to apply theory- and evidence-based behavior
+change methods in an intervention. European Health Psychologist,
+16(5), 156–170. https://doi.org/10.31234/osf.io/r78wh
+
+Kok, G., Gottlieb, N. H., Peters, G.-J. Y., Mullen,
+P. D., Parcel, G. S., Ruiter, R. A. C., … Bartholomew,
+L. K. (2016). A taxonomy of behavior change methods:
+an Intervention Mapping approach. Health Psychology
+Review, 10(3), 297–312.
+https://doi.org/10.1080/17437199.2015.1077155
+
 Peters, G.-J. Y., et al. (2019) The core of
 behavior change: introducing the Acyclic Behavior Change
 Diagram to report and analyze interventions.
 }
 \author{
-Gjalt-Jorn Peters, \email{gjalt-jorn@a-bc.eu}
+Gjalt-Jorn Peters, \email{gjalt-jorn@a-bc.eu}, with
+contributions from Matti Heino.
 }

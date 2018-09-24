@@ -24,11 +24,11 @@ detStructCIBER(determinantStructure, data, conf.level = list(means = 0.9999,
   length(determinants)), rightAnchors = rep("Hi", length(determinants)),
   orderBy = 1, decreasing = NULL, generateColors = list(means = c("red",
   "blue", "green"), associations = c("red", "grey", "green")),
-  strokeColors = viridis::viridis(length(targets)),
-  titlePrefix = "Means and associations with", titleVarLabels = NULL,
-  titleSuffix = "", fullColorRange = NULL, associationsAlpha = 0.5,
-  baseSize = 0.8, dotSize = 2.5 * baseSize, baseFontSize = 10 * baseSize,
-  theme = ggplot2::theme_bw(base_size = baseFontSize), ...)
+  strokeColors = NULL, titlePrefix = "Means and associations with",
+  titleVarLabels = NULL, titleSuffix = "", fullColorRange = NULL,
+  associationsAlpha = 0.5, baseSize = 0.8, dotSize = 2.5 * baseSize,
+  baseFontSize = 10 * baseSize, theme = ggplot2::theme_bw(base_size =
+  baseFontSize), ...)
 }
 \arguments{
 \item{data}{The dataframe containing the variables.}
