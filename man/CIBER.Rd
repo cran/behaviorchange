@@ -3,7 +3,6 @@
 \name{CIBER}
 \alias{CIBER}
 \alias{detStructCIBER}
-\alias{detStructCIBER}
 \title{Confidence Interval-Based Estimation of Relevance (CIBER)}
 \usage{
 CIBER(data, determinants, targets, conf.level = list(means = 0.9999,
@@ -15,15 +14,17 @@ CIBER(data, determinants, targets, conf.level = list(means = 0.9999,
   strokeColors = viridis::viridis(length(targets)),
   titlePrefix = "Means and associations with", titleVarLabels = NULL,
   titleSuffix = "", fullColorRange = NULL, associationsAlpha = 0.5,
-  returnPlotOnly = TRUE, drawPlot = TRUE, baseSize = 0.8, dotSize = 2.5
-  * baseSize, baseFontSize = 10 * baseSize,
-  theme = ggplot2::theme_bw(base_size = baseFontSize), xbreaks = NULL, ...)
+  returnPlotOnly = TRUE, drawPlot = TRUE, baseSize = 0.8,
+  dotSize = 2.5 * baseSize, baseFontSize = 10 * baseSize,
+  theme = ggplot2::theme_bw(base_size = baseFontSize), xbreaks = NULL,
+  ...)
 
-detStructCIBER(determinantStructure, data, conf.level = list(means = 0.9999,
-  associations = 0.95), subQuestions = NULL, leftAnchors = rep("Lo",
-  length(determinants)), rightAnchors = rep("Hi", length(determinants)),
-  orderBy = 1, decreasing = NULL, generateColors = list(means = c("red",
-  "blue", "green"), associations = c("red", "grey", "green")),
+detStructCIBER(determinantStructure, data, conf.level = list(means =
+  0.9999, associations = 0.95), subQuestions = NULL,
+  leftAnchors = rep("Lo", length(determinants)),
+  rightAnchors = rep("Hi", length(determinants)), orderBy = 1,
+  decreasing = NULL, generateColors = list(means = c("red", "blue",
+  "green"), associations = c("red", "grey", "green")),
   strokeColors = NULL, titlePrefix = "Means and associations with",
   titleVarLabels = NULL, titleSuffix = "", fullColorRange = NULL,
   associationsAlpha = 0.5, baseSize = 0.8, dotSize = 2.5 * baseSize,

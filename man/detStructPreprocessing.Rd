@@ -6,9 +6,6 @@
 \alias{detStructAddVarLabels}
 \alias{detStructPreprocessing}
 \alias{detStructAddVarNames}
-\alias{detStructAddVarLabels}
-\alias{detStructComputeProducts}
-\alias{detStructComputeScales}
 \alias{detStructComputeProducts}
 \alias{detStructComputeScales}
 \title{Functions to preprocess determinant structures}
@@ -101,21 +98,38 @@ names(detStudy) <- c('rUse_behav',
                      'rUse_expAtt2');
 
 ### Specify the determinant structure
-detStruct <- determinantStructure('Behavior',
-                                  list('behav',
+
+### First a subdeterminant
+expAtt <-
+  behaviorchange::subdeterminants("Subdeterminants",
+                                  "expAtt");
+
+### Then two determinants
+attitude <-
+  behaviorchange::determinantVar("Determinant",
+                                 "attitude",
+                                 expAtt);
+
+intention <-
+  behaviorchange::determinantVar("ProximalDeterminant",
+                                 "intention",
+                                 attitude);
+
+### Then the entire determinant strcture
+detStruct <-
+  behaviorchange::determinantStructure('Behavior',
+                                       list('behav',
                                        behaviorRegEx = 'rUse'),
-                                  determinantVar("ProximalDeterminant",
-                                                 "intention",
-                                                 determinantVar("Determinant",
-                                                                "attitude",
-                                                                subdeterminants("Subdeterminants",
-                                                                                "expAtt"))));
+                                       intention);
 
 ### Add the variable names
-detStructAddVarNames(detStruct, names(detStudy));
+behaviorchange::detStructAddVarNames(detStruct,
+                                     names(detStudy));
 
 ### Add the determinant scale variable to the dataframe
-detStudyPlus <- detStructComputeScales(detStruct, data=detStudy);
+detStudyPlus <-
+  behaviorchange::detStructComputeScales(detStruct,
+                                         data=detStudy);
 
 ### Show its presence
 names(detStudyPlus);

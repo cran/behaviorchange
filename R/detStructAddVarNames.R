@@ -59,7 +59,8 @@
 #' @export
 #' @name detStructPreprocessing
 #' @rdname detStructPreprocessing
-#' @examples ### Create some bogus determinant data
+#' @examples
+#' ### Create some bogus determinant data
 #' detStudy <- mtcars[, c(1, 3:7)];
 #' names(detStudy) <- c('rUse_behav',
 #'                      'rUse_intention',
@@ -69,21 +70,38 @@
 #'                      'rUse_expAtt2');
 #'
 #' ### Specify the determinant structure
-#' detStruct <- determinantStructure('Behavior',
-#'                                   list('behav',
+#'
+#' ### First a subdeterminant
+#' expAtt <-
+#'   behaviorchange::subdeterminants("Subdeterminants",
+#'                                   "expAtt");
+#'
+#' ### Then two determinants
+#' attitude <-
+#'   behaviorchange::determinantVar("Determinant",
+#'                                  "attitude",
+#'                                  expAtt);
+#'
+#' intention <-
+#'   behaviorchange::determinantVar("ProximalDeterminant",
+#'                                  "intention",
+#'                                  attitude);
+#'
+#' ### Then the entire determinant strcture
+#' detStruct <-
+#'   behaviorchange::determinantStructure('Behavior',
+#'                                        list('behav',
 #'                                        behaviorRegEx = 'rUse'),
-#'                                   determinantVar("ProximalDeterminant",
-#'                                                  "intention",
-#'                                                  determinantVar("Determinant",
-#'                                                                 "attitude",
-#'                                                                 subdeterminants("Subdeterminants",
-#'                                                                                 "expAtt"))));
+#'                                        intention);
 #'
 #' ### Add the variable names
-#' detStructAddVarNames(detStruct, names(detStudy));
+#' behaviorchange::detStructAddVarNames(detStruct,
+#'                                      names(detStudy));
 #'
 #' ### Add the determinant scale variable to the dataframe
-#' detStudyPlus <- detStructComputeScales(detStruct, data=detStudy);
+#' detStudyPlus <-
+#'   behaviorchange::detStructComputeScales(detStruct,
+#'                                          data=detStudy);
 #'
 #' ### Show its presence
 #' names(detStudyPlus);
@@ -93,9 +111,11 @@ detStructAddVarNames <- function(determinantStructure,
                                  names) {
 
   ### Get all behaviorRegExes that are set (should only be one)
-  behaviorRegEx <- determinantStructure$Get('behaviorRegEx',
-                                            traversal='level',
-                                            filterFun=function(x) return(!is.null(x$behaviorRegEx)));
+  behaviorRegEx <- data.tree::Get(nodes=list(determinantStructure),
+                                  attribute='behaviorRegEx',
+                                  traversal='level',
+                                  filterFun=function(x) return(!is.null(data.tree::Get(nodes=list(x),
+                                                                                       attribute='behaviorRegEx'))));
 
   ### Remove any duplicates and select the first one in case there are more
   behaviorRegEx <- unique(behaviorRegEx)[1];
@@ -105,25 +125,32 @@ detStructAddVarNames <- function(determinantStructure,
 
   ### Walk through the determinant structure and select the
   ### matching variable names, adding the to the structure
-  determinantStructure$Do(function(currentNode, allNames = allNms) {
+  data.tree::Do(nodes=data.tree::Traverse(determinantStructure,
+                                          traversal = 'level',
+                                          filterFun = function(x) {
+                                            return(!is.null(x$selection))}),
+                fun=function(currentNode, allNames = allNms) {
+
     if (is.list(currentNode$selection)) {
-      currentNode$varNames <- sapply(currentNode$selection,
-                                     function(x) {
-                                       res <- sapply(x,
-                                                     grep,
-                                                     allNames,
-                                                     value=TRUE,
-                                                     simplify=FALSE);
-                                       names(res) <- allNames;
-                                       return(res);
-                                     },
-                                     simplify=FALSE);
+      currentNode$varNames <-
+        sapply(currentNode$selection,
+               function(x) {
+                 res <- sapply(x,
+                               grep,
+                               allNames,
+                               value=TRUE,
+                               simplify=FALSE);
+                 names(res) <- allNames;
+                 return(res);
+               },
+               simplify=FALSE);
       names(currentNode$varNames) <- currentNode$selection;
     } else {
-      currentNode$varNames <- sapply(currentNode$selection,
-                                     grep, allNames, value=TRUE, simplify=FALSE);
+      currentNode$varNames <-
+        sapply(currentNode$selection,
+               grep, allNames, value=TRUE, simplify=FALSE);
       names(currentNode$varNames) <- currentNode$selection;
     }
-  }, traversal = 'level', filterFun = function(x) return(!is.null(x$selection)));
+  });
 
 }

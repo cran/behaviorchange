@@ -8,7 +8,10 @@ detStructAddVarLabels <- function(determinantStructure,
                                   subQuestionCol = 'subQuestions',
                                   questionTextCol = 'questionText') {
 
-  determinantStructure$Do(function(currentNode) {
+  data.tree::Do(nodes=data.tree::Traverse(determinantStructure,
+                                          traversal = 'level',
+                                          filterFun = function(x) return(!is.null(x$varNames))),
+                fun=function(currentNode) {
     if (currentNode$type == 'subdeterminantProducts') {
       ### Look at $varNames[[1]] - check which ones occur in
       ### the list of productVarNames; then select the corresponding
@@ -17,6 +20,12 @@ detStructAddVarLabels <- function(determinantStructure,
       currentNode$rightAnchors <- rep('hi', length(currentNode$productVarNames));
       currentNode$subQuestions <- currentNode$productVarNames;
     } else {
+
+      if (getOption('ufs.debug', FALSE)) {
+        message("Debugging message:\n  Found ",
+                ufs::vecTxtQ(unlist(currentNode$varNames)), ".\n");
+      }
+
       currentNode$leftAnchors <- varLabelDf[varLabelDf[, varNameCol] %in%
                                               unlist(currentNode$varNames),
                                             leftAnchorCol];
@@ -30,6 +39,6 @@ detStructAddVarLabels <- function(determinantStructure,
                                                 unlist(currentNode$varNames),
                                               questionTextCol];
     }
-  }, traversal = 'level', filterFun = function(x) return(!is.null(x$varNames)));
+  });
 
 }

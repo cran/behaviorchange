@@ -93,7 +93,7 @@ determinantStructure <-
       res <- c(res, list(...));
     }
 
-    if (type == 'determinantStructure') {
+    if (grepl('determinantStructure', type)) {
       res <- data.tree::as.Node(res);
       ### Arrows from children to parents
       data.tree::SetEdgeStyle(res, dir='back');

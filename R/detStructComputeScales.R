@@ -15,9 +15,10 @@ detStructComputeScales <- function(determinantStructure,
 
   ### Get behavior regex
   ### Get all behaviorRegExes that are set (should only be one)
-  behaviorRegEx <- determinantStructure$Get('behaviorRegEx',
-                                            traversal='level',
-                                            filterFun=function(x) return(!is.null(x$behaviorRegEx)));
+  behaviorRegEx <- data.tree::Get(nodes=data.tree::Traverse(determinantStructure,
+                                                            traversal='level',
+                                                            filterFun=function(x) return(!is.null(x$behaviorRegEx))),
+                                  attribute='behaviorRegEx');
 
   ### Remove any duplicates and select the first one in case there are more
   behaviorRegEx <- unique(behaviorRegEx);
@@ -30,16 +31,23 @@ detStructComputeScales <- function(determinantStructure,
   behaviorRegEx <- behaviorRegEx[1];
 
   ### Get all variables names of all 'product halves'
-  scalables <- determinantStructure$Get("varNames", traversal='level',
-                                        filterFun=function(x) {
-                                          return(x$type == 'determinantVar');
-                                        }, simplify=FALSE);
+  scalables <- data.tree::Get(nodes=data.tree::Traverse(determinantStructure,
+                                                        traversal='level',
+                                                        filterFun=function(x) {
+                                                          return(x$type == 'determinantVar');
+                                                        }),
+                              attribute="varNames",
+                              simplify=FALSE);
 
   ### Remove superfluous level in between
   scalables <- lapply(scalables, unlist);
 
   ### Add behavior before variable names
   names(scalables) <- paste0(behaviorRegEx, separator, names(scalables));
+
+  if (getOption('ufs.debug', FALSE)) {
+    message("I will create these variables: ", ufs::vecTxtQ(names(scalables)), ".\n");
+  }
 
   ### Add new variable names to determinant structure
   determinantStructure$Set(scaleVarName = names(scalables),
