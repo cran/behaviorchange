@@ -104,8 +104,10 @@
 #'   labels.
 #' @param silent Whether to suppress (`TRUE`) or show
 #'   (`FALSE`) more detailed information.
-#' @param returnGraphOnly Whether to return the full results
-#'   object or only the [DiagrammeR::DiagrammeR] graph.
+#' @param returnGraphOnly,returnSvgOnly Whether to return the full results
+#'   object or only either the [DiagrammeR::DiagrammeR] graph or a one-value
+#'   character vector containing a Scalable Vector Graphic as produced by
+#'   [DiagrammeRsvg::export_svg()].
 #' @param regExReplacements A list of pairs of regular
 #'   expressions that will be applied to the specifications
 #'   before generating the ABCD. This can be used to sanitize
@@ -168,6 +170,7 @@ abcd <- function(specs,
                  maxLabelLength = 30,
                  silent = FALSE,
                  returnGraphOnly = FALSE,
+                 returnSvgOnly = FALSE,
                  regExReplacements = list(c("\\\"", "`"),
                                           c("\\'", "`"),
                                           c("\\\\", "/"))) {
@@ -629,6 +632,14 @@ abcd <- function(specs,
 
   if (returnGraphOnly) {
     return(graph);
+  } else if (returnSvgOnly) {
+    ### From DiagrammeR::export_graph
+    dot_code <- DiagrammeR::generate_dot(graph);
+    graphSvg <-
+      DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
+    graphSvg <-
+      sub(".*\n<svg ", "<svg ", graphSvg);
+    return(graphSvg);
   } else {
     res$output$graph <- graph;
     class(res) <- "abcdiagram";

@@ -177,9 +177,18 @@ Elke rij in de tabel geeft een 'ketting' weer die de aannames van een stukje van
 Een voorbeeld van zo'n ABCD specificatietabel staat in Google Sheets op https://docs.google.com/spreadsheets/d/1EKVqtG1kmf0ZxEvFUOBqUmakXTd9Ye3aSyZucBqiyRM/edit?usp=sharing. Deze specificatie ziet er zo uit:
 
 ```{r abcd-specificatie, echo=FALSE}
-knitr::kable(behaviorchange::abcd_specs_dutch_xtc,
-             format="html",
-             table.attr="style='font-size:85%;'");
+abcd_specs_dutch_xtc <- behaviorchange::abcd_specs_dutch_xtc;
+
+names(abcd_specs_dutch_xtc) <-
+  c("Gedrags-veranderings-principes",
+    "Voorwaarden voor effectiviteit",
+    "Toepassingen",
+    "Sub-determinanten",
+    "Determinanten",
+    "Sub-gedragingen",
+    "Doelgedrag");
+
+knitr::kable(abcd_specs_dutch_xtc);
 ```
 
 Deze specificatie kan worden ingeladen in de online ABCD app op https://a-bc.eu/apps/abcd door die Google Sheets URL erin te copypasten. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
@@ -190,8 +199,17 @@ Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van
 
 De ABCD diagram voor het voorbeeld hierboven ziet er zo uit:
 
-```{r abcd-diagram, echo=FALSE, fig.width=14, fig.height=7}
-print(behaviorchange::abcd(behaviorchange::abcd_specs_dutch_xtc));
+![De ABCD voor het XTC voorbeeld](abcd_specs_dutch_xtc.png){ width=100% }
+
+```{r abcd-diagram, echo=FALSE, fig.width=14, fig.height=7, eval=FALSE}
+abcd_specs_dutch_xtc_graph <-
+  behaviorchange::abcd(behaviorchange::abcd_specs_dutch_xtc);
+print(abcd_specs_dutch_xtc_graph);
+DiagrammeR::export_graph(abcd_specs_dutch_xtc_graph$output$graph,
+                         here::here('vignettes', 'abcd_specs_dutch_xtc.png'),
+                         title="Acyclic Behavior Change Diagram",
+                         width=3000,
+                         height=1000);
 ```
 
 Deze ABCD laat in het midden, op het 'breedste' (eigenlijk hoogste' punt van de diagram, in grijze boxjes de subdeterminanten zien waar de interventie zich op richt. Dit zijn dus bijvoorbeeld de opvattingen die zijn ge&iuml;dentificeerd in determinantenonderzoek. Hoe meer deze lijst alle belangrijke aspecten van de psychologie van de doelgroep bevat, hoe hoger de effectiviteit van de interventie zal zijn.

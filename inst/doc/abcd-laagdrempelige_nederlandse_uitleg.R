@@ -29,10 +29,26 @@ DiagrammeR::render_graph(raaGraph);
 
 
 ## ----abcd-specificatie, echo=FALSE---------------------------------------
-knitr::kable(behaviorchange::abcd_specs_dutch_xtc,
-             format="html",
-             table.attr="style='font-size:85%;'");
+abcd_specs_dutch_xtc <- behaviorchange::abcd_specs_dutch_xtc;
 
-## ----abcd-diagram, echo=FALSE, fig.width=14, fig.height=7----------------
-print(behaviorchange::abcd(behaviorchange::abcd_specs_dutch_xtc));
+names(abcd_specs_dutch_xtc) <-
+  c("Gedrags-veranderings-principes",
+    "Voorwaarden voor effectiviteit",
+    "Toepassingen",
+    "Sub-determinanten",
+    "Determinanten",
+    "Sub-gedragingen",
+    "Doelgedrag");
+
+knitr::kable(abcd_specs_dutch_xtc);
+
+## ----abcd-diagram, echo=FALSE, fig.width=14, fig.height=7, eval=FALSE----
+#  abcd_specs_dutch_xtc_graph <-
+#    behaviorchange::abcd(behaviorchange::abcd_specs_dutch_xtc);
+#  print(abcd_specs_dutch_xtc_graph);
+#  DiagrammeR::export_graph(abcd_specs_dutch_xtc_graph$output$graph,
+#                           here::here('vignettes', 'abcd_specs_dutch_xtc.png'),
+#                           title="Acyclic Behavior Change Diagram",
+#                           width=3000,
+#                           height=1000);
 

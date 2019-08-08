@@ -10,7 +10,7 @@ abcd(specs, specCols = c("bcps", "cnds", "apps", "sdts", "dets", "pobs",
   localBackup = NULL, title = "Acyclic Behavior Change Diagram\\n\\n",
   outputFile = NULL, outputWidth = 3000, outputHeight = 1500,
   includeColNames = TRUE, maxLabelLength = 30, silent = FALSE,
-  returnGraphOnly = FALSE,
+  returnGraphOnly = FALSE, returnSvgOnly = FALSE,
   regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/")))
 
 \method{print}{abcdiagram}(x, width = x$input$width,
@@ -61,8 +61,10 @@ labels.}
 \item{silent}{Whether to suppress (\code{TRUE}) or show
 (\code{FALSE}) more detailed information.}
 
-\item{returnGraphOnly}{Whether to return the full results
-object or only the \link[DiagrammeR:DiagrammeR]{DiagrammeR::DiagrammeR} graph.}
+\item{returnGraphOnly, returnSvgOnly}{Whether to return the full results
+object or only either the \link[DiagrammeR:DiagrammeR]{DiagrammeR::DiagrammeR} graph or a one-value
+character vector containing a Scalable Vector Graphic as produced by
+\code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}}.}
 
 \item{regExReplacements}{A list of pairs of regular
 expressions that will be applied to the specifications

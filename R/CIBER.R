@@ -63,6 +63,9 @@
 #' @param strokeColors The palette to use to color the stroke of the confidence
 #' intervals for the associations between the determinants and the targets.
 #' Successive colors from this palette are used for the targets.
+#' @param vLines,vLineColors In the association plot, vertical lines can
+#' be plotted to facilitate interpretation. Specify their locations and
+#' colors here, or set one or both to `NULL` to eliminate them.
 #' @param titlePrefix Text to add before the list of target names and the
 #' proportions of explained variance for each target. This plot title also
 #' serves as legend to indicate which target 'gets' which each color.
@@ -110,8 +113,9 @@
 #' Development of Behaviour Change Interventions? Confidence Interval-Based
 #' Estimation of Relevance. http://dx.doi.org/
 #' @keywords hplot
+#' @rdname CIBER
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' CIBER(data=mtcars,
 #'       determinants=c('drat', 'wt', 'am',
 #'                      'gear', 'vs', 'carb'),
@@ -133,7 +137,9 @@ CIBER <- function(data,
                   generateColors = list(means = c("red", "blue", "green"),
                                         associations = c("red", "grey", "green")),
                   strokeColors = viridis::viridis(length(targets)),
-                  titlePrefix = "Means and associations with",
+                  vLines = c(-0.5, 0, 0.5),
+                  vLineColors = "grey",
+                  titlePrefix = "Means and associations (r) with",
                   titleVarLabels = NULL,
                   titleSuffix = "",
                   fullColorRange = NULL,
@@ -274,16 +280,16 @@ CIBER <- function(data,
   ### Get R squared values
   tryCatch(
     res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
-      return(userfriendlyscience::regr(stats::formula(paste(currentTarget,
-                                                      '~',
-                                                      paste(determinants,
-                                                      collapse=" + "))),
-                  data=res$intermediate$dat,
-                  conf.level=conf.level$associations));
+      return(lm_rSq_ci(stats::formula(paste(currentTarget,
+	  									 '~',
+											 paste(determinants,
+  										       collapse=" + "))),
+                       data=res$intermediate$dat,
+                       conf.level=conf.level$associations));
     }), error=function(e) {
       stop("Encountered an error when trying to compute the R square of targets ",
            ufs::vecTxtQ(targets), " predicted by ", ufs::vecTxtQ(determinants),
-           ".");
+           ". The error is:\n\n", e$message);
     });
 
 
@@ -329,7 +335,7 @@ CIBER <- function(data,
     ggplot2::ggplot_build(res$intermediate$biAxisDiamondPlot$intermediate$meansPlot);
   yMajor <- builtMeansPlot$layout$panel_ranges[[1]]$y.major_source;
 
-  ### Note to self: this changes in ggplot2 3.0; used to be stored in
+  ### Note to self: this changed in ggplot2 3.0; used to be stored in
   ###   builtMeansPlot$layout$panel_ranges[[1]]$y.range
   yRange <- range(builtMeansPlot$layout$panel_scales_y[[1]]$range$range);
 
@@ -354,7 +360,19 @@ CIBER <- function(data,
                                      returnLayerOnly = TRUE, ...));
            }, simplify=FALSE);
 
+  if (!is.null(vLines) && !is.null(vLineColors)) {
+    if (!(length(vLineColors) == length(vLines))) {
+      vLineColors <- rep_len(vLineColors, length(vLines));
+    }
+    vLineLayer <-
+      ggplot2::geom_vline(xintercept = vLines,
+                          color = vLineColors);
+  } else {
+    vLineLayer <- NULL;
+  }
+
   res$intermediate$assocPlot <- ggplot2::ggplot() +
+    vLineLayer +
     res$intermediate$assocLayers +
     theme +
     ggplot2::xlab(paste0(round(100 * conf.level$associations, 2), '% CIs of associations')) +
@@ -381,7 +399,7 @@ CIBER <- function(data,
   currentXpos <- sum(grid::unit(0.2, "lines"),
                      grid::grobWidth(titleGrobs[[1]]));
   newGrob <- grid::textGrob(label = paste0(titleVarLabels[1], " (R\U00B2 = ",
-                                           ufs::formatCI(res$intermediate$Rsq[[1]]$output$rsq.ci, noZero=TRUE), ")"),
+                                           ufs::formatCI(res$intermediate$Rsq[[1]], noZero=TRUE), ")"),
                       x = currentXpos,
                       y = grid::unit(.8, "lines"),
                       hjust = 0, vjust = 0,
@@ -402,7 +420,7 @@ CIBER <- function(data,
                          grid::grobWidth(prefixGrob));
       newGrob <-
         grid::textGrob(label = paste0(titleVarLabels[i], " (R\U00B2 = ",
-                                      ufs::formatCI(res$intermediate$Rsq[[i]]$output$rsq.ci, noZero=TRUE), ")"),
+                                      ufs::formatCI(res$intermediate$Rsq[[i]], noZero=TRUE), ")"),
                        x = currentXpos,
                        y = grid::unit(0.8, "lines"),
                        hjust = 0, vjust = 0,

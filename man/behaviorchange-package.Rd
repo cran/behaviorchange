@@ -40,13 +40,19 @@ developers and prevention workers.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://a-bc.eu/R/behaviorchange}
-  \item Report bugs at \url{https://github.com/academy-of-behavior-change/behaviorchange/issues}
+  \item \url{https://r-packages.gitlab.io/behaviorchange}
+  \item Report bugs at \url{https://gitlab.com/r-packages/behaviorchange/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@a-bc.eu} [contributor]
+\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@a-bc.eu} (0000-0002-0336-9589)
+
+Other contributors:
+\itemize{
+  \item Rik Crutzen \email{rik@a-bc.eu} (0000-0002-3731-6610) [contributor]
+  \item Stefan Gruijters \email{mail@stefangruijters.nl} (0000-0003-0141-0071) [contributor]
+}
 
 }
 \keyword{internal}
