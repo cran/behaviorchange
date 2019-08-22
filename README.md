@@ -1,5 +1,5 @@
 
-# behaviorchange 📦
+# <img src='img/hex-logo.png' align="right" height="200" /> behaviorchange 📦
 
 behaviorchange: Tools for Behavior Change Researchers and Professionals
 
@@ -21,6 +21,17 @@ The pkgdown website for this project is located at
 <!-- Start of a custom bit for every package -->
 
 <!--------------------------------------------->
+
+## jamovi
+
+This package is also available as a module in jamovi, which is freely
+available at <https://jamovi.org>.
+
+## The Book of Behavior Change
+
+The package authors are working on an open access book on behavior
+change. The in progress version is already available from
+<https://bookofbehaviorchange.com>.
 
 <!--------------------------------------------->
 

@@ -128,6 +128,15 @@ lm_rSq_ci <- function(formula, data=NULL, conf.level=.95,
     rsq.ci <- rsq.ci.olkinfinn;
   }
 
+  rsq.ci <- sort(rsq.ci);
+
+  if ((rsq.ci[1]) < 0) {
+    rsq.ci[1] <- 0;
+  }
+  if ((rsq.ci[2]) > 1) {
+    rsq.ci[2] <- 1;
+  }
+
   return(rsq.ci);
 
 }

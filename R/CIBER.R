@@ -41,6 +41,13 @@
 #' panel. If the determinants were measured with one variable each, this can be
 #' used to show the anchors that were used for the respective scales. Must have
 #' the same length as \code{determinants}.
+#' @param outputFile The file to write the output to (the plot is not stored to
+#' disk if `NULL`). The extension can be specified to change the file type.
+#' @param outputWidth,outputHeight,outputUnits The width, height,
+#' and units for the output file.
+#' @param outputParams More advanced parameters for the output file. This can be
+#' used to pass arguments to [ggplot2::ggsave()], such as passing
+#' `outputParams=list(type="cairo-png")` to use anti-aliasing when saving a PNG file.
 #' @param orderBy Whether to sort the determinants. Set to \code{NULL} to not
 #' sort at all; specify the name or index of one of the \code{target}s to sort
 #' by the point estimates of the associations with that target variable. Use
@@ -115,11 +122,18 @@
 #' @keywords hplot
 #' @rdname CIBER
 #' @examples
-#' \donttest{
-#' CIBER(data=mtcars,
-#'       determinants=c('drat', 'wt', 'am',
-#'                      'gear', 'vs', 'carb'),
-#'       targets=c('mpg', 'cyl'));
+#' \donttest{### This example uses the determinant study Party Panel 17.1;
+#' ### see ?behaviorchange::BBC_data for more information.
+#' data(BBC_pp17.1);
+#' behaviorchange::CIBER(data=BBC_pp17.1,
+#'                       determinants=c('epw_AttExpect_hearingDamage',
+#'                                      'epw_AttExpect_highTone',
+#'                                      'epw_AttExpect_musicVolume',
+#'                                      'epw_AttExpect_musicFidelity',
+#'                                      'epw_AttExpect_loudConversation',
+#'                                      'epw_AttExpect_musicFocus',
+#'                                      'epw_AttExpect_musicEnjoy'),
+#'                       targets=c('epw_attitude'));
 #' }
 #' @export
 #' @importFrom ufs "%IN%"
@@ -131,6 +145,11 @@ CIBER <- function(data,
                   subQuestions = NULL,
                   leftAnchors = rep("Lo", length(determinants)),
                   rightAnchors = rep("Hi", length(determinants)),
+                  outputFile = NULL,
+                  outputWidth = NULL,
+                  outputHeight = NULL,
+                  outputUnits = "in",
+                  outputParams = list(),
                   orderBy = NULL,
                   decreasing = NULL,
                   numberSubQuestions = FALSE,
@@ -273,7 +292,8 @@ CIBER <- function(data,
     return(ufs::associationsToDiamondPlotDf(res$intermediate$dat,
                                             determinants,
                                             currentTarget,
-                                            esMetric = 'r'));
+                                            esMetric = 'r',
+                                            conf.level=conf.level$associations));
   }, simplify=FALSE);
   names(res$intermediate$assocDat) <- targets;
 
@@ -465,6 +485,33 @@ CIBER <- function(data,
   if (drawPlot) {
     grid::grid.newpage();
     grid::grid.draw(res$output$plot);
+  }
+
+  if (!is.null(outputFile)) {
+    if ((nchar(dirname(outputFile)) == 0) | (!dir.exists(dirname(outputFile)))) {
+      warning("The directory specified to save the the outputFile to ('",
+              dirname(outputFile),
+              "') does not exist, so not saving the plot!");
+    } else {
+      if (is.null(outputWidth)) {
+        outputWidth <- attr(res$output$plot, 'width');
+        outputUnits <- "in";
+      }
+      if (is.null(outputHeight)) {
+        outputHeight <- attr(res$output$plot, 'height');
+        outputUnits <- "in";
+      }
+      if (is.null(outputUnits)) {
+        outputUnits <- "in";
+      }
+      do.call(ggplot2::ggsave,
+              c(list(file=outputFile,
+                     plot=res$output$plot,
+                     width = outputWidth,
+                     height = outputHeight,
+                     units = outputUnits),
+                outputParams));
+    }
   }
 
   invisible(ufs::ifelseObj(returnPlotOnly, res$output$plot, res));

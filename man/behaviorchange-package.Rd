@@ -13,13 +13,15 @@ Contains specialised analyses and
     estimation of relevance, CIBER, or CIBERlite
     plots), systematically developing, reporting,
     and analysing interventions (for example, using
-    acyclic behavior change diagrams or ABCDs), and
-    reporting about intervention effectiveness (for
-    example, using the Numbers Needed for Change). This
-    package is especially useful for researchers in
-    the field of behavior change or health psychology
-    and to behavior change professionals such as
-    intervention developers and prevention workers.
+    acyclic behavior change diagrams), and reporting
+    about intervention effectiveness (for example, using
+    the Numbers Needed for Change), and computing the
+    required sample size (using the Meaningful Change
+    Definition). This package is especially useful for
+    researchers in the field of behavior change or
+    health psychology and to behavior change
+    professionals such as intervention developers and
+    prevention workers.
 }
 \details{
 Contains specialised analyses and
@@ -31,11 +33,13 @@ plots), systematically developing, reporting,
 and analysing interventions (for example, using
 acyclic behavior change diagrams), and reporting
 about intervention effectiveness (for example, using
-the Numbers Needed for Change). This package
-is especially useful for researchers in the field of
-behavior change or health psychology and to
-behavior change professionals such as intervention
-developers and prevention workers.
+the Numbers Needed for Change), and computing the
+required sample size (using the Meaningful Change
+Definition). This package is especially useful for
+researchers in the field of behavior change or
+health psychology and to behavior change
+professionals such as intervention developers and
+prevention workers.
 }
 \seealso{
 Useful links:

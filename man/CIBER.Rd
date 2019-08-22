@@ -9,7 +9,9 @@
 CIBER(data, determinants, targets, conf.level = list(means = 0.9999,
   associations = 0.95), subQuestions = NULL, leftAnchors = rep("Lo",
   length(determinants)), rightAnchors = rep("Hi", length(determinants)),
-  orderBy = NULL, decreasing = NULL, numberSubQuestions = FALSE,
+  outputFile = NULL, outputWidth = NULL, outputHeight = NULL,
+  outputUnits = "in", outputParams = list(), orderBy = NULL,
+  decreasing = NULL, numberSubQuestions = FALSE,
   generateColors = list(means = c("red", "blue", "green"), associations =
   c("red", "grey", "green")),
   strokeColors = viridis::viridis(length(targets)), vLines = c(-0.5, 0,
@@ -24,11 +26,12 @@ CIBER(data, determinants, targets, conf.level = list(means = 0.9999,
 binaryCIBER(data, determinants, targets, conf.level = list(means =
   0.9999, associations = 0.95), subQuestions = NULL,
   leftAnchors = rep("Lo", length(determinants)),
-  rightAnchors = rep("Hi", length(determinants)), orderBy = NULL,
-  decreasing = NULL, numberSubQuestions = FALSE,
-  comparisonColors = viridis::viridis(2, end = 0.5),
-  categoryLabels = NULL, generateColors = list(means = c("red", "blue",
-  "green"), associations = c("red", "grey", "green")),
+  rightAnchors = rep("Hi", length(determinants)), outputFile = NULL,
+  outputWidth = NULL, outputHeight = NULL, outputUnits = "in",
+  outputParams = list(), orderBy = NULL, decreasing = NULL,
+  numberSubQuestions = FALSE, comparisonColors = viridis::viridis(2,
+  end = 0.5), categoryLabels = NULL, generateColors = list(means =
+  c("red", "blue", "green"), associations = c("red", "grey", "green")),
   strokeColors = viridis::viridis(length(targets)), vLines = c(-0.8, 0,
   0.8), vLineColors = "grey",
   titlePrefix = "Means and associations (d) with",
@@ -79,6 +82,16 @@ the same length as \code{determinants}.}
 panel. If the determinants were measured with one variable each, this can be
 used to show the anchors that were used for the respective scales. Must have
 the same length as \code{determinants}.}
+
+\item{outputFile}{The file to write the output to (the plot is not stored to
+disk if \code{NULL}). The extension can be specified to change the file type.}
+
+\item{outputWidth, outputHeight, outputUnits}{The width, height,
+and units for the output file.}
+
+\item{outputParams}{More advanced parameters for the output file. This can be
+used to pass arguments to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}, such as passing
+\code{outputParams=list(type="cairo-png")} to use anti-aliasing when saving a PNG file.}
 
 \item{orderBy}{Whether to sort the determinants. Set to \code{NULL} to not
 sort at all; specify the name or index of one of the \code{target}s to sort
@@ -194,24 +207,32 @@ determinants of behavior.
 Details are explained in Crutzen & Peters (2017).
 }
 \examples{
-\donttest{
-CIBER(data=mtcars,
-      determinants=c('drat', 'wt', 'am',
-                     'gear', 'vs', 'carb'),
-      targets=c('mpg', 'cyl'));
+\donttest{### This example uses the determinant study Party Panel 17.1;
+### see ?behaviorchange::BBC_data for more information.
+data(BBC_pp17.1);
+behaviorchange::CIBER(data=BBC_pp17.1,
+                      determinants=c('epw_AttExpect_hearingDamage',
+                                     'epw_AttExpect_highTone',
+                                     'epw_AttExpect_musicVolume',
+                                     'epw_AttExpect_musicFidelity',
+                                     'epw_AttExpect_loudConversation',
+                                     'epw_AttExpect_musicFocus',
+                                     'epw_AttExpect_musicEnjoy'),
+                      targets=c('epw_attitude'));
 }
-\donttest{### With binary targets
-binaryCIBER(data=mtcars,
-            determinants=c('mpg', 'wt',
-                           'drat'),
-                           targets=c('am', 'vs'));
+\donttest{### With a binary target
+data(BBC_pp17.1);
+behaviorchange::binaryCIBER(data=BBC_pp17.1,
+                            determinants=c('epGeneralBeliefs_loudnessPreference',
+                                           'epGeneralBeliefs_loudnessGenre',
+                                           'epGeneralBeliefs_loudnessTooMuch',
+                                           'epGeneralBeliefs_priceFoam',
+                                           'epGeneralBeliefs_priceSilicon',
+                                           'epGeneralBeliefs_priceCustom'),
+                            targets=c('epPossession'),
+                            categoryLabels = c('no',
+                                               'yes'));
 
-### With only one specified target, the subgroups
-### are shown in the left panel
-binaryCIBER(data=mtcars,
-            determinants=c('mpg', 'wt',
-                           'drat'),
-                           targets='am');
 }
 }
 \references{

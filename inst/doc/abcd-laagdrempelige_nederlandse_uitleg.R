@@ -1,9 +1,9 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, echo = FALSE-------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 );
-require('magrittr');
+require('magrittr', quiet=TRUE);
 
 ## ----raa, echo=FALSE, fig.width=6, fig.height=3.5, fig.cap="Figuur 1: De reasoned action approach."----
 

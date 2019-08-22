@@ -2,18 +2,19 @@
 #' @param comparisonColors Colors to use for the two groups in a
 #' binary CIBER plot with one (dichotomous) target.
 #' @param categoryLabels Labels for the two values of the target.
-#' @examples \donttest{### With binary targets
-#' binaryCIBER(data=mtcars,
-#'             determinants=c('mpg', 'wt',
-#'                            'drat'),
-#'                            targets=c('am', 'vs'));
+#' @examples \donttest{### With a binary target
+#' data(BBC_pp17.1);
+#' behaviorchange::binaryCIBER(data=BBC_pp17.1,
+#'                             determinants=c('epGeneralBeliefs_loudnessPreference',
+#'                                            'epGeneralBeliefs_loudnessGenre',
+#'                                            'epGeneralBeliefs_loudnessTooMuch',
+#'                                            'epGeneralBeliefs_priceFoam',
+#'                                            'epGeneralBeliefs_priceSilicon',
+#'                                            'epGeneralBeliefs_priceCustom'),
+#'                             targets=c('epPossession'),
+#'                             categoryLabels = c('no',
+#'                                                'yes'));
 #'
-#' ### With only one specified target, the subgroups
-#' ### are shown in the left panel
-#' binaryCIBER(data=mtcars,
-#'             determinants=c('mpg', 'wt',
-#'                            'drat'),
-#'                            targets='am');
 #' }
 #' @rdname CIBER
 binaryCIBER <- function(data,
@@ -24,6 +25,11 @@ binaryCIBER <- function(data,
                         subQuestions = NULL,
                         leftAnchors = rep("Lo", length(determinants)),
                         rightAnchors = rep("Hi", length(determinants)),
+                        outputFile = NULL,
+                        outputWidth = NULL,
+                        outputHeight = NULL,
+                        outputUnits = "in",
+                        outputParams = list(),
                         orderBy = NULL,
                         decreasing = NULL,
                         numberSubQuestions = FALSE,
@@ -61,6 +67,40 @@ binaryCIBER <- function(data,
               output = list());
 
   if (is.null(subQuestions)) subQuestions <- determinants;
+
+  ### Check whether none of the determinants is constant for one
+  ### of the target values; if so, kick them out now and issue a
+  ### warning.
+  constantDeterminants <- c();
+  constantTargets <- c();
+  for (currentDeterminant in determinants) {
+    for (currentTarget in targets) {
+      constantTable <-
+        table(data[, currentDeterminant],
+              data[, currentTarget]);
+      if ((all(constantTable[, 1] == 0)) | (all(constantTable[, 2] == 0))) {
+        constantDeterminants <-
+          c(constantDeterminants,
+            currentDeterminant);
+        constantTargets <-
+          c(constantTargets,
+            currentTarget);
+      }
+    }
+  }
+  if (length(constantDeterminants) > 0) {
+    determinants <- setdiff(determinants,
+                            constantDeterminants);
+    if (length(determinants) > 0) {
+      warning(paste0("One or more (sub-)determinants has a constant value for one or more targets. ",
+                     "These have been removed from the (sub-)determinant list. These are the following ",
+                     "(sub-)determinant and target combinations: ",
+                     vecTxt(paste0("(sub-)determinant '", constantDeterminants, "' with target '",
+                                   constantTargets, "'")), "."));
+    } else {
+      stop("All determinants are constant for one or more targets!");
+    }
+  }
 
   ### Extract relevant subdatasets
   res$intermediate$determinantsDat <- data[, determinants];
@@ -207,6 +247,22 @@ binaryCIBER <- function(data,
       return(x[res$intermediate$sortOrder, ]);
     }, simplify=FALSE);
 
+  ### Get extreme values from association dataframe
+  scale_extreme <- 0;
+  color_extreme <- 0;
+  for (i in targets) {
+
+    scale_extreme <- max(abs(c(scale_extreme,
+                               unlist(res$intermediate$assocDat[[i]][, 'lo']),
+                               unlist(res$intermediate$assocDat[[i]][, 'hi']))));
+    color_extreme <- max(c(color_extreme,
+                           abs(unlist(res$intermediate$assocDat[[i]][, 'es']))));
+
+    ### Set to 2 if lower than 2
+    scale_extreme <- max(scale_extreme, 2);
+    color_extreme <- max(color_extreme, 2);
+  }
+
   ### Sort determinant names
   determinants <- determinants[res$intermediate$sortOrder];
 
@@ -311,20 +367,25 @@ binaryCIBER <- function(data,
   res$intermediate$allEffectsizes <-
     unlist(res$intermediate$fullAssocDat[, 1:3]);
 
-  res$intermediate$scaleMin.raw <-
-    min(res$intermediate$allEffectsizes);
+  # res$intermediate$scaleMin.raw <-
+  #   min(res$intermediate$allEffectsizes);
+  #
+  # res$intermediate$scaleMax.raw <-
+  #   max(res$intermediate$allEffectsizes);
+  #
+  # res$intermediate$scaleMin.clean <-
+  #   floor(res$intermediate$scaleMin.raw * 2) / 2;
+  #
+  # res$intermediate$scaleMax.clean <-
+  #   ceiling(res$intermediate$scaleMax.raw * 2) / 2;
 
-  res$intermediate$scaleMax.raw <-
-    max(res$intermediate$allEffectsizes);
-
-  res$intermediate$scaleMin.clean <-
-    floor(res$intermediate$scaleMin.raw * 2) / 2;
-
-  res$intermediate$scaleMax.clean <-
-    ceiling(res$intermediate$scaleMax.raw * 2) / 2;
+  res$intermediate$scaleMin.clean <- -1 * scale_extreme;
+  res$intermediate$scaleMax.clean <- scale_extreme;
 
   limits <- c(res$intermediate$scaleMin.clean,
               res$intermediate$scaleMax.clean);
+
+  colorLimits <- c(-1 * color_extreme, color_extreme);
 
   res$intermediate$assocLayers <-
     sapply(names(res$intermediate$assocDat),
@@ -333,7 +394,7 @@ binaryCIBER <- function(data,
                                      ciCols=c('lo', 'es', 'hi'),
                                      yLabels = subQuestions[res$intermediate$sortOrder],
                                      generateColors=generateColors$associations,
-                                     fullColorRange = limits,
+                                     fullColorRange = colorLimits,
                                      alpha = associationsAlpha,
                                      lineColor=strokeColors[currentTarget],
                                      size=1, theme=theme,
@@ -455,6 +516,33 @@ binaryCIBER <- function(data,
   if (drawPlot) {
     grid::grid.newpage();
     grid::grid.draw(res$output$plot);
+  }
+
+  if (!is.null(outputFile)) {
+    if ((nchar(dirname(outputFile)) == 0) | (!dir.exists(dirname(outputFile)))) {
+      warning("The directory specified to save the the outputFile to ('",
+              dirname(outputFile),
+              "') does not exist, so not saving the plot!");
+    } else {
+      if (is.null(outputWidth)) {
+        outputWidth <- attr(res$output$plot, 'width');
+        outputUnits <- "in";
+      }
+      if (is.null(outputHeight)) {
+        outputHeight <- attr(res$output$plot, 'height');
+        outputUnits <- "in";
+      }
+      if (is.null(outputUnits)) {
+        outputUnits <- "in";
+      }
+      do.call(ggplot2::ggsave,
+              c(list(file=outputFile,
+                     plot=res$output$plot,
+                     width = outputWidth,
+                     height = outputHeight,
+                     units = outputUnits),
+                outputParams));
+    }
   }
 
   invisible(ufs::ifelseObj(returnPlotOnly, res$output$plot, res));

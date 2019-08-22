@@ -87,9 +87,6 @@
 #'   - `dets` = **Determinants**;
 #'   - `pobs` = **Performance Objectives**;
 #'   - `behs` = **Behaviors**;
-#' @param omitColOrder If not all seven columns are available in the
-#'   specifications, this character vector specifies which columns
-#'   are assumed to be omitted.
 #' @param localBackup Whether to write the specifications
 #'   to a local backup
 #' @param title The title of the diagram
@@ -144,23 +141,16 @@
 #'   Peters, G.-J. Y., et al. (2019) The core of
 #'   behavior change: introducing the Acyclic Behavior Change
 #'   Diagram to report and analyze interventions.
-#' @examples ### Using 'print' to prevent pkgdown() from choking
-#' ### Partial acyclic behavior change diagram of only
-#' ### one performance objective (sub-behavior)
-#' ### (using the 'abcd_specs_single_po_without_conditions'
-#' ###  dataset in this package)
-#' print(behaviorchange::abcd(behaviorchange::abcd_specs_single_po_without_conditions));
+#' @examples ### Load one of the ABCD matrices supplied
+#' ### with the behaviorchange package
+#' data(abcd_specification_example_xtc);
 #'
-#' ### Acyclic behavior change diagram including multiple
-#' ### sub-behaviors (performance objectives)
-#' ### (using the 'abcd_specs_complete' dataset in this
-#' ###  package)
-#' print(behaviorchange::abcd(behaviorchange::abcd_specs_complete));
+#' ### Create ABCD matrix (using 'print' to allow pkgdown() to print properly).
+#' print(behaviorchange::abcd(abcd_specification_example_xtc));
 #' @rdname abcd
 #' @export
 abcd <- function(specs,
                  specCols = c('bcps', 'cnds', 'apps', 'sdts', 'dets', 'pobs', 'behs'),
-                 omitColOrder = c('cnds', 'behs', 'bcps', 'apps'),
                  localBackup = NULL,
                  title = "Acyclic Behavior Change Diagram\n\n",
                  outputFile = NULL,
@@ -174,6 +164,10 @@ abcd <- function(specs,
                  regExReplacements = list(c("\\\"", "`"),
                                           c("\\'", "`"),
                                           c("\\\\", "/"))) {
+
+  if (length(specCols) < 7) {
+    stop("An ABCD matrix must always have at least seven columns.");
+  }
 
   res <- list(input = as.list(environment()),
               intermediate = list(),
@@ -269,8 +263,21 @@ abcd <- function(specs,
                           }),
                   stringsAsFactors=FALSE);
 
+  res$intermediate$datasheet <-
+    datasheet <-
+    as.data.frame(lapply(datasheet,
+                         function(column) {
+                           return(ifelse(is.na(column) | (column == "NA"),
+                                         "This still has to be specified",
+                                         column));
+                         }),
+                  stringsAsFactors=FALSE);
+
   ### Get number of columns with data
   useCols <- ncol(datasheet);
+
+  ### This has been removed to enforce consistent 7-column ABCD matrices
+  omitColOrder <- c();
 
   ### Check for problematic numbers of columns
   if (useCols > length(specCols)) {
@@ -630,18 +637,24 @@ abcd <- function(specs,
     }
   }
 
+  ### From DiagrammeR::export_graph
+  dot_code <- DiagrammeR::generate_dot(graph);
+  graphSvg <-
+    DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
+  graphSvg <-
+    sub(".*\n<svg ", "<svg ", graphSvg);
+  graphSvg <- gsub('<svg width=\"[0-9]+pt\" height=\"[0-9]+pt\"\n viewBox=',
+                   '<svg viewBox=',
+                   graphSvg);
+
+  res$output$graph <- graph;
+  res$output$svg <- graphSvg;
+
   if (returnGraphOnly) {
     return(graph);
   } else if (returnSvgOnly) {
-    ### From DiagrammeR::export_graph
-    dot_code <- DiagrammeR::generate_dot(graph);
-    graphSvg <-
-      DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
-    graphSvg <-
-      sub(".*\n<svg ", "<svg ", graphSvg);
     return(graphSvg);
   } else {
-    res$output$graph <- graph;
     class(res) <- "abcdiagram";
     return(res);
   }
@@ -656,14 +669,14 @@ print.abcdiagram <- function(x,
                              height=x$input$height,
                              title = DiagrammeR::get_graph_name(x$output$graph),
                              ...) {
-  return(DiagrammeR::render_graph(x$output$graph,
-                                  width=width,
-                                  height=height,
-                                  title=title,
-                                  ...));
+  print(DiagrammeR::render_graph(x$output$graph,
+                                 width=width,
+                                 height=height,
+                                 title=title,
+                                 ...));
 }
 
-#' Simple example datasets for ABCD's
+#' Simple example datasets for ABCDs
 #'
 #' This are three (nested) datasets illustrating the logic model of change for
 #' a simple condom use intervention in a way that can be visualised using
@@ -685,22 +698,33 @@ print.abcdiagram <- function(x,
 #' * `Target Behavior`: The ultimate target behavior, usually defined at a relatively general level.
 #'
 #' In addition to these three datasets, a Dutch example specification
-#' is included named `abcd_specs_dutch_xtc`.
+#' is included named `abcd_specs_dutch_xtc`, and the same in English as `abcd_specification_example_xtc`.
+#'
+#' Finally, `abcd_specification_empty` is an empty 'template' ABCD matrix.
 #'
 #' @docType data
-#' @aliases abcd_specs_complete abcd_specs_without_conditions abcd_specs_single_po_without_conditions abcd_specs_dutch_xtc
+#' @aliases abcd_specs_complete abcd_specs_without_conditions abcd_specs_single_po_without_conditions
+#' abcd_specs_dutch_xtc abcd_specification_example_xtc abcd_specification_empty
 #' @keywords data
 #' @name abcd_specs_examples
 #' @usage data(abcd_specs_complete)
 #' @usage data(abcd_specs_without_conditions)
 #' @usage data(abcd_specs_single_po_without_conditions)
+#' @usage data(abcd_specification_example_xtc)
+#' @usage data(abcd_specs_dutch_xtc)
+#' @usage data(abcd_specification_empty)
 #' @format For `abcd_specs_complete`, a data frame with 7 variables and 7 rows;
 #' for `abcd_specs_without_conditions`, a data frame with 6 variables and 7 rows;
 #' for `abcd_specs_single_po_without_conditions`, a data frame with 5 variables and 4 rows;
+#' for `abcd_specification_example_xtc` and `abcd_specs_dutch_xtc`,
+#' a data frame with 7 variables and 5 rows' and
+#' for `abcd_specification_empty`, a data frame with 7 variables and 1 row.
 c("abcd_specs_complete",
   "abcd_specs_without_conditions",
   "abcd_specs_single_po_without_conditions",
-  "abcd_specs_dutch_xtc");
+  "abcd_specification_example_xtc",
+  "abcd_specs_dutch_xtc",
+  "abcd_specification_empty");
 
 # abcd_specs_complete <-
 #   data.frame(c("Persuasive communication",
@@ -842,3 +866,112 @@ c("abcd_specs_complete",
 #     "Sub-gedragingen (`Performance Objectives`)",
 #     "Doelgedrag");
 
+# abcd_specification_example_xtc <- data.frame(
+#     `Behavior Change Principles` = c(
+#       "Persuasive communication",
+#       "Persuasive communication",
+#       "Persuasive communication",
+#       "Information about others' approval",
+#       "Modeling (vicarious learning)"
+#     ),
+#     `Conditions for Effectiveness` = c(
+#       "Messages must be relevant and not deviate too much from existing beliefs; can be stimulated with surprise and repetition; contains arguments.",
+#       "Messages must be relevant and not deviate too much from existing beliefs; can be stimulated with surprise and repetition; contains arguments.",
+#       "Messages must be relevant and not deviate too much from existing beliefs; can be stimulated with surprise and repetition; contains arguments.",
+#       "Others do indeed approve of the target behavior.",
+#       "The message recipient must identify with the model; the model has to be a coping model, struggling with the behavior, not a mastery model; the model must be positively reinforced."
+#     ),
+#     Applications = c(
+#       "An infographic shows how the effects of ecstasy change as the dose increases.",
+#       "An infographic shows how the effects of ecstasy change as the dose increases.",
+#       "An infographic shows how the effects of ecstasy change as the dose increases.",
+#       "Show the Party Panel result that illustrates that most people want to dose relatively low (compared to the strength of available ecstasy pills).",
+#       "A comic with examples of how to discuss the dose you plan to take."
+#     ),
+#     `Sub-determinants (formulated as Change Objectives)` = c(
+#       "If I use a high dose of ecstasy, I will feel less connected to others.",
+#       "If I use a high dose of ecstasy, I will feel more isolated.",
+#       "If I use a high dose of ecstasy, I will remember less",
+#       "Most people approve of avoiding a high dose of ecstasy.",
+#       "I can explain why I want to follow the dosing recommendations."
+#     ),
+#     Determinants = c(
+#       "Attitude",
+#       "Attitude",
+#       "Attitude",
+#       "Perceived norm",
+#       "Perceived behavioral control"
+#     ),
+#     `Sub-behaviors (Performance Objectives)` = c(
+#       "Decide to follow the dosing recommendations",
+#       "Decide to follow the dosing recommendations",
+#       "Decide to follow the dosing recommendations",
+#       "Decide to follow the dosing recommendations",
+#       "In advance, with the groups of friends, discuss everybody's planned dose."
+#     ),
+#     `Target behavior` = c(
+#       "Following ecstasy dosing recommendations",
+#       "Following ecstasy dosing recommendations",
+#       "Following ecstasy dosing recommendations",
+#       "Following ecstasy dosing recommendations",
+#       "Following ecstasy dosing recommendations"
+#     )
+#   );
+#
+# names(abcd_specification_example_xtc) <-
+#   c("Behavior Change Principles",
+#     "Conditions for Effectiveness",
+#     "Applications",
+#     "Sub-determinants (formulated as Change Objectives)",
+#     "Determinants",
+#     "Sub-behaviors (Performance Objectives)",
+#     "Target behavior");
+#
+# write.table(abcd_specification_example_xtc,
+#             file=here::here("data", "abcd_specification_example_xtc.csv"),
+#             quote=TRUE,
+#             sep=";",
+#             na="NA",
+#             row.names=FALSE,
+#             fileEncoding="UTF-8");
+
+# abcd_specification_empty <- data.frame(
+#     `Behavior Change Principles` = c(
+#       "Enter the behavior change principle that is the active ingredient in this causal-structural chain here (e.g. a BCT)"
+#     ),
+#     `Conditions for Effectiveness` = c(
+#       "Specify the conditions for effectiveness for that BCP and the target population and context here"
+#     ),
+#     Applications = c(
+#       "Enter the application here (i.e. the BCPs 'tangible' implementation in the intervention)"
+#     ),
+#     `Sub-determinants` = c(
+#       "Enter the sub-determinant underlying the relevant determinant here (e.g. a belief)"
+#     ),
+#     Determinants = c(
+#       "Enter the determinant predicting the sub-behavior here"
+#     ),
+#     `Sub-behaviors (Performance Objectives)` = c(
+#       "Enter the sub-behavior of the target behavior that is targeted in this causal-structural chain here"
+#     ),
+#     `Target behavior` = c(
+#       "Enter the target behavior that is the ultimate target of this causal-structural chain here"
+#     )
+#   );
+#
+# names(abcd_specification_empty) <-
+#   c("Behavior Change Principles",
+#     "Conditions for Effectiveness",
+#     "Applications",
+#     "Sub-determinants (formulated as Change Objectives)",
+#     "Determinants",
+#     "Sub-behaviors (Performance Objectives)",
+#     "Target behavior");
+#
+# write.table(abcd_specification_empty,
+#             file=here::here("data", "abcd_specification_empty.csv"),
+#             quote=TRUE,
+#             sep=";",
+#             na="NA",
+#             row.names=FALSE,
+#             fileEncoding="UTF-8");

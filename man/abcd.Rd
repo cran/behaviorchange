@@ -6,11 +6,11 @@
 \title{Acyclic Behavior Change Diagram}
 \usage{
 abcd(specs, specCols = c("bcps", "cnds", "apps", "sdts", "dets", "pobs",
-  "behs"), omitColOrder = c("cnds", "behs", "bcps", "apps"),
-  localBackup = NULL, title = "Acyclic Behavior Change Diagram\\n\\n",
-  outputFile = NULL, outputWidth = 3000, outputHeight = 1500,
-  includeColNames = TRUE, maxLabelLength = 30, silent = FALSE,
-  returnGraphOnly = FALSE, returnSvgOnly = FALSE,
+  "behs"), localBackup = NULL,
+  title = "Acyclic Behavior Change Diagram\\n\\n", outputFile = NULL,
+  outputWidth = 3000, outputHeight = 1500, includeColNames = TRUE,
+  maxLabelLength = 30, silent = FALSE, returnGraphOnly = FALSE,
+  returnSvgOnly = FALSE,
   regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/")))
 
 \method{print}{abcdiagram}(x, width = x$input$width,
@@ -35,10 +35,6 @@ and more details):
 \item \code{pobs} = \strong{Performance Objectives};
 \item \code{behs} = \strong{Behaviors};
 }}
-
-\item{omitColOrder}{If not all seven columns are available in the
-specifications, this character vector specifies which columns
-are assumed to be omitted.}
 
 \item{localBackup}{Whether to write the specifications
 to a local backup}
@@ -160,18 +156,12 @@ performance objectives.
 For details, see Peters et al. (2019).
 }
 \examples{
-### Using 'print' to prevent pkgdown() from choking
-### Partial acyclic behavior change diagram of only
-### one performance objective (sub-behavior)
-### (using the 'abcd_specs_single_po_without_conditions'
-###  dataset in this package)
-print(behaviorchange::abcd(behaviorchange::abcd_specs_single_po_without_conditions));
+### Load one of the ABCD matrices supplied
+### with the behaviorchange package
+data(abcd_specification_example_xtc);
 
-### Acyclic behavior change diagram including multiple
-### sub-behaviors (performance objectives)
-### (using the 'abcd_specs_complete' dataset in this
-###  package)
-print(behaviorchange::abcd(behaviorchange::abcd_specs_complete));
+### Create ABCD matrix (using 'print' to allow pkgdown() to print properly).
+print(behaviorchange::abcd(abcd_specification_example_xtc));
 }
 \references{
 Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary

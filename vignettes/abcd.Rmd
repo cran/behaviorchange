@@ -161,11 +161,11 @@ This is a set of three screenshots showing the use of the online app. In this ex
 
 # References
 
-Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary learning processes as the foundation for behaviour change. Health Psychology Review, 12(1), 43–57. https://doi.org/10.1080/17437199.2017.1362569
+Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary learning processes as the foundation for behaviour change. Health Psychology Review, 12(1), 43–57. \doi{10.1080/17437199.2017.1362569}
 
-Peters, G.-J. Y., & Crutzen, R. (2017). Pragmatic nihilism: how a Theory of Nothing can help health psychology progress. Health Psychology Review, 11(2). https://doi.org/10.1080/17437199.2017.1284015
+Peters, G.-J. Y., & Crutzen, R. (2017). Pragmatic nihilism: how a Theory of Nothing can help health psychology progress. Health Psychology Review, 11(2). \doi{10.1080/17437199.2017.1284015}
 
-Kok, G. (2014). A practical guide to effective behavior change: How to apply theory- and evidence-based behavior change methods in an intervention. European Health Psychologist, 16(5), 156–170. https://doi.org/10.31234/osf.io/r78wh
+Kok, G. (2014). A practical guide to effective behavior change: How to apply theory- and evidence-based behavior change methods in an intervention. European Health Psychologist, 16(5), 156–170. \doi{10.31234/osf.io/r78wh}
 
-Kok, G., Gottlieb, N. H., Peters, G.-J. Y., Mullen, P. D., Parcel, G. S., Ruiter, R. A. C., Fernández, M E., Markham, C., & Bartholomew, L. K. (2016). A taxonomy of behavior change methods: an Intervention Mapping approach. Health Psychology Review, 10(3), 297–312. https://doi.org/10.1080/17437199.2015.1077155
+Kok, G., Gottlieb, N. H., Peters, G.-J. Y., Mullen, P. D., Parcel, G. S., Ruiter, R. A. C., Fernández, M E., Markham, C., & Bartholomew, L. K. (2016). A taxonomy of behavior change methods: an Intervention Mapping approach. Health Psychology Review, 10(3), 297–312. \doi{10.1080/17437199.2015.1077155}
 
