@@ -50,12 +50,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@a-bc.eu} (0000-0002-0336-9589)
+\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@a-bc.eu} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID})
 
 Other contributors:
 \itemize{
-  \item Rik Crutzen \email{rik@a-bc.eu} (0000-0002-3731-6610) [contributor]
-  \item Stefan Gruijters \email{mail@stefangruijters.nl} (0000-0003-0141-0071) [contributor]
+  \item Rik Crutzen \email{rik@a-bc.eu} (\href{https://orcid.org/0000-0002-3731-6610}{ORCID}) [contributor]
+  \item Stefan Gruijters \email{mail@stefangruijters.nl} (\href{https://orcid.org/0000-0003-0141-0071}{ORCID}) [contributor]
 }
 
 }

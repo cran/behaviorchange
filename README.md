@@ -1,17 +1,21 @@
 
-# <img src='img/hex-logo.png' align="right" height="200" /> behaviorchange 📦
-
-behaviorchange: Tools for Behavior Change Researchers and Professionals
-
 <!-- badges: start -->
 
 [![Pipeline
 status](https://gitlab.com/r-packages/behaviorchange/badges/master/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/commits/master)
-
 [![Coverage
 status](https://codecov.io/gl/r-packages/behaviorchange/branch/master/graph/badge.svg)](https://codecov.io/gl/r-packages/behaviorchange?branch=master)
-
+[![Version on
+CRAN](https://www.r-pkg.org/badges/version/behaviorchange?color=brightgreen)](https://cran.r-project.org/package=behaviorchange)
+[![Monthly downloads on
+CRAN](https://cranlogs.r-pkg.org/badges/last-month/behaviorchange?color=brightgreen)](https://cran.r-project.org/package=behaviorchange)
+[![Total downloads on
+CRAN](https://cranlogs.r-pkg.org/badges/grand-total/behaviorchange?color=brightgreen)](https://cran.r-project.org/package=behaviorchange)
 <!-- badges: end -->
+
+# <img src='img/hex-logo.png' align="right" height="200" /> behaviorchange 📦
+
+behaviorchange: Tools for Behavior Change Researchers and Professionals
 
 The pkgdown website for this project is located at
 <https://r-packages.gitlab.io/behaviorchange>.

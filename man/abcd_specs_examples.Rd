@@ -18,6 +18,16 @@ a data frame with 7 variables and 5 rows' and
 for \code{abcd_specification_empty}, a data frame with 7 variables and 1 row.}
 \usage{
 data(abcd_specs_complete)
+
+data(abcd_specs_without_conditions)
+
+data(abcd_specs_single_po_without_conditions)
+
+data(abcd_specification_example_xtc)
+
+data(abcd_specs_dutch_xtc)
+
+data(abcd_specification_empty)
 }
 \description{
 This are three (nested) datasets illustrating the logic model of change for
@@ -33,13 +43,13 @@ dataset are:
 }
 \details{
 \itemize{
-\item \code{Behavior Change Principles}: The behavior change principles (BCPs), also known as methods for behavior change or 'behavior change techniques' (BCTs), that describe the psychological principles that are assumed to realise the change in the (sub-)determinants.
-\item \code{Conditions for effectiveness\\n(e.g. parameters for use)}: The conditions for effectiveness that describe the constraints and considerations taken into account in the translation of the BCPs to practical applications for the relevant target population, context, culture, etc.
+\item \verb{Behavior Change Principles}: The behavior change principles (BCPs), also known as methods for behavior change or 'behavior change techniques' (BCTs), that describe the psychological principles that are assumed to realise the change in the (sub-)determinants.
+\item \verb{Conditions for effectiveness\\\\n(e.g. parameters for use)}: The conditions for effectiveness that describe the constraints and considerations taken into account in the translation of the BCPs to practical applications for the relevant target population, context, culture, etc.
 \item \code{Applications}: The applications of these BCPs. Where the BCPs describe theoretical principles, the applications are more or less tangible intervention elements.
-\item \code{Sub-determinants\\n(e.g. beliefs; can be formulated as Change Objectives)}: The specific aspects of teh target population's psychology that are targeted by the BCPs (e.g. beliefs, or in Intervention Mapping vocabulary, Change Objectives).
+\item \verb{Sub-determinants\\\\n(e.g. beliefs; can be formulated as Change Objectives)}: The specific aspects of teh target population's psychology that are targeted by the BCPs (e.g. beliefs, or in Intervention Mapping vocabulary, Change Objectives).
 \item \code{Determinants}: The determinants, psychological constructs, that the targeted sub-determinants are a part of, and that together predict the Performance Objectives (sub-behaviors).
-\item \code{Performance Objectives}: Explicitly defined sub-behaviors at a level of specificity that distinguishes them from other sub-behaviors, and that together form the target behavior.
-\item \code{Target Behavior}: The ultimate target behavior, usually defined at a relatively general level.
+\item \verb{Performance Objectives}: Explicitly defined sub-behaviors at a level of specificity that distinguishes them from other sub-behaviors, and that together form the target behavior.
+\item \verb{Target Behavior}: The ultimate target behavior, usually defined at a relatively general level.
 }
 
 In addition to these three datasets, a Dutch example specification

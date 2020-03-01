@@ -1,12 +1,17 @@
 ---
-title: "ABCD: Laagdrempelige Nederlandse uitleg"
-author: "Gjalt-Jorn Peters"
+title: "ABCD: Laagdrempelige Nederlandse Uitleg"
+author: "Gjalt-Jorn Ygram Peters"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+#output: pdf_document
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{ABCD: Laagdrempelige Nederlandse uitleg}
   %\VignetteEngine{knitr::rmarkdown}
+header-includes:
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
 editor_options: 
   chunk_output_type: console
 ---
@@ -17,6 +22,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 );
 require('magrittr', quiet=TRUE);
+require('webshot', quiet=TRUE);
 ```
 
 ABCD's zijn figuren die helpen om interventies (ook wel "campagnes" of "programma's" genoemd) te maken of evalueren. ABCD is een Engelstalig acroniem van "Acyclic Behavior Change Diagram": kortom, een gedragsveranderingsdiagram waarin geen 'cycli' zitten, oftewel, waarin alle pijlen dezelfde kant op wijzen (in dit geval naar rechts). ABCD's maken de aannames, die de basis vormen van een interventie, zichtbaar.
@@ -49,7 +55,7 @@ Een veel gebruikte theorie is bijvoorbeeld de 'Reasoned Action Approach' (RAA), 
 
 De RAA stelt dat beredeneerd gedrag vooral wordt bepaald door of mensen de intentie hebben dat gedrag uit te voeren. Die intentie wordt dan weer voorspeld door hoe mensen over het gedrag denken. Die gedachtes zijn gegroepeerd in drie clusters, die 'attitude', 'waargenomen norm', en 'waargenomen gedragscontrole' heten. In de psychologie noemen we zulke clusters van vergelijkbare gedachten meestal 'variabelen' of  'constructen'. De variabelen in de RAA zijn ge&iuml;llustreerd in Figuur 1.
 
-```{r raa, echo=FALSE, fig.width=6, fig.height=3.5, fig.cap="Figuur 1: De reasoned action approach."}
+```{r raa, echo=FALSE, fig.width=3, fig.height=2, fig.cap="Figuur 1: De reasoned action approach."}
 
 raaGraph <-
   DiagrammeR::create_graph() %>%
@@ -69,11 +75,25 @@ raaGraph <-
                                     c("dir", "forward", "edge"),
                                     c("fillcolor", "#FFFFFF", "node"));
 
-DiagrammeR::render_graph(raaGraph);
+if (knitr::is_latex_output()) {
+  ### From DiagrammeR::export_graph
+  dot_code <- DiagrammeR::generate_dot(raaGraph);
+  graphSvg <-
+    DiagrammeRsvg::export_svg(DiagrammeR::grViz(dot_code));
+  graphSvg <-
+    sub(".*\n<svg ", "<svg ", graphSvg);
+  graphSvg <- gsub('<svg width=\"[0-9]+pt\" height=\"[0-9]+pt\"\n viewBox=',
+                   '<svg width="2000px" height="1000px" viewBox=',
+                   graphSvg);
+  grid::grid.newpage();
+  grid::grid.raster(png::readPNG(rsvg::rsvg_png(charToRaw(graphSvg))));
+} else if (knitr::is_html_output()) {
+  DiagrammeR::render_graph(raaGraph);
+}
 
 ```
 
-In dit figuur representered de boxjes de variabelen, en de pijltjes laten zien welke variabelen volgens de theorie invloed hebben op welke andere variabelen. De RAA voorspelt dus dat mensen doen wat ze doen (tenminste, als het beredeneerd gedrag betreft) vanwege hun attitude, waargenomen norm, en waargenomen gedragscontrole.
+In dit figuur representeren de boxjes de variabelen, en de pijltjes laten zien welke variabelen volgens de theorie invloed hebben op welke andere variabelen. De RAA voorspelt dus dat mensen doen wat ze doen (tenminste, als het beredeneerd gedrag betreft) vanwege hun attitude, waargenomen norm, en waargenomen gedragscontrole.
 
 #### Attitude
 
@@ -111,7 +131,7 @@ Attitude bestaat bijvoorbeeld uit *alle* verwachtingen die mensen hebben over de
 
 Als je iets in de wereld wil veranderen, oftewel, als je menselijk gedrag wil veranderen (want hoe de wereld is, is het gevolg van gedrag van mensen), dan moet je dus veranderen wat mensen denken. Je moet ze dus iets leren. Als mensen bijvoorbeeld ten onrechte denken dat er veel XTC wordt gebruikt, dan kun je dat misverstand corrigeren, wat (*als* descriptieve norm een rol speelt bij hun gedrag) dan zorgt dat er minder wordt gebruikt. De verandering van zulke psychologische variabelen komt er altijd op neer dat mensen iets leren over de wereld.
 
-Levende wezens kunnen leren op allerlei manieren. Dit kunnen we omdat er leerprocessen zijn ge&euml;volueerd (die op hun beurt zijn ge&euml;volueerd omdat organismen met een mutatie waardoor ze beter konden leren een voordeel hadden ten opzichte van dieren die dat minder goed konden, waardoor ze meer nakomelingen kregen, zodat de genen die coderen voor die mutatie zich door de populatie verspreiden). Die evolutionaire leerprocessen (ELPs) zijn hoe dieren (en dus mensen) leren. Die ELPs zijn bijvoorbeeld habituatie, conditionering, of emotiegebaseerd leren - er zijn er negen (zie Crutzen & Peters, 2018, \doi{10.1080/17437199.2017.1362569}).
+Levende wezens kunnen leren op allerlei manieren. Dit kunnen we omdat er leerprocessen zijn ge&euml;volueerd (die op hun beurt zijn ge&euml;volueerd omdat organismen met een mutatie waardoor ze beter konden leren een voordeel hadden ten opzichte van dieren die dat minder goed konden, waardoor ze meer nakomelingen kregen, zodat de genen die coderen voor die mutatie zich door de populatie verspreiden). Die evolutionaire leerprocessen (ELPs) zijn hoe dieren (en dus mensen) leren. Die ELPs zijn bijvoorbeeld habituatie, conditionering, of emotiegebaseerd leren - er zijn er negen (zie Crutzen & Peters, 2018, [doi:10.1080/17437199.2017.1362569](https://doi.org/10.1080/17437199.2017.1362569)).
 
 Die ELPs moeten dus worden ingeschakeld als je een mens iets wil leren. Tegelijkertijd zijn deze leerprocessen heel basaal. Over de jaren heen zijn er allerlei methoden op hogere niveau's onderzocht die 'onder de motorkap' deze ELPs inzetten. Deze gedragsveranderingsprincipes (Behavior Change Principles, BCPs) zijn beschrijvingen van wat je kunt doen om mensen bepaalde dingen te leren. Een voorbeeld van een lijst van BCPs is de lijst van methoden voor gedragsverandering in Intervention Mapping (zie [Kok et al., 2016](https://osf.io/ng3xh)).
 
@@ -158,9 +178,9 @@ Dit wordt natuurlijk snel onoverzichtelijk, zoveel verschillende, vaak abstracte
 
 De ABCD bestaat uit twee delen.
 
-## ABCD specificatietabel
+## ABCD matrix
 
-Het eerste deel is de ABCD specificatietabel. Dit is een tabel met zeven kolommen, van links naar rechts:
+Het eerste deel is de ABCD matrix. Dit is een tabel met zeven kolommen, van links naar rechts:
 
 1. Gedragsveranderingsprincipes (BCPs, en 'methods for behavior change' in Intervention Mapping);
 2. Effectiviteitsvoorwaarden ('parameters for effectiveness' in Intervention Mapping);
@@ -174,9 +194,13 @@ Elke rij in de tabel geeft een 'ketting' weer die de aannames van een stukje van
 
 ### Voorbeeld: XTC-gebruik
 
-Een voorbeeld van zo'n ABCD specificatietabel staat in Google Sheets op https://docs.google.com/spreadsheets/d/1EKVqtG1kmf0ZxEvFUOBqUmakXTd9Ye3aSyZucBqiyRM/edit?usp=sharing. Deze specificatie ziet er zo uit:
+Een voorbeeld van zo'n ABCD matrix staat in Google Sheets op https://docs.google.com/spreadsheets/d/1EKVqtG1kmf0ZxEvFUOBqUmakXTd9Ye3aSyZucBqiyRM/edit?usp=sharing. Deze specificatie staat in Tabel 1.
 
-```{r abcd-specificatie, echo=FALSE}
+Zo'n specificatie kan worden geopend in de speciale module "behaviorchange - Tools for Behavior Change Researchers and Professionals", die in het evenees gratis programma "jamovi" kan worden geinstalleerd (zie https://jamovi.org). In dit programma kan de ABCD matrix worden bewerkt en kan de ABCD zelf worden geproduceerd en opgeslagen als PDF. 
+
+Ook bestaat er een online app op https://a-bc.eu/apps/abcd, waar een Google Sheets URL in kan worden gecopypaste. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
+
+```{r abcd-specificatie, echo=FALSE, warning=FALSE, results="asis"}
 abcd_specs_dutch_xtc <- behaviorchange::abcd_specs_dutch_xtc;
 
 names(abcd_specs_dutch_xtc) <-
@@ -188,14 +212,38 @@ names(abcd_specs_dutch_xtc) <-
     "Sub-gedragingen",
     "Doelgedrag");
 
-knitr::kable(abcd_specs_dutch_xtc);
-```
+if (knitr::is_latex_output()) {
+  cat("\n
+\\newpage\n
+\\blandscape\n
+\n
+");
 
-Deze specificatie kan worden ingeladen in de online ABCD app op https://a-bc.eu/apps/abcd door die Google Sheets URL erin te copypasten. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
+  print(
+    kableExtra::kable_styling(kableExtra::column_spec(
+      knitr::kable(abcd_specs_dutch_xtc,
+                   caption="Een voorbeeld van een ABCD matrix.",
+                   booktabs = TRUE,
+                   row.names = FALSE,
+                   longtable = TRUE),
+    column = 1:7,
+    width = c("2.5cm", "5cm", "4cm",
+              "3.5cm", "2cm", "2.5cm", "1.8cm")
+    )));
+
+  cat("\n
+\\elandscape\n
+\\newpage\n
+\n
+");
+} else {
+  knitr::kable(abcd_specs_dutch_xtc);
+}
+```
 
 ## ABCD diagram
 
-Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van de ABCD specificaties zodat deze voor mensen goed leesbaar is. Het resulterende model wordt ook wel een 'logic model' of een 'theory of change' genoemd. Dit wordt simpelweg gegenereerd door de `abcd` functie in de `behaviorchange` R package, of door de online app op https://a-bc.eu/apps/abcd.
+Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van de ABCD specificaties zodat deze voor mensen goed leesbaar is. Het resulterende model wordt ook wel een 'logic model' of een 'theory of change' genoemd. Dit wordt simpelweg gegenereerd door de `abcd` functie in de `behaviorchange` R package, door de 'behaviorchange' module in jamovi, of door de online app op https://a-bc.eu/apps/abcd.
 
 De ABCD diagram voor het voorbeeld hierboven ziet er zo uit:
 
@@ -230,6 +278,6 @@ ABCDs maken het mogelijk om op een eenduidige manier de onderliggende aannames b
 
 # Referenties
 
-Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary learning processes as the foundation for behaviour change. *Health Psychology Review, 12*, 43–57. \doi{10.1080/17437199.2017.1362569}
+Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary learning processes as the foundation for behaviour change. *Health Psychology Review, 12*, 43–57. [doi:10.1080/17437199.2017.1362569](https://doi.org/10.1080/17437199.2017.1362569)
 
-Kok, G., Gottlieb, N. H., Peters, G.-J. Y., Mullen, P. D., Parcel, G. S., Ruiter, R. A. C., … Bartholomew, L. K. (2016). A taxonomy of behavior change methods: an Intervention Mapping approach. *Health Psychology Review, 10*, 297–312. \doi{10.1080/17437199.2015.1077155}
+Kok, G., Gottlieb, N. H., Peters, G.-J. Y., Mullen, P. D., Parcel, G. S., Ruiter, R. A. C., … Bartholomew, L. K. (2016). A taxonomy of behavior change methods: an Intervention Mapping approach. *Health Psychology Review, 10*, 297–312. [doi:10.1080/17437199.2015.1077155](https://doi.org/10.1080/17437199.2015.1077155)

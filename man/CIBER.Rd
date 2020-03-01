@@ -6,52 +6,103 @@
 \alias{binaryCIBER}
 \title{Confidence Interval-Based Estimation of Relevance (CIBER)}
 \usage{
-CIBER(data, determinants, targets, conf.level = list(means = 0.9999,
-  associations = 0.95), subQuestions = NULL, leftAnchors = rep("Lo",
-  length(determinants)), rightAnchors = rep("Hi", length(determinants)),
-  outputFile = NULL, outputWidth = NULL, outputHeight = NULL,
-  outputUnits = "in", outputParams = list(), orderBy = NULL,
-  decreasing = NULL, numberSubQuestions = FALSE,
-  generateColors = list(means = c("red", "blue", "green"), associations =
-  c("red", "grey", "green")),
-  strokeColors = viridis::viridis(length(targets)), vLines = c(-0.5, 0,
-  0.5), vLineColors = "grey",
+CIBER(
+  data,
+  determinants,
+  targets,
+  conf.level = list(means = 0.9999, associations = 0.95),
+  subQuestions = NULL,
+  leftAnchors = rep("Lo", length(determinants)),
+  rightAnchors = rep("Hi", length(determinants)),
+  outputFile = NULL,
+  outputWidth = NULL,
+  outputHeight = NULL,
+  outputUnits = "in",
+  outputParams = list(),
+  orderBy = NULL,
+  decreasing = NULL,
+  numberSubQuestions = FALSE,
+  generateColors = list(means = c("red", "blue", "green"), associations = c("red",
+    "grey", "green")),
+  strokeColors = viridis::viridis(length(targets)),
+  vLines = c(-0.5, 0, 0.5),
+  vLineColors = "grey",
   titlePrefix = "Means and associations (r) with",
-  titleVarLabels = NULL, titleSuffix = "", fullColorRange = NULL,
-  associationsAlpha = 0.5, returnPlotOnly = TRUE, drawPlot = TRUE,
-  baseSize = 0.8, dotSize = 2.5 * baseSize, baseFontSize = 10 *
-  baseSize, theme = ggplot2::theme_bw(base_size = baseFontSize),
-  xbreaks = NULL, ...)
+  titleVarLabels = NULL,
+  titleSuffix = "",
+  fullColorRange = NULL,
+  associationsAlpha = 0.5,
+  returnPlotOnly = TRUE,
+  drawPlot = TRUE,
+  baseSize = 0.8,
+  dotSize = 2.5 * baseSize,
+  baseFontSize = 10 * baseSize,
+  theme = ggplot2::theme_bw(base_size = baseFontSize),
+  xbreaks = NULL,
+  ...
+)
 
-binaryCIBER(data, determinants, targets, conf.level = list(means =
-  0.9999, associations = 0.95), subQuestions = NULL,
+binaryCIBER(
+  data,
+  determinants,
+  targets,
+  conf.level = list(means = 0.9999, associations = 0.95),
+  subQuestions = NULL,
   leftAnchors = rep("Lo", length(determinants)),
-  rightAnchors = rep("Hi", length(determinants)), outputFile = NULL,
-  outputWidth = NULL, outputHeight = NULL, outputUnits = "in",
-  outputParams = list(), orderBy = NULL, decreasing = NULL,
-  numberSubQuestions = FALSE, comparisonColors = viridis::viridis(2,
-  end = 0.5), categoryLabels = NULL, generateColors = list(means =
-  c("red", "blue", "green"), associations = c("red", "grey", "green")),
-  strokeColors = viridis::viridis(length(targets)), vLines = c(-0.8, 0,
-  0.8), vLineColors = "grey",
+  rightAnchors = rep("Hi", length(determinants)),
+  outputFile = NULL,
+  outputWidth = NULL,
+  outputHeight = NULL,
+  outputUnits = "in",
+  outputParams = list(),
+  orderBy = NULL,
+  decreasing = NULL,
+  numberSubQuestions = FALSE,
+  comparisonColors = viridis::viridis(2, end = 0.5),
+  categoryLabels = NULL,
+  generateColors = list(means = c("red", "blue", "green"), associations = c("red",
+    "grey", "green")),
+  strokeColors = viridis::viridis(length(targets)),
+  vLines = c(-0.8, 0, 0.8),
+  vLineColors = "grey",
   titlePrefix = "Means and associations (d) with",
-  titleVarLabels = NULL, titleSuffix = "", fullColorRange = NULL,
-  associationsAlpha = 0.5, returnPlotOnly = TRUE, drawPlot = TRUE,
-  baseSize = 0.8, dotSize = 2.5 * baseSize, baseFontSize = 10 *
-  baseSize, theme = ggplot2::theme_bw(base_size = baseFontSize),
-  xbreaks = NULL, ...)
+  titleVarLabels = NULL,
+  titleSuffix = "",
+  fullColorRange = NULL,
+  associationsAlpha = 0.5,
+  returnPlotOnly = TRUE,
+  drawPlot = TRUE,
+  baseSize = 0.8,
+  dotSize = 2.5 * baseSize,
+  baseFontSize = 10 * baseSize,
+  theme = ggplot2::theme_bw(base_size = baseFontSize),
+  xbreaks = NULL,
+  ...
+)
 
-detStructCIBER(determinantStructure, data, conf.level = list(means =
-  0.9999, associations = 0.95), subQuestions = NULL,
+detStructCIBER(
+  determinantStructure,
+  data,
+  conf.level = list(means = 0.9999, associations = 0.95),
+  subQuestions = NULL,
   leftAnchors = rep("Lo", length(determinants)),
-  rightAnchors = rep("Hi", length(determinants)), orderBy = 1,
-  decreasing = NULL, generateColors = list(means = c("red", "blue",
-  "green"), associations = c("red", "grey", "green")),
-  strokeColors = NULL, titlePrefix = "Means and associations with",
-  titleVarLabels = NULL, titleSuffix = "", fullColorRange = NULL,
-  associationsAlpha = 0.5, baseSize = 0.8, dotSize = 2.5 * baseSize,
-  baseFontSize = 10 * baseSize, theme = ggplot2::theme_bw(base_size =
-  baseFontSize), ...)
+  rightAnchors = rep("Hi", length(determinants)),
+  orderBy = 1,
+  decreasing = NULL,
+  generateColors = list(means = c("red", "blue", "green"), associations = c("red",
+    "grey", "green")),
+  strokeColors = NULL,
+  titlePrefix = "Means and associations with",
+  titleVarLabels = NULL,
+  titleSuffix = "",
+  fullColorRange = NULL,
+  associationsAlpha = 0.5,
+  baseSize = 0.8,
+  dotSize = 2.5 * baseSize,
+  baseFontSize = 10 * baseSize,
+  theme = ggplot2::theme_bw(base_size = baseFontSize),
+  ...
+)
 }
 \arguments{
 \item{data}{The dataframe containing the variables.}

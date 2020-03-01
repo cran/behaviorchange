@@ -33,7 +33,7 @@
 #' Note that many rows contain missing values; the columns and rows
 #' were taken directly from the original Party Panel datasets, and
 #' represent all participants that made it past a given behavior.
-#' @examples data(BBC_pp17.1);
+#' @examples data('BBC_pp17.1', package='behaviorchange');
 #' behaviorchange::CIBERlite(data=BBC_pp17.1,
 #'                           determinants=c("epw_attitude",
 #'                                          "epw_perceivedNorm",

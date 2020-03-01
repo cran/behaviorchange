@@ -4,8 +4,13 @@
 \alias{lm_rSq_ci}
 \title{Obtaining an R squared confidence interval estimate for an lm regression}
 \usage{
-lm_rSq_ci(formula, data = NULL, conf.level = 0.95,
-  ci.method = c("widest", "r.con", "olkinfinn"), env = parent.frame())
+lm_rSq_ci(
+  formula,
+  data = NULL,
+  conf.level = 0.95,
+  ci.method = c("widest", "r.con", "olkinfinn"),
+  env = parent.frame()
+)
 }
 \arguments{
 \item{formula}{The formula of the regression analysis, of the form \code{y ~
@@ -22,8 +27,6 @@ regression coefficients.}
 interval around R squared.}
 
 \item{env}{The enviroment where to evaluate the formula.}
-
-\item{\dots}{Any additional arguments are ignored.}
 }
 \value{
 The confidence interval

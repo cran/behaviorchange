@@ -4,12 +4,22 @@
 \alias{dMCD}
 \title{Estimate Cohen's d corresponding to a Meaningful Change Definition}
 \usage{
-dMCD(cer, mcd = NULL, eer = NULL, plot = TRUE, mcdOnX = FALSE,
-  plotResultValues = TRUE, resultValueLineColor = "blue",
-  resultValueLineSize = 1, returnLineLayerOnly = FALSE,
-  theme = ggplot2::theme_bw(), highestPossibleEER = 0.999999999,
-  xLab = ifelse(mcdOnX, "Meaningful Change Definition",
-  "Control Event Rate"), yLab = "Cohen's d", ...)
+dMCD(
+  cer,
+  mcd = NULL,
+  eer = NULL,
+  plot = TRUE,
+  mcdOnX = FALSE,
+  plotResultValues = TRUE,
+  resultValueLineColor = "blue",
+  resultValueLineSize = 1,
+  returnLineLayerOnly = FALSE,
+  theme = ggplot2::theme_bw(),
+  highestPossibleEER = 0.999999999,
+  xLab = ifelse(mcdOnX, "Meaningful Change Definition", "Control Event Rate"),
+  yLab = "Cohen's d",
+  ...
+)
 }
 \arguments{
 \item{cer}{The Control Event Rate (or base rate): how many people already

@@ -99,6 +99,10 @@
 #'   of the ABCD.
 #' @param maxLabelLength At which width to word wrap the
 #'   labels.
+#' @param nodeFontSize,edgeFontSize,colNameFontSize Font sizes of the nodes (i.e.
+#' the text in boxes), edges (basically the conditions for effectiveness) and the
+#' column names (at the bottom).
+#' @param penWidth The width of the pen to draw the strokes.
 #' @param silent Whether to suppress (`TRUE`) or show
 #'   (`FALSE`) more detailed information.
 #' @param returnGraphOnly,returnSvgOnly Whether to return the full results
@@ -158,6 +162,10 @@ abcd <- function(specs,
                  outputHeight=1500,
                  includeColNames = TRUE,
                  maxLabelLength = 30,
+                 nodeFontSize = 10,
+                 edgeFontSize = 8,
+                 colNameFontSize = nodeFontSize,
+                 penWidth = 1,
                  silent = FALSE,
                  returnGraphOnly = FALSE,
                  returnSvgOnly = FALSE,
@@ -174,6 +182,7 @@ abcd <- function(specs,
               output = list());
 
   loadedDatasheet <- FALSE;
+  gs_url <- NULL;
 
   if (is.character(specs) && length(specs) == 2) {
     whichIsURL <- grepl('^http.?://', specs);
@@ -451,23 +460,33 @@ abcd <- function(specs,
   nodeAttributes <- list(bcps = list(shape = 'box',
                                      color = "#000000",
                                      fillcolor = "#FFFFFF",
-                                     style="rounded,filled"),
+                                     style="rounded,filled",
+                                     fontsize=nodeFontSize,
+                                     penwidth=penWidth),
                          apps = list(shape = 'box',
                                      color = "#000000",
                                      fillcolor = "#FFFFFF",
-                                     style="filled"),
+                                     style="filled",
+                                     fontsize=nodeFontSize,
+                                     penwidth=penWidth),
                          sdts = list(shape = 'box',
                                      color = "#EEEEEE",
                                      fillcolor = "#EEEEEE",
-                                     style="filled"),
+                                     style="filled",
+                                     fontsize=nodeFontSize,
+                                     penwidth=penWidth),
                          dets = list(shape = 'ellipse',
                                      color = "#000000",
                                      fillcolor = "#FFFFFF",
-                                     style = "filled"),
+                                     style = "filled",
+                                     fontsize=nodeFontSize,
+                                     penwidth=penWidth),
                          pobs = list(shape = 'box',
                                      color = "#000000",
                                      fillcolor = "#FFFFFF",
-                                     style="rounded,filled"));
+                                     style="rounded,filled",
+                                     fontsize=nodeFontSize,
+                                     penwidth=penWidth));
 
   if ('behs' %in% usedCols) {
     nodeAttributes <-
@@ -475,7 +494,9 @@ abcd <- function(specs,
         list(behs = list(shape = 'box',
                          color = "#000000",
                          fillcolor = "#FFFFFF",
-                         style="rounded,filled")));
+                         style="rounded,filled",
+                         fontsize=nodeFontSize,
+                         penwidth = penWidth)));
   }
 
   node_dfs <-
@@ -487,6 +508,8 @@ abcd <- function(specs,
                                                style=nodeAttributes[[i]]$style,
                                                color=nodeAttributes[[i]]$color,
                                                fillcolor=nodeAttributes[[i]]$fillcolor,
+                                               penwidth=nodeAttributes[[i]]$penwidth,
+                                               fontsize=nodeAttributes[[i]]$fontsize,
                                                fontcolor="#000000",
                                                fixedsize=FALSE,
                                                shape=nodeAttributes[[i]]$shape));
@@ -500,9 +523,11 @@ abcd <- function(specs,
                                       style="filled",
                                       color="#FFFFFF",
                                       fillcolor="#FFFFFF",
+                                      penwidth=penWidth,
                                       fontcolor="#000000",
                                       fixedsize=FALSE,
-                                      shape="plaintext"));
+                                      shape="plaintext",
+                                      fontsize=colNameFontSize));
     final_nodeDf <- do.call(DiagrammeR::combine_ndfs,
                             c(colNames_node_df,
                               node_dfs));
@@ -550,19 +575,27 @@ abcd <- function(specs,
     list(bcp_app_edges = list(arrowhead = 'icurve',
                               label=letters[seq_along(edges_to$bcp_app_edges)],
                               tooltip="The parameters for use have to be explained separately",
-                              color = "#000000"),
+                              color = "#000000",
+                              fontsize=edgeFontSize,
+                              penwidth=penWidth),
          app_sdt_edges = list(arrowhead = 'normal',
                               label="",
                               tooltip="Influence",
-                              color = "#000000"),
+                              color = "#000000",
+                              fontsize=edgeFontSize,
+                              penwidth=penWidth),
          sdt_det_edges = list(arrowhead = 'dot',
                               label="",
                               tooltip="Is a part of",
-                              color = "#000000"),
+                              color = "#000000",
+                              fontsize=edgeFontSize,
+                              penwidth=penWidth),
          det_pob_edges = list(arrowhead = 'normal',
                               label="",
                               tooltip="Influences",
-                              color = "#000000"));
+                              color = "#000000",
+                              fontsize=edgeFontSize,
+                              penwidth=penWidth));
 
   if ('cnds' %in% usedCols) {
     edgeAttributes$bcp_app_edges$label <- cnds;
@@ -577,7 +610,9 @@ abcd <- function(specs,
         list(pob_beh_edges = list(arrowhead = 'dot',
                                   label="",
                                   tooltip="Is a part of",
-                                  color = "#000000")));
+                                  color = "#000000",
+                                  fontsize=edgeFontSize,
+                                  penwidth=penWidth)));
   }
 
   edge_dfs <-
@@ -587,6 +622,8 @@ abcd <- function(specs,
                                                to=edges_to[[i]],
                                                label=edgeAttributes[[i]]$label,
                                                tooltip=edgeAttributes[[i]]$tooltip,
+                                               fontsize=edgeAttributes[[i]]$fontsize,
+                                               penwidth=edgeAttributes[[i]]$penwidth,
                                                arrowhead=edgeAttributes[[i]]$arrowhead,
                                                color=edgeAttributes[[i]]$color));
            });
@@ -595,7 +632,8 @@ abcd <- function(specs,
     colNames_edge_df <-
       list(DiagrammeR::create_edge_df(from=1:(length(col_ids)-1),
                                       to=2:length(col_ids),
-                                      color = "#FFFFFF"));
+                                      color = "#FFFFFF",
+                                      penwidth=penWidth));
     final_edgeDf <- do.call(DiagrammeR::combine_edfs,
                             c(colNames_edge_df,
                               edge_dfs));

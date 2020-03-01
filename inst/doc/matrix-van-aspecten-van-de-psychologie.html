@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Gjalt-Jorn Peters &amp; Rik Crutzen" />
 
-<meta name="date" content="2019-08-22" />
+<meta name="date" content="2020-03-01" />
 
 <title>Matrix van Aspecten van de Psychologie (MAP)</title>
 
@@ -31,9 +31,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -202,7 +199,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -217,7 +215,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Matrix van Aspecten van de Psychologie (MAP)</h1>
 <h4 class="author">Gjalt-Jorn Peters &amp; Rik Crutzen</h4>
-<h4 class="date">2019-08-22</h4>
+<h4 class="date">2020-03-01</h4>
 
 
 
@@ -231,7 +229,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Elk aspect heeft vervolgens een unieke identifier, een label, en een of meerdere bronnen, zodat duidelijk is waar ze vandaan komen.</p>
 <p>De behaviorchange_matrix_columns specificatie geeft aan welke determinanten de kolommen in de matrix moeten vormen. Omdat psychologische constructen hierarchisch zijn opgebouwd is het belangrijk om te specificeren op welke niveau van aggregatie de matrix moet worden geconstrueerd. Dit niveau is het niveau waarop de koppeling met gedragsveranderingprincipes plaatsvindt.</p>
 <p>Vervolgens wordt door middel van justifier documentatie van elk aspect aangegeven wat er mee gebeurd. Door hier gebruik te maken van de justifier specificatie kan eenvoudig in kaart worden gebracht welke beslissingen beter en slechter onderbouwd zijn.</p>
-<p>Deze beslissingen hebben allemaal het type “aspect_selection”, moeten allemaal verwijzen naar de identifier van het betreffende aspect via “bc_map_id”, en kunnen drie waarden hebben: “drop”, “select”, en “defer”. Deze drukken respectievelijk de beslissing uit om de intervantie niet op een aspect te richten; om dat juist wel te doen; en om deze interventie niet op een aspect te richten, terwijl dat aspect wellicht wel relevant is.</p>
+<p>Deze beslissingen hebben allemaal het type “aspect_selection”, moeten allemaal verwijzen naar de identifier van het betreffende aspect via “bc_map_id”, en kunnen drie waarden hebben: “forgo”, “select”, en “defer”. Deze drukken respectievelijk de beslissing uit om de intervantie niet op een aspect te richten; om dat juist wel te doen; en om deze interventie niet op een aspect te richten, terwijl dat aspect wellicht wel relevant is.</p>
 <p>Conform de justifier conventie hebben beslissingen onderbouwingen, die gebaseerd zijn op assertions die bronnen hebben. Op deze manier is precies terug te vinden waarop elk besluit is gebaseerd.</p>
 <p>Deze specificaties bevatten dus zowel 1) alles dat bekend is over waarom mensen mogelijkerwijs het doelgedrag al dan niet uitvoeren; 2) de keuzes die worden gemaakt en de onderbouwingen van die keuzes; en als resultaat van de verwerking van die twee, 3) de matrix van veranderdoelen, die vervolgens de basis vormt van de ABCD.</p>
 <pre><code>---
@@ -292,6 +290,9 @@ decision:
         id: ciberplot_1
 ---</code></pre>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

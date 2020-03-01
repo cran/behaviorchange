@@ -18,6 +18,12 @@ were taken directly from the original Party Panel datasets, and
 represent all participants that made it past a given behavior.}
 \usage{
 data(BBC_pp15.1)
+
+data(BBC_pp16.1)
+
+data(BBC_pp17.1)
+
+data(BBC_pp18.1)
 }
 \description{
 These are subsets of Party Panel datasets. Party Panel is an annual
@@ -41,7 +47,7 @@ repositories (https://gitlab.com/partypanel) and the website
 at https://partypanel.eu.
 }
 \examples{
-data(BBC_pp17.1);
+data('BBC_pp17.1', package='behaviorchange');
 behaviorchange::CIBERlite(data=BBC_pp17.1,
                           determinants=c("epw_attitude",
                                          "epw_perceivedNorm",

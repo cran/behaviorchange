@@ -14,7 +14,6 @@
 #' @param ci.method Which method to use for the confidence
 #' interval around R squared.
 #' @param env The enviroment where to evaluate the formula.
-#' @param \dots Any additional arguments are ignored.
 #' @return The confidence interval
 #'
 #' @author Gjalt-Jorn Peters

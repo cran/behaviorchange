@@ -4,13 +4,20 @@
 \alias{CIBERlite}
 \title{CIBERlite}
 \usage{
-CIBERlite(data, determinants, targets, determinantOrder = NULL,
-  determinantLabels = NULL, subDeterminantLabels = NULL,
-  title = NULL, conf.level = 0.95, scaleRange = NULL,
+CIBERlite(
+  data,
+  determinants,
+  targets,
+  determinantOrder = NULL,
+  determinantLabels = NULL,
+  subDeterminantLabels = NULL,
+  title = NULL,
+  conf.level = 0.95,
+  scaleRange = NULL,
   determinantAesthetics = list(fill = "black", color = NA, alpha = 0.5),
-  subDeterminantAesthetics = list(fill = "black", color = NA, alpha =
-  0.5), rDiamondAesthetics = list(fill = "#c4c4c4", color = NA, alpha =
-  0.75))
+  subDeterminantAesthetics = list(fill = "black", color = NA, alpha = 0.5),
+  rDiamondAesthetics = list(fill = "#c4c4c4", color = NA, alpha = 0.75)
+)
 }
 \arguments{
 \item{data}{The dataframe containing the variables.}

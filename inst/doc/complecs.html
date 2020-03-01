@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Creating a COMPLECS overview</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Creating a COMPLECS overview</h1>
+
+
+
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>When developing a behavior change intervention, it is first necessary to obtain a comprehensive in-depth understanding of the problem. For example, the Intervention Mapping protocol dedicated the first step, the Needs Assessment, to this endeavour. In this phase, maintaining an overview can be challenging, as all the myraid aspects of reality that are, or may be, relevant are collected and related to each other.</p>
+<p>COMPLECS<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> was developed to help to keep an overview during this process. It allows adding new information in a piece-wise manner, and then combines everything into one visualisation.</p>
+<p>COMPLECS reads the specifications from a spreadsheet. This spreadsheet can be provided either as an URL to Google Sheets (useful if you want to collaborate wiht multiple people) or as the path to an Excel file.</p>
+</div>
+<div id="the-anatomy-of-a-complecs-specification" class="section level1">
+<h1>The anatomy of a COMPLECS specification</h1>
+<p>The spreadsheet workbook should contain four worksheets. The default names<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> of these worksheets and columns in those worksheets are as follows.</p>
+<p>In the <strong><code>entities</code> worksheet</strong>, you specify the entities you identified. These become the <em>nodes</em> in the visualisations. Entities can be people such as a member of the at-risk population, the target population, or another relevant actor; they can be more abstract entities such as school boards, hospital management, or politicians; they can be environmental conditions, such as the presence of free condoms or drug testing services; or they can be behaviors, such as bullying or providing social support. In fact, entities can be anything that you think is useful to include in the overview; there are really no limitations except what works for you. This flexibility is possible because entities have types, which are specified in another worksheet. When specifying an entity, you have to specify a unique identifier (in column <code>entity_id</code>), a human-readable label (in <code>entity_label</code>), and an entity type (<code>entity_type_id</code>).</p>
+<p>In the <strong><code>connections</code> worksheet</strong>, you specify how the entities relate to each other. By default, you can use the relationship types specified in West et al. (2019, <a href="https://doi.org/10.1038/s41562-019-0561-2">doi:10.1038/s41562-019-0561-2</a>), such as <code>causal_influences_unspecified</code> for causal effects where it is unknown whether the effects are positive or negative; <code>causal_influences_positive</code> for positive causal effects; <code>causal_influences_negative</code> for negative causal effects; and <code>causal_influences_unknown</code> if it is unknown whether there is a causal effect. When specifying a connection, you have to specify the entity from which the connection originates (<code>from_entity_id</code>), the entity to which that entity connects (<code>to_entity_id</code>), and the connection type (<code>connection_type_id</code>).</p>
+<p>In the <strong><code>entity_types</code> worksheet</strong>, you specify the possible entity types. By default, the following types are prespecified: <code>person</code>, <code>environmental_condition</code>, <code>behavior</code>, and <code>determinant</code>. You can add more types here by specifying their type identifier (in column <code>entity_type_id</code>) and their human-readable label (in <code>entity_type_label</code>), as well as how you want it to look in the COMPLECS overview by specifying the stroke color (<code>color</code>), the shape (<code>shape</code>), the fill color (<code>fillcolor</code>), the style (<code>style</code>), and the text color (<code>fontcolor</code>).</p>
+<p>In the <strong><code>connection_types</code> worksheet</strong>, you specify the possible connection types. By default, all connection types listed in West et al. (2019, <a href="https://doi.org/10.1038/s41562-019-0561-2">doi:10.1038/s41562-019-0561-2</a>) have been prespecified. You can add more connection types here by specifying their connection type identifier (in column <code>connection_type_id</code>) and their human-readable label (in <code>connection_type_label</code>), as well as how you want the connection to look in teh COMPLECS overview by specifying the stroke color (<code>color</code>), the style (<code>style</code>), and the direction of the arrow (<code>dir</code>).</p>
+</div>
+<div id="preparing-google-sheets-for-data-export" class="section level1">
+<h1>Preparing Google Sheets for data export</h1>
+<p>If you want to use a Google Sheet, make sure you make it public in two ways (it has to be public in <em>both</em> ways for the R <code>googlesheets</code> package to be able to read the information):</p>
+<ul>
+<li>First, it has to be shared in the regular way, by clicking the Share button at the top-right and clicking “Get shareable link”.</li>
+<li>Second, it has to be “published to the web”. You do this by opening the “File” menu and the selecting “Publish to the web”. In the modal dialog that appears, normally, you should be facing the left of two tabs, labelled “Link”, and in the two drop-down menus, “Entire document” and “Web page” should already be selected by default. If that is the case, you can simply click “Publish” and then confirm this choice in the dialog that appears. If not, select those options and then publish.</li>
+</ul>
+</div>
+<div id="generating-the-complecs-overview" class="section level1">
+<h1>Generating the COMPLECS overview</h1>
+<p>Once you specified everyting, you can generate the overview. To do this, you can use the <code>complecs</code> function in the <code>behaviorchange</code> package (<a href="https://r-packages.gitlab.io/behaviorchange/reference/complecs.html">this function’s manual page is located here</a>). The function only requires one argument: the URL to a Google Sheet, or the path to an Excel file. If you use the function like this, the produced COMPLECS overview will simply be shown. However, you will usually want to save the overview to a file. To do that, you can use <code>outputFile</code> to specify a path and filename of a file you want to write to.</p>
+<p>As an example, let us use the default COMPLECS specification template located at <a href="https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk" class="uri">https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk</a>. Let’s first store that long URL in a convenient variable:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">googleSheetsURL &lt;-</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="st">  &quot;https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk&quot;</span>;</a></code></pre></div>
+<p>You can produce a COMPLECS overview by simply passing that URL to the <code>complecs()</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">behaviorchange<span class="op">::</span><span class="kw">complecs</span>(googleSheetsURL);</a></code></pre></div>
+<svg viewBox="0.00 0.00 473.80 420.06" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 416.0583)">
+<title>
+%0
+</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-416.0583 469.8046,-416.0583 469.8046,4 -4,4"></polygon> <!-- 1 --> <g id="node1" class="node">
+<title>
+1
+</title>
+<ellipse fill="#aaaaff" stroke="#000088" cx="60.0397" cy="-143.387" rx="60.0795" ry="22.7556"></ellipse> <text text-anchor="middle" x="60.0397" y="-146.387" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">Getting ecstasy</text> <text text-anchor="middle" x="60.0397" y="-134.387" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">pills tested</text> </g> <!-- 2 --> <g id="node2" class="node">
+<title>
+2
+</title>
+<ellipse fill="#aaaaff" stroke="#000088" cx="248.901" cy="-224.931" rx="67.8" ry="22.7556"></ellipse> <text text-anchor="middle" x="248.901" y="-227.931" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">Using a high dose</text> <text text-anchor="middle" x="248.901" y="-215.931" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">of MDMA</text> </g> <!-- 3 --> <g id="node3" class="node">
+<title>
+3
+</title>
+<ellipse fill="#aaaaff" stroke="#000088" cx="211.2927" cy="-22.6274" rx="83.3983" ry="22.7556"></ellipse> <text text-anchor="middle" x="211.2927" y="-25.6274" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">Combining MDMA with</text> <text text-anchor="middle" x="211.2927" y="-13.6274" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000088">other substances</text> </g> <!-- 4 --> <g id="node4" class="node">
+<title>
+4
+</title>
+<ellipse fill="#aaffaa" stroke="#008800" cx="314.6578" cy="-313.2253" rx="69.7161" ry="22.7556"></ellipse> <text text-anchor="middle" x="314.6578" y="-316.2253" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#008800">Drug-dogs at party</text> <text text-anchor="middle" x="314.6578" y="-304.2253" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#008800">entrances</text> </g> <!-- 5 --> <g id="node5" class="node">
+<title>
+5
+</title>
+<ellipse fill="#aaffaa" stroke="#008800" cx="392.4126" cy="-389.4309" rx="73.2842" ry="22.7556"></ellipse> <text text-anchor="middle" x="392.4126" y="-392.4309" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#008800">Zero-tolerance drug</text> <text text-anchor="middle" x="392.4126" y="-380.4309" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#008800">policies</text> </g> <!-- 6 --> <g id="node6" class="node">
+<title>
+6
+</title>
+<polygon fill="#eeeeee" stroke="#000000" points="217.5124,-152.867 136.634,-152.867 136.634,-116.867 217.5124,-116.867 217.5124,-152.867"></polygon> <text text-anchor="middle" x="177.0732" y="-137.867" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">MDMA-related</text> <text text-anchor="middle" x="177.0732" y="-125.867" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">incidents</text> </g> <!-- 1&#45;&gt;6 --> <g id="edge1" class="edge">
+<title>
+1-&gt;6
+</title>
+<path fill="none" stroke="#ff0000" d="M119.2422,-139.0771C123.3881,-138.7753 127.5293,-138.4738 131.5827,-138.1787"></path> <polygon fill="#ff0000" stroke="#ff0000" points="131.8041,-139.9173 136.6638,-137.8088 131.5499,-136.4265 131.8041,-139.9173"></polygon> <text text-anchor="middle" x="124.0809" y="-141.0279" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">-</text> </g> <!-- 2&#45;&gt;6 --> <g id="edge2" class="edge">
+<title>
+2-&gt;6
+</title>
+<path fill="none" stroke="#00ff00" d="M231.1458,-202.668C220.0771,-188.789 205.8855,-170.9943 194.8186,-157.1176"></path> <polygon fill="#00ff00" stroke="#00ff00" points="195.977,-155.7635 191.4913,-152.9456 193.2407,-157.9458 195.977,-155.7635"></polygon> <text text-anchor="middle" x="210.6466" y="-182.2928" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">+</text> </g> <!-- 3&#45;&gt;6 --> <g id="edge3" class="edge">
+<title>
+3-&gt;6
+</title>
+<path fill="none" stroke="#00ff00" d="M204.3679,-45.3408C198.5128,-64.5456 190.1557,-91.9568 184.2344,-111.3783"></path> <polygon fill="#00ff00" stroke="#00ff00" points="182.4173,-111.3379 182.633,-116.6309 185.7652,-112.3586 182.4173,-111.3379"></polygon> <text text-anchor="middle" x="191.9656" y="-80.7596" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">+</text> </g> <!-- 4&#45;&gt;2 --> <g id="edge4" class="edge">
+<title>
+4-&gt;2
+</title>
+<path fill="none" stroke="#00ff00" d="M298.0646,-290.9449C289.0404,-278.8278 277.8264,-263.7703 268.3882,-251.0971"></path> <polygon fill="#00ff00" stroke="#00ff00" points="269.6512,-249.8632 265.2612,-246.8984 266.8442,-251.9538 269.6512,-249.8632"></polygon> <text text-anchor="middle" x="280.8908" y="-273.421" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">+</text> </g> <!-- 5&#45;&gt;4 --> <g id="edge5" class="edge">
+<title>
+5-&gt;4
+</title>
+<path fill="none" stroke="#00ff00" d="M370.3392,-367.7972C361.0643,-358.7071 350.2093,-348.0685 340.5592,-338.6106"></path> <polygon fill="#00ff00" stroke="#00ff00" points="341.5823,-337.163 336.7864,-334.913 339.1325,-339.6627 341.5823,-337.163"></polygon> <text text-anchor="middle" x="353.1136" y="-355.6039" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">+</text> </g> </g>
+</svg>
+<p>If you want to save the resulting COMPLECS overview to a file, you also specify a path and filename:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">behaviorchange<span class="op">::</span><span class="kw">complecs</span>(googleSheetsURL,</a>
+<a class="sourceLine" id="cb3-2" title="2">                         <span class="dt">outputFile =</span> <span class="st">&quot;~/complecs-overview-example.pdf&quot;</span>);</a></code></pre></div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>COMPLECS is a recursive acronym for COMPLECS Organises Multiple Players &amp; Linked Environments using Connected Specifications.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>These names of the worksheets and their columns can be specified using the <code>behaviorchange::opts$set()</code> function.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

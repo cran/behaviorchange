@@ -6,12 +6,30 @@
 \alias{print.nnc}
 \title{Numbers Needed for Change}
 \usage{
-nnc(d = NULL, cer = NULL, r = 1, n = NULL, threshold = NULL,
-  mean = 0, sd = 1, poweredFor = NULL, thresholdSensitivity = NULL,
-  eventDesirable = TRUE, eventIfHigher = TRUE, conf.level = 0.95,
-  dReliability = 1, d.ci = NULL, cer.ci = NULL, r.ci = NULL,
-  d.n = NULL, cer.n = NULL, r.n = NULL, plot = TRUE,
-  returnPlot = TRUE, silent = FALSE)
+nnc(
+  d = NULL,
+  cer = NULL,
+  r = 1,
+  n = NULL,
+  threshold = NULL,
+  mean = 0,
+  sd = 1,
+  poweredFor = NULL,
+  thresholdSensitivity = NULL,
+  eventDesirable = TRUE,
+  eventIfHigher = TRUE,
+  conf.level = 0.95,
+  dReliability = 1,
+  d.ci = NULL,
+  cer.ci = NULL,
+  r.ci = NULL,
+  d.n = NULL,
+  cer.n = NULL,
+  r.n = NULL,
+  plot = TRUE,
+  returnPlot = TRUE,
+  silent = FALSE
+)
 
 \method{print}{nnc}(x, digits = 2, ...)
 }

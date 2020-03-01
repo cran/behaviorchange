@@ -25,7 +25,7 @@ De behaviorchange_matrix_columns specificatie geeft aan welke determinanten de k
 
 Vervolgens wordt door middel van justifier documentatie van elk aspect aangegeven wat er mee gebeurd. Door hier gebruik te maken van de justifier specificatie kan eenvoudig in kaart worden gebracht welke beslissingen beter en slechter onderbouwd zijn. 
 
-Deze beslissingen hebben allemaal het type "aspect_selection", moeten allemaal verwijzen naar de identifier van het betreffende aspect via "bc_map_id", en kunnen drie waarden hebben: "drop", "select", en "defer". Deze drukken respectievelijk de beslissing uit om de intervantie niet op een aspect te richten; om dat juist wel te doen; en om deze interventie niet op een aspect te richten, terwijl dat aspect wellicht wel relevant is. 
+Deze beslissingen hebben allemaal het type "aspect_selection", moeten allemaal verwijzen naar de identifier van het betreffende aspect via "bc_map_id", en kunnen drie waarden hebben: "forgo", "select", en "defer". Deze drukken respectievelijk de beslissing uit om de intervantie niet op een aspect te richten; om dat juist wel te doen; en om deze interventie niet op een aspect te richten, terwijl dat aspect wellicht wel relevant is. 
 
 Conform de justifier conventie hebben beslissingen onderbouwingen, die gebaseerd zijn op assertions die bronnen hebben. Op deze manier is precies terug te vinden waarop elk besluit is gebaseerd. 
 

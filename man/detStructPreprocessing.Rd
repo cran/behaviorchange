@@ -10,17 +10,26 @@
 \alias{detStructComputeScales}
 \title{Functions to preprocess determinant structures}
 \usage{
-detStructAddVarLabels(determinantStructure, varLabelDf,
-  varNameCol = "varNames.cln", leftAnchorCol = "leftAnchors",
-  rightAnchorCol = "rightAnchors", subQuestionCol = "subQuestions",
-  questionTextCol = "questionText")
+detStructAddVarLabels(
+  determinantStructure,
+  varLabelDf,
+  varNameCol = "varNames.cln",
+  leftAnchorCol = "leftAnchors",
+  rightAnchorCol = "rightAnchors",
+  subQuestionCol = "subQuestions",
+  questionTextCol = "questionText"
+)
 
 detStructAddVarNames(determinantStructure, names)
 
 detStructComputeProducts(determinantStructure, data, append = TRUE)
 
-detStructComputeScales(determinantStructure, data, append = TRUE,
-  separator = "_")
+detStructComputeScales(
+  determinantStructure,
+  data,
+  append = TRUE,
+  separator = "_"
+)
 }
 \arguments{
 \item{determinantStructure}{The \code{\link{determinantStructure}} object.}
