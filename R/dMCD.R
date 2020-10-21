@@ -22,16 +22,24 @@
 #' @param theme The `ggplot2` theme to use.
 #' @param highestPossibleEER The highest possible EER to include in the plot.
 #' @param xLab,yLab The labels for the X and Y axes.
-#' @param ... Any additional arguments are passed on to the `ggplot2::geom_line`
+#' @param dist,distArgs,distNS Used to specify the distribution to use to convert
+#' between Cohen's d and the CER and EER. distArgs can be used to specify
+#' additional arguments to the corresponding `q` and `p` functions, and
+#' distNS to specify the namespace (i.e. package) from where to get the
+#' distribution functions.
+#' @param x The object to print (i.e. a result from a call to dMCD).
+#' @param ... Any additional arguments to dMCD are passed on to the `ggplot2::geom_line`
 #' used to draw the line showing the different Cohen's d values as a function of
-#' the base rate (or MCD) on the X axis.
+#' the base rate (or MCD) on the X axis. Additional arguments for the print method
+#' are passed on to the default print method.
 #'
-#' @references Gruijters, S. L. K., & Peters, G.-J. Y. (2019). Meaningful change
+#' @references Gruijters, S. L. K., & Peters, G.-J. Y. (2020). Meaningful change
 #' definitions: Sample size planning for experimental intervention research.
 #' *PsyArXiv*. \doi{10.31234/osf.io/jc295}
 #'
 #' @return The Cohen's d value, optionally with a `ggplot2` plot stored in an
 #' attribute (which is only a `ggplot2` layer if `returnLineLayerOnly=TRUE`).
+#' @rdname dMCD
 #' @examples dMCD(.2, .05);
 #' @export
 dMCD <- function(cer,
@@ -49,6 +57,9 @@ dMCD <- function(cer,
                                "Meaningful Change Definition",
                                "Control Event Rate"),
                  yLab = "Cohen's d",
+                 dist = "norm",
+                 distArgs=list(),
+                 distNS="stats",
                  ...) {
 
   providedArgs <- as.list(environment());
@@ -68,7 +79,11 @@ dMCD <- function(cer,
         mcd <- c(mcd,
                  j - i);
         d <- c(d,
-               ufs::convert.cer.to.d(cer=i, eer=j));
+               ufs::convert.cer.to.d(cer=i,
+                                     eer=j,
+                                     dist=dist,
+                                     distArgs=distArgs,
+                                     distNS=distNS));
       }
     }
     mcd <- matrix(mcd,
@@ -93,7 +108,11 @@ dMCD <- function(cer,
         eer <- c(eer,
                  i + j);
         d <- c(d,
-               ufs::convert.cer.to.d(cer=i, eer=min(i+j, highestPossibleEER)));
+               ufs::convert.cer.to.d(cer=i,
+                                     eer=min(i+j, highestPossibleEER),
+                                     dist=dist,
+                                     distArgs=distArgs,
+                                     distNS=distNS));
       }
     }
     eer[eer > 1] <- highestPossibleEER;
@@ -132,7 +151,8 @@ dMCD <- function(cer,
                        NA);
       dSeq <-
         ufs::convert.cer.to.d(cer=rep(cer, length(eerSeq)),
-                              eer=eerSeq);
+                              eer=eerSeq,
+                              dist=dist, distArgs=distArgs, distNS=distNS);
 
       if (plotResultValues) {
         plot <- plot +
@@ -172,7 +192,8 @@ dMCD <- function(cer,
                        NA);
       dSeq <-
         ufs::convert.cer.to.d(cer=cerSeq,
-                              eer=eerSeq);
+                              eer=eerSeq,
+                              dist=dist, distArgs=distArgs, distNS=distNS);
 
       if (plotResultValues) {
         plot <- plot +
@@ -214,6 +235,25 @@ dMCD <- function(cer,
       ggplot2::ylab(yLab);
   }
 
+  class(res) <- "dMCD";
+
   return(res);
 
+}
+
+#' @rdname dMCD
+#' @method print dMCD
+#' @export
+print.dMCD <- function(x, ...) {
+  ### Work-around - no idea why printing the plot throws these warnings:
+  ###   Warning messages:
+  ###   1: In min(x) : no non-missing arguments to min; returning Inf
+  ###   2: In max(x) : no non-missing arguments to max; returning -Inf
+  ###   3: In min(x) : no non-missing arguments to min; returning Inf
+  ###   4: In max(x) : no non-missing arguments to max; returning -Inf
+  y <- x;
+  attr(y, "plot") <- NULL;
+  print(unclass(y));
+  suppressWarnings(print(attr(x, "plot")));
+  return(invisible(x));
 }

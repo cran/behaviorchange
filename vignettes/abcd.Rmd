@@ -84,13 +84,11 @@ Such ABCDs are generated from a uniform, machine readable, format: a table, for 
 
 ABCDs can be generated using the [behaviorchange::abcd()] function in the `behaviorchange` R package.
 
-They can also be generated from the online app that runs at https://a-bc.eu/apps/abcd.
+They can also be generated from the online app that runs at [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/).
 
-# Examples
+# Example
 
-This are two example ABCDs. The ABCD tables are included in the `behaviorchange` package, and the identical tables are available on Google Sheets.
-
-## A simple but complete ABCD
+The ABCD matrix for this example is included in the `behaviorchange` package, and the identical table is available on Google Sheets.
 
 ```{r full-ABCD, eval=FALSE, echo=TRUE}
 behaviorchange::abcd(behaviorchange::abcd_specs_complete);
@@ -100,15 +98,15 @@ behaviorchange::abcd(behaviorchange::abcd_specs_complete);
 
 The ABCD table for this ABCD is available at https://docs.google.com/spreadsheets/d/1U1j-VoiK3WmfveJ7VpUMY_H9WNXDh85a8jKbM67AQSI/edit#gid=0.
 
-## An ABCD with only one target behavior and no specified conditions
+<!-- ## An ABCD with only one target behavior and no specified conditions -->
 
-```{r partial-ABCD, eval=FALSE, echo=TRUE}
+```{r partial-ABCD, eval=FALSE, echo=FALSE}
 behaviorchange::abcd(behaviorchange::abcd_specs_single_po_without_conditions);
 ```
 
-![An ABCD with only one target behavior and no specified conditions](abcd_specs_single_po_without_conditions.png){ width=100% }
+<!-- ![An ABCD with only one target behavior and no specified conditions](abcd_specs_single_po_without_conditions.png){ width=100% } -->
 
-The ABCD table for this ABCD is available at https://docs.google.com/spreadsheets/d/1U1j-VoiK3WmfveJ7VpUMY_H9WNXDh85a8jKbM67AQSI/edit#gid=0.
+<!-- The ABCD table for this ABCD is available at https://docs.google.com/spreadsheets/d/1U1j-VoiK3WmfveJ7VpUMY_H9WNXDh85a8jKbM67AQSI/edit#gid=0. -->
 
 # Practical Guide
 
@@ -132,11 +130,11 @@ Instead of starting from scratch, you can also copy one of the examples, for exa
 
 ## Creating an Acyclic Behavior Change Diagram
 
-You can then generate the ABCD in two ways. The first is to use the free software R. In R, you can download and install the `behaviorchange` package, which contains the `abcd` function that imports a spreadsheet with an ABCD matrix and generates the diagram. However, if you don't already use R this might not be convenient. Therefore, the Academy of Behavior Change  also hosts an online app available at https://a-bc.eu/apps/abcd. In that app, you can import the spreadsheet in two ways.
+You can then generate the ABCD in two ways. The first is to use the free software R. In R, you can download and install the `behaviorchange` package, which contains the `abcd` function that imports a spreadsheet with an ABCD matrix and generates the diagram. However, if you don't already use R this might not be convenient. Therefore, the Academy of Behavior Change  also hosts an online app available at [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/). In that app, you can import the spreadsheet in two ways.
 
-First, you can import a so-called 'comma separated values' (.csv) file. This is an open standard for storing spreadsheets. You can export your spreadsheet from whichever programme you use (for example Excel, Calc, SPSS, or Google Sheets) as .csv file, which you can then import into the app (if you visit https://a-bc.eu/apps/abcd you'll see a "Browse" button at the bottom that allows you to select and upload the file from your harddisk).
+First, you can import a so-called 'comma separated values' (.csv) file. This is an open standard for storing spreadsheets. You can export your spreadsheet from whichever programme you use (for example Excel, Calc, SPSS, or Google Sheets) as .csv file, which you can then import into the app (if you visit [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/) you'll see a "Browse" button at the bottom that allows you to select and upload the file from your harddisk).
 
-Second, you can 'publish' a Google Sheet so that it's publically available, and then the app can directly import the data from your Google Sheet. This is of course much easier if you use Google Sheets in the first place. To do this, you have to do two things. First, share the Google Sheet, which you can do by clicking the *Share* button in the top-right corner. Indicate that you want to share by link, and select how you want to share it (normally, you only want to give people read-only access). A link is then created. Copy it, because you'll need to paste it into the app. But you're not done yet; you also have to 'publish' the sheet. To do this, click the *File* menu (or whatever it's called in your language; the left-most menu) and select *Publish to the web...*. Indicate that you want to publish using a link (as opposed to embedding) and that you want to publish the entire document as a web page. The click *Publish* to publish the document. This is required to allow other servers to directly read the spreadsheet. Once you completed both steps, you can copy-paste the link (the one obtained through the *Share* settings, *not* the one obtained through the *Publish* settings) into the ABCD app at https://a-bc.eu/apps/abcd.
+Second, you can 'publish' a Google Sheet so that it's publically available, and then the app can directly import the data from your Google Sheet. This is of course much easier if you use Google Sheets in the first place. To do this, you have to do two things. First, share the Google Sheet, which you can do by clicking the *Share* button in the top-right corner. Indicate that you want to share by link, and select how you want to share it (normally, you only want to give people read-only access). A link is then created. Copy it, because you'll need to paste it into the app. But you're not done yet; you also have to 'publish' the sheet. To do this, click the *File* menu (or whatever it's called in your language; the left-most menu) and select *Publish to the web...*. Indicate that you want to publish using a link (as opposed to embedding) and that you want to publish the entire document as a web page. The click *Publish* to publish the document. This is required to allow other servers to directly read the spreadsheet. Once you completed both steps, you can copy-paste the link (the one obtained through the *Share* settings, *not* the one obtained through the *Publish* settings) into the ABCD app at [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/).
 
 Whether you import a .csv file or use a link to a Published and Shared Google sheet, after you specified your ABCD matrix, you can click *Create ABCD* in the online app to let the app import the data.
 

@@ -10,12 +10,14 @@
 \alias{abcd_specification_example_xtc}
 \alias{abcd_specification_empty}
 \title{Simple example datasets for ABCDs}
-\format{For \code{abcd_specs_complete}, a data frame with 7 variables and 7 rows;
+\format{
+For \code{abcd_specs_complete}, a data frame with 7 variables and 7 rows;
 for \code{abcd_specs_without_conditions}, a data frame with 6 variables and 7 rows;
 for \code{abcd_specs_single_po_without_conditions}, a data frame with 5 variables and 4 rows;
 for \code{abcd_specification_example_xtc} and \code{abcd_specs_dutch_xtc},
 a data frame with 7 variables and 5 rows' and
-for \code{abcd_specification_empty}, a data frame with 7 variables and 1 row.}
+for \code{abcd_specification_empty}, a data frame with 7 variables and 1 row.
+}
 \usage{
 data(abcd_specs_complete)
 

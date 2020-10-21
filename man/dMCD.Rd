@@ -2,6 +2,7 @@
 % Please edit documentation in R/dMCD.R
 \name{dMCD}
 \alias{dMCD}
+\alias{print.dMCD}
 \title{Estimate Cohen's d corresponding to a Meaningful Change Definition}
 \usage{
 dMCD(
@@ -18,8 +19,13 @@ dMCD(
   highestPossibleEER = 0.999999999,
   xLab = ifelse(mcdOnX, "Meaningful Change Definition", "Control Event Rate"),
   yLab = "Cohen's d",
+  dist = "norm",
+  distArgs = list(),
+  distNS = "stats",
   ...
 )
+
+\method{print}{dMCD}(x, ...)
 }
 \arguments{
 \item{cer}{The Control Event Rate (or base rate): how many people already
@@ -51,9 +57,18 @@ line (which can be used to quickly stack lines for different MCDs).}
 
 \item{xLab, yLab}{The labels for the X and Y axes.}
 
-\item{...}{Any additional arguments are passed on to the \code{ggplot2::geom_line}
+\item{dist, distArgs, distNS}{Used to specify the distribution to use to convert
+between Cohen's d and the CER and EER. distArgs can be used to specify
+additional arguments to the corresponding \code{q} and \code{p} functions, and
+distNS to specify the namespace (i.e. package) from where to get the
+distribution functions.}
+
+\item{...}{Any additional arguments to dMCD are passed on to the \code{ggplot2::geom_line}
 used to draw the line showing the different Cohen's d values as a function of
-the base rate (or MCD) on the X axis.}
+the base rate (or MCD) on the X axis. Additional arguments for the print method
+are passed on to the default print method.}
+
+\item{x}{The object to print (i.e. a result from a call to dMCD).}
 }
 \value{
 The Cohen's d value, optionally with a \code{ggplot2} plot stored in an
@@ -68,7 +83,7 @@ corresponding Cohen's d. See Gruijters & Peters (2019) for details.
 dMCD(.2, .05);
 }
 \references{
-Gruijters, S. L. K., & Peters, G.-J. Y. (2019). Meaningful change
+Gruijters, S. L. K., & Peters, G.-J. Y. (2020). Meaningful change
 definitions: Sample size planning for experimental intervention research.
 \emph{PsyArXiv}. \doi{10.31234/osf.io/jc295}
 }

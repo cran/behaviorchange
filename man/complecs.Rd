@@ -9,11 +9,15 @@ complecs(
   input,
   title = "COMPLECS overview",
   layout = "neato",
+  graph_styling = list(c("outputorder", "nodesfirst", "graph"), c("overlap", "false",
+    "graph"), c("fixedsize", "false", "node")),
+  directed = TRUE,
   outputFile = NULL,
   outputWidth = NULL,
   outputHeight = NULL,
   returnSvgOnly = FALSE,
-  maxLabelLength = 20
+  maxLabelLength = 20,
+  regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/"))
 )
 
 \method{print}{complecs}(
@@ -32,6 +36,12 @@ complecs(
 \item{layout}{The layout to use; has to be one of the \code{DiagrammeR} layout
 types (\code{dot}, \code{neato}, \code{circo} and \code{twopi}).}
 
+\item{graph_styling}{Additional styling to apply; a list with three-element
+vectors, where the three elements correspond to, respectively, the \code{attr},
+\code{value}, and \code{attr_type} arguments for [DiagrammeR::add_global_graph_attrs().}
+
+\item{directed}{Whether to draw directed arrows or not.}
+
 \item{outputFile}{A character vector where each element is one path (including
 filename) to write the graph to.}
 
@@ -41,6 +51,11 @@ height when calling \code{complecs} to generate a COMPLECS overview.}
 \item{returnSvgOnly}{Whether to only return the SVG in a character vector.}
 
 \item{maxLabelLength}{The number of characters where to wrap the labels.}
+
+\item{regExReplacements}{A list of pairs of regular
+expressions that will be applied to the specifications
+before generating the ABCD. This can be used to sanitize
+problematic characters (e.g. ', " and \).}
 
 \item{x}{The object to print (i.e. a result of a call to \code{complecs}).}
 

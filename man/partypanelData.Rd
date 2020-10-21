@@ -9,13 +9,15 @@
 \alias{BBC_pp17.1}
 \alias{BBC_pp18.1}
 \title{Subsets of Party Panel datasets}
-\format{For BBC_pp15.1, a \code{data.frame} with 123 columns and 829 rows.
+\format{
+For BBC_pp15.1, a \code{data.frame} with 123 columns and 829 rows.
 For BBC_pp16.1, a \code{data.frame} with 63 columns and 1077 rows.
 For BBC_pp17.1, a \code{data.frame} with 94 columns and 943 rows.
 For BBC_pp18.1, a \code{data.frame} with 84 columns and 880 rows.
 Note that many rows contain missing values; the columns and rows
 were taken directly from the original Party Panel datasets, and
-represent all participants that made it past a given behavior.}
+represent all participants that made it past a given behavior.
+}
 \usage{
 data(BBC_pp15.1)
 

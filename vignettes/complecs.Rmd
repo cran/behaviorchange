@@ -3,8 +3,10 @@ title: "Creating a COMPLECS overview"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Creating a COMPLECS overview}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -54,13 +56,22 @@ googleSheetsURL <-
 
 You can produce a COMPLECS overview by simply passing that URL to the `complecs()` function:
 
-```{r, echo=TRUE, message=FALSE, results='hide'}
+```{r, echo=TRUE, message=FALSE, results='hide', eval=FALSE}
 behaviorchange::complecs(googleSheetsURL);
 ```
 
 ```{r, echo=FALSE, results='asis', message=FALSE}
-cat(behaviorchange::complecs(googleSheetsURL,
-                             returnSvgOnly = TRUE));
+cat(
+  behaviorchange::complecs(
+    system.file(package="behaviorchange",
+      "extdata",
+      "COMPLECS-spec-template.xlsx"
+    ),
+    returnSvgOnly = TRUE
+  )
+);
+#cat(behaviorchange::complecs(googleSheetsURL,
+#                             returnSvgOnly = TRUE));
 ```
 
 If you want to save the resulting COMPLECS overview to a file, you also specify a path and filename:

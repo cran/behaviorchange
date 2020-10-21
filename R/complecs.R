@@ -12,6 +12,10 @@
 #' @param title The title of the COMPLECS graph.
 #' @param layout The layout to use; has to be one of the `DiagrammeR` layout
 #' types (`dot`, `neato`, `circo` and `twopi`).
+#' @param graph_styling Additional styling to apply; a list with three-element
+#' vectors, where the three elements correspond to, respectively, the `attr`,
+#' `value`, and `attr_type` arguments for [DiagrammeR::add_global_graph_attrs().
+#' @param directed Whether to draw directed arrows or not.
 #' @param outputFile A character vector where each element is one path (including
 #' filename) to write the graph to.
 #' @param outputWidth,outputHeight If not `NULL`, a way to override the width and
@@ -20,6 +24,10 @@
 #' height when calling `print` to print a COMPLECS overview.
 #' @param returnSvgOnly Whether to only return the SVG in a character vector.
 #' @param maxLabelLength The number of characters where to wrap the labels.
+#' @param regExReplacements A list of pairs of regular
+#'   expressions that will be applied to the specifications
+#'   before generating the ABCD. This can be used to sanitize
+#'   problematic characters (e.g. ', " and \).
 #' @param x The object to print (i.e. a result of a call to `complecs`).
 #' @param ... Any additional arguments for the [print()] method are passed
 #' to [DiagrammeR::render_graph()].
@@ -33,11 +41,18 @@
 complecs <- function(input,
                      title = "COMPLECS overview",
                      layout = "neato",
+                     graph_styling = list(c("outputorder", "nodesfirst", "graph"),
+                                          c("overlap", "false", "graph"),
+                                          c("fixedsize", "false", "node")),
+                     directed = TRUE,
                      outputFile = NULL,
                      outputWidth=NULL,
                      outputHeight=NULL,
                      returnSvgOnly = FALSE,
-                     maxLabelLength=20) {
+                     maxLabelLength=20,
+                     regExReplacements = list(c("\\\"", "`"),
+                                              c("\\'", "`"),
+                                              c("\\\\", "/"))) {
 
   entitySheet <- opts$get("complecs_entitySheet");
   connectionsSheet <- opts$get("complecs_connectionsSheet");
@@ -54,6 +69,19 @@ complecs <- function(input,
 
   if (file.exists(input)) {
     ### Read the file
+    if (!requireNamespace('openxlsx')) {
+      stop("To read Excel files, you need to have openxlsx installed!");
+    }
+    wb <- openxlsx::loadWorkbook(input);
+    worksheetNames <- names(wb);
+
+    worksheetData <-
+      lapply(worksheetNames,
+             function(i) {
+               openxlsx::read.xlsx(wb,
+                                   sheet=i);
+             });
+    names(worksheetData) <- worksheetNames;
 
   } else if ((length(input) == 1) && (grepl('^http.?://', input))) {
     ### Read the google sheets workbook
@@ -100,6 +128,73 @@ complecs <- function(input,
   entityTypes <- as.data.frame(worksheetData[[entityTypesSheet]]);
   connectionTypes <- as.data.frame(worksheetData[[connectionTypesSheet]]);
 
+  ### Remove empty rows (all rows without identifier)
+
+  entities <- entities[(nchar(entities$entity_id) > 0) &
+                         (nchar(entities$entity_type_id) > 0), ];
+  connections <- connections[(nchar(connections$from_entity_id) > 0) &
+                               (nchar(connections$to_entity_id) > 0), ];
+  entityTypes <- entityTypes[(nchar(entityTypes$entity_type_id) > 0), ];
+  connectionTypes <- connectionTypes[(nchar(connectionTypes$connection_type_id) > 0), ];
+
+  sanitizeForDiagrammer <-
+    function(dat,
+             regExRepl = regExReplacements) {
+      return(as.data.frame(lapply(dat,
+                                  function(column) {
+                                    for (i in seq_along(regExRepl)) {
+                                      column <- gsub(regExRepl[[i]][1],
+                                                     regExRepl[[i]][2],
+                                                     column);
+                                    }
+                                    return(column);
+                                  }),
+                           stringsAsFactors=FALSE));
+    }
+
+  ### Sanitize
+  entities <- sanitizeForDiagrammer(entities);
+  connections <- sanitizeForDiagrammer(connections);
+  entityTypes <- sanitizeForDiagrammer(entityTypes);
+  connectionTypes <- sanitizeForDiagrammer(connectionTypes);
+
+  fromConnections_nonexistentEntities <-
+    connections$from_entity_id[
+      !(connections$from_entity_id %in%
+        entities$entity_id)];
+
+  toConnections_nonexistentEntities <-
+    connections$to_entity_id[
+      !(connections$to_entity_id %in%
+          entities$entity_id)];
+
+  nonexistentEntityTypes <-
+    entities$entity_type_id[
+      !(entities$entity_type_id %in%
+          entityTypes$entity_type_id)];
+
+  nonexistentConnectionTypes <-
+    connections$connection_type_id[
+      !(connections$connection_type_id %in%
+          connectionTypes$connection_type_id)];
+
+
+  if (length(fromConnections_nonexistentEntities) > 0) {
+    warning("In the connections sheet, connections are specified ",
+            "from the following entities that are absent from ",
+            "the entities sheet: ",
+            vecTxtQ(unique(fromConnections_nonexistentEntities)),
+            ".");
+  }
+
+  if (length(toConnections_nonexistentEntities) > 0) {
+    warning("In the connections sheet, connections are specified ",
+            "from the following entities that are absent from ",
+            "the entities sheet: ",
+            vecTxtQ(unique(toConnections_nonexistentEntities)),
+            ".");
+  }
+
   ### Merge columns from type dataframes into regular dataframes
   mergedEntities <-
     merge(x = entities,
@@ -114,48 +209,16 @@ complecs <- function(input,
 
   ### Convert merged dataframes into lists
   entitiesAsList <-
-    c(list(n = nrow(entities),
+    c(list(n = length(mergedEntities[, entityCols['entity_type_id']]),
            type = mergedEntities[, entityCols['entity_type_id']],
            label = mergedEntities[, entityCols['entity_label']]),
       as.list(mergedEntities[, setdiff(names(mergedEntities),
                                        c(entityCols['entity_type_id'],
                                          entityCols['entity_label']))]));
 
-  # ### Create vectors with entity type and connection type attributes
-  # entityType_stroke <- stats::setNames(entityTypes[, entityTypesCols['entity_type_stroke']],
-  #                                      nm = entityTypes[, entityTypesCols['entity_type_id']]);
-  # entityType_fill <- stats::setNames(entityTypes[, entityTypesCols['entity_type_fill']],
-  #                                    nm = entityTypes[, entityTypesCols['entity_type_id']]);
-  # entityType_shape <- stats::setNames(entityTypes[, entityTypesCols['entity_type_shape']],
-  #                                     nm = entityTypes[, entityTypesCols['entity_type_id']]);
-  # entityType_style <- stats::setNames(entityTypes[, entityTypesCols['entity_type_style']],
-  #                                     nm = entityTypes[, entityTypesCols['entity_type_id']]);
-  # entityType_text <- stats::setNames(entityTypes[, entityTypesCols['entity_type_text']],
-  #                                    nm = entityTypes[, entityTypesCols['entity_type_id']]);
-  # connectionType_stroke <-
-  #   stats::setNames(connectionTypes[, connectionTypesCols['connection_type_stroke']],
-  #                   nm = connectionTypes[, connectionTypesCols['connection_type_id']]);
-  # connectionType_style <-
-  #   stats::setNames(connectionTypes[, connectionTypesCols['connection_type_style']],
-  #                   nm = connectionTypes[, connectionTypesCols['connection_type_id']]);
-  # connectionType_dir <-
-  #   stats::setNames(connectionTypes[, connectionTypesCols['connection_type_dir']],
-  #                   nm = connectionTypes[, connectionTypesCols['connection_type_id']]);
-
   nodes_df <-
     do.call(DiagrammeR::create_node_df,
             entitiesAsList);
-
-  # nodes_df <-
-  #   DiagrammeR::create_node_df(nrow(entities),
-  #                              type=entities[, entityCols['entity_type_id']],
-  #                              label=entities[, entityCols['entity_label']],
-  #                              entity_id=entities[, entityCols['entity_id']],
-  #                              color = entityType_stroke[entities[, entityCols['entity_type_id']]],
-  #                              fillcolor = entityType_fill[entities[, entityCols['entity_type_id']]],
-  #                              fontcolor = entityType_text[entities[, entityCols['entity_type_id']]],
-  #                              shape = entityType_shape[entities[, entityCols['entity_type_id']]],
-  #                              style = entityType_style[entities[, entityCols['entity_type_id']]]);
 
   ### Create a vector to conveniently convert entity_ids to the node_df ids
   node_ids <- stats::setNames(nodes_df$id,
@@ -181,14 +244,6 @@ complecs <- function(input,
                     paste0(strwrap(lbl, maxLabelLength), collapse="\n");
                   }));
 
-  # edges_df <-
-  #   DiagrammeR::create_edge_df(from = node_ids[connections[, "from_entity_id"]],
-  #                              to = node_ids[connections[, "to_entity_id"]],
-  #                              rel = connections[, "connection_type_id"],
-  #                              color = connectionType_stroke[connections[, connectionsCols['connection_type_id']]],
-  #                              style = connectionType_style[connections[, connectionsCols['connection_type_id']]],
-  #                              dir = connectionType_dir[connections[, connectionsCols['connection_type_id']]]);
-
   res$intermediate$nodes_df <-
     nodes_df;
   res$intermediate$edges_df <-
@@ -201,10 +256,11 @@ complecs <- function(input,
                              graph_name = title);
 
   graph <-
-    apply_graph_theme(graph,
-                      c("layout", layout, "graph"),
-                      c("outputorder", "nodesfirst", "graph"),
-                      c("fixedsize", "false", "node"));
+    do.call(apply_graph_theme,
+            c(list(graph = graph,
+                   directed = directed),
+              list(c("layout", layout, "graph")),
+              graph_styling));
 
   ### From DiagrammeR::export_graph
   dot_code <- DiagrammeR::generate_dot(graph);

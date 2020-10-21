@@ -2,9 +2,9 @@
 <!-- badges: start -->
 
 [![Pipeline
-status](https://gitlab.com/r-packages/behaviorchange/badges/master/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/commits/master)
+status](https://gitlab.com/r-packages/behaviorchange/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/commits/prod)
 [![Coverage
-status](https://codecov.io/gl/r-packages/behaviorchange/branch/master/graph/badge.svg)](https://codecov.io/gl/r-packages/behaviorchange?branch=master)
+status](https://codecov.io/gl/r-packages/behaviorchange/branch/prod/graph/badge.svg)](https://codecov.io/gl/r-packages/behaviorchange?branch=prod)
 [![Version on
 CRAN](https://www.r-pkg.org/badges/version/behaviorchange?color=brightgreen)](https://cran.r-project.org/package=behaviorchange)
 [![Monthly downloads on
@@ -29,12 +29,12 @@ The pkgdown website for this project is located at
 ## jamovi
 
 This package is also available as a module in jamovi, which is freely
-available at <https://jamovi.org>.
+available at <https://www.jamovi.org>.
 
 ## The Book of Behavior Change
 
 The package authors are working on an open access book on behavior
-change. The in progress version is already available from
+change. The in-progress version is already available from
 <https://bookofbehaviorchange.com>.
 
 <!--------------------------------------------->
@@ -53,11 +53,11 @@ install.packages('behaviorchange');
 ```
 
 You can install the development version of `behaviorchange` from
-[GitLab](https://gitlab.com) with:
+[GitLab](https://about.gitlab.com) with:
 
 ``` r
-devtools::install_gitlab('r-packages/behaviorchange');
+remotes::install_gitlab('r-packages/behaviorchange');
 ```
 
-(assuming you have `devtools` installed; otherwise, install that first
+(assuming you have `remotes` installed; otherwise, install that first
 using the `install.packages` function)

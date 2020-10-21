@@ -8,12 +8,21 @@ knitr::opts_chunk$set(
 googleSheetsURL <-
   "https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk";
 
-## ---- echo=TRUE, message=FALSE, results='hide'--------------------------------
-behaviorchange::complecs(googleSheetsURL);
+## ---- echo=TRUE, message=FALSE, results='hide', eval=FALSE--------------------
+#  behaviorchange::complecs(googleSheetsURL);
 
 ## ---- echo=FALSE, results='asis', message=FALSE-------------------------------
-cat(behaviorchange::complecs(googleSheetsURL,
-                             returnSvgOnly = TRUE));
+cat(
+  behaviorchange::complecs(
+    system.file(package="behaviorchange",
+      "extdata",
+      "COMPLECS-spec-template.xlsx"
+    ),
+    returnSvgOnly = TRUE
+  )
+);
+#cat(behaviorchange::complecs(googleSheetsURL,
+#                             returnSvgOnly = TRUE));
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  behaviorchange::complecs(googleSheetsURL,

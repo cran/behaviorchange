@@ -39,6 +39,7 @@ CIBER(
   baseFontSize = 10 * baseSize,
   theme = ggplot2::theme_bw(base_size = baseFontSize),
   xbreaks = NULL,
+  rsq = TRUE,
   ...
 )
 
@@ -216,6 +217,8 @@ the \code{baseSize}.}
 
 \item{xbreaks}{Which breaks to use on the X axis (can be useful to override
 \code{\link{ggplot2}}'s defaults).}
+
+\item{rsq}{Whether to compute the R squared values.}
 
 \item{\dots}{These arguments are passed on to
 \code{\link{biAxisDiamondPlot}} (for the left panel) and

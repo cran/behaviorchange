@@ -6,7 +6,7 @@ output: rmarkdown::html_vignette
 #output: pdf_document
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{ABCD: Laagdrempelige Nederlandse uitleg}
+  %\VignetteIndexEntry{ABCD: Laagdrempelige Nederlandse Uitleg}
   %\VignetteEngine{knitr::rmarkdown}
 header-includes:
   - \usepackage{pdflscape}
@@ -31,7 +31,7 @@ ABCD's zijn figuren die helpen om interventies (ook wel "campagnes" of "programm
 
 *Als je al weet hoe gedragsverandering werkt kun je dit stukje overslaan en gelijk naar het kopje "[ABCDs](#abcds)" hieronder gaan*
 
-Om te begrijpen waarom deze aannames belangrijk zijn, eerst wat uitleg over wat zo'n interventie is en hoe die werkt. Hierbij gebruik ik voorbeelden uit mijn eigen onderzoek naar XTC-gebruik (een van de rondes van [Party Panel](https://partypanel.nl)), onderdeel van [Celebrate Safe](https://celebratesafe.nl)). De dosis MDMA (de werkzame stof in XTC) in XTC-pillen is de afgelopen jaren gestegen. Vroeger bevatten XTC-pillen ongeveer 80 milligram MDMA: precies de goede dosis van iemand van 60-80 kilogram. Tegenwoordig is het gemiddelde bijna 160 milligram per pil. Als mensen hun pil die niet doormidden breken, of bij zwaardere pillen, door drie&euml;en of vieren, nemen ze te veel. Hierdoor is hun ervaring minder goed en is gebruik schadelijker dan als je goed doseert. Daarom hebben we onderzoek gedaan naar hoe mensen denken over deze hooggedoseerde XTC. Uit dit onderzoek zal ik voorbeelden putten.
+Om te begrijpen waarom deze aannames belangrijk zijn, eerst wat uitleg over wat zo'n interventie is en hoe die werkt. Hierbij gebruik ik voorbeelden uit mijn eigen onderzoek naar XTC-gebruik (een van de rondes van [Party Panel](https://partypanel.nl)), onderdeel van de Celebrate Safe campagne). De dosis MDMA (de werkzame stof in XTC) in XTC-pillen is de afgelopen jaren gestegen. Vroeger bevatten XTC-pillen ongeveer 80 milligram MDMA: precies de goede dosis van iemand van 60-80 kilogram. Tegenwoordig is het gemiddelde bijna 160 milligram per pil. Als mensen hun pil die niet doormidden breken, of bij zwaardere pillen, door drie&euml;en of vieren, nemen ze te veel. Hierdoor is hun ervaring minder goed en is gebruik schadelijker dan als je goed doseert. Daarom hebben we onderzoek gedaan naar hoe mensen denken over deze hooggedoseerde XTC. Uit dit onderzoek zal ik voorbeelden putten.
 
 ## Wat is een interventie?
 
@@ -196,9 +196,9 @@ Elke rij in de tabel geeft een 'ketting' weer die de aannames van een stukje van
 
 Een voorbeeld van zo'n ABCD matrix staat in Google Sheets op https://docs.google.com/spreadsheets/d/1EKVqtG1kmf0ZxEvFUOBqUmakXTd9Ye3aSyZucBqiyRM/edit?usp=sharing. Deze specificatie staat in Tabel 1.
 
-Zo'n specificatie kan worden geopend in de speciale module "behaviorchange - Tools for Behavior Change Researchers and Professionals", die in het evenees gratis programma "jamovi" kan worden geinstalleerd (zie https://jamovi.org). In dit programma kan de ABCD matrix worden bewerkt en kan de ABCD zelf worden geproduceerd en opgeslagen als PDF. 
+Zo'n specificatie kan worden geopend in de speciale module "behaviorchange - Tools for Behavior Change Researchers and Professionals", die in het evenees gratis programma "jamovi" kan worden geinstalleerd (zie https://www.jamovi.org). In dit programma kan de ABCD matrix worden bewerkt en kan de ABCD zelf worden geproduceerd en opgeslagen als PDF. 
 
-Ook bestaat er een online app op https://a-bc.eu/apps/abcd, waar een Google Sheets URL in kan worden gecopypaste. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
+Ook bestaat er een online app op [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/), waar een Google Sheets URL in kan worden gecopypaste. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
 
 ```{r abcd-specificatie, echo=FALSE, warning=FALSE, results="asis"}
 abcd_specs_dutch_xtc <- behaviorchange::abcd_specs_dutch_xtc;
@@ -243,7 +243,7 @@ if (knitr::is_latex_output()) {
 
 ## ABCD diagram
 
-Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van de ABCD specificaties zodat deze voor mensen goed leesbaar is. Het resulterende model wordt ook wel een 'logic model' of een 'theory of change' genoemd. Dit wordt simpelweg gegenereerd door de `abcd` functie in de `behaviorchange` R package, door de 'behaviorchange' module in jamovi, of door de online app op https://a-bc.eu/apps/abcd.
+Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van de ABCD specificaties zodat deze voor mensen goed leesbaar is. Het resulterende model wordt ook wel een 'logic model' of een 'theory of change' genoemd. Dit wordt simpelweg gegenereerd door de `abcd` functie in de `behaviorchange` R package, door de 'behaviorchange' module in jamovi, of door de online app op [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/).
 
 De ABCD diagram voor het voorbeeld hierboven ziet er zo uit:
 
@@ -274,7 +274,7 @@ Dat komt echt heel nauw, en daarom zijn voor die BCPs specifieke voorwaarden voo
 
 # Conclusie
 
-ABCDs maken het mogelijk om op een eenduidige manier de onderliggende aannames bij een interventie te communiceren in een formaat dat tegelijkertijd 'machine-readable' is 'human-readable' is. Ze kunnen helpen bij interventie-ontwikkeling en -analyse, en bij het documenteren van interventies. ABCDs zijn gratis toegankelijk via de online app op https://a-bc.eu/apps/abcd en via het gratis (en open source) R package `behaviorchange`.
+ABCDs maken het mogelijk om op een eenduidige manier de onderliggende aannames bij een interventie te communiceren in een formaat dat tegelijkertijd 'machine-readable' is 'human-readable' is. Ze kunnen helpen bij interventie-ontwikkeling en -analyse, en bij het documenteren van interventies. ABCDs zijn gratis toegankelijk via de online app op [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/) en via het gratis (en open source) R package `behaviorchange`.
 
 # Referenties
 

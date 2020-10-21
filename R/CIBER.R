@@ -103,6 +103,7 @@
 #' @param theme This is the theme that is used for the plots.
 #' @param xbreaks Which breaks to use on the X axis (can be useful to override
 #' \code{\link{ggplot2}}'s defaults).
+#' @param rsq Whether to compute the R squared values.
 #' @param \dots These arguments are passed on to
 #' \code{\link{biAxisDiamondPlot}} (for the left panel) and
 #' \code{\link{diamondPlot}} (for the right panel).  Note that all argument are
@@ -170,6 +171,7 @@ CIBER <- function(data,
                   baseFontSize=10*baseSize,
                   theme=ggplot2::theme_bw(base_size=baseFontSize),
                   xbreaks=NULL,
+                  rsq = TRUE,
                   ...) {
 
   if (!all(c(determinants, targets) %in% names(data))) {
@@ -246,15 +248,34 @@ CIBER <- function(data,
                                         decreasing=res$intermediate$decreasing);
   } else if (orderBy %IN% (targets)) {
     tryCatch({
+
       res$intermediate$sortOrder <-
-        sort(ufs::associationMatrix(data,
-                                    x=determinants,
-                                    y=orderBy),
-                                    decreasing=res$intermediate$decreasing)$intermediate$sorting$order;
+        stats::cor(data[, determinants],
+                   data[, orderBy],
+                   use = "pairwise.complete.obs");
+
+        # unlist(
+        #   lapply(
+        #     data[, determinants],
+        #     function(determinant) {
+        #       return(
+        #         cor.test(determinant, data[, orderBy])$estimate
+        #       );
+        #     }
+        #   )
+        # );
+
+      res$intermediate$sortOrder <-
+        order(res$intermediate$sortOrder);
+      # res$intermediate$sortOrder <-
+      #   sort(ufs::associationMatrix(data,
+      #                               x=determinants,
+      #                               y=orderBy),
+      #                               decreasing=res$intermediate$decreasing)$intermediate$sorting$order;
     }, error = function(errorMsg) {
-      stop("When trying to call associationMatrix to get the sorting order, ",
-           "the data frame no longer has class 'numeric', but instead '",
-           class(data), "'.");
+      stop("Error when determining sorting order. Class of the ",
+           "data frame: '",
+           class(data), "'; error message: ", errorMsg$msg);
     });
   } else {
     stop("In argument 'orderBy' either pass TRUE (to order by ",
@@ -289,29 +310,52 @@ CIBER <- function(data,
 
   ### Get confidence intervals for effect sizes
   res$intermediate$assocDat <- sapply(targets, function(currentTarget) {
-    return(ufs::associationsToDiamondPlotDf(res$intermediate$dat,
-                                            determinants,
-                                            currentTarget,
-                                            esMetric = 'r',
-                                            conf.level=conf.level$associations));
+
+    tryCatch({
+      tmpCors <-
+        lapply(data[, determinants, drop=FALSE],
+               stats::cor.test,
+               data[, currentTarget]);
+    }, error = function(errorMsg) {
+      stop("Error when computing correlation confidence intervals. ",
+           "Determinants: ", vecTxt(determinants, useQuote="`"),
+           ". Target: `", currentTarget, "`. ",
+           "The error message was: ", errorMsg);
+    });
+
+    return(
+      data.frame(
+        lo=unlist(lapply(tmpCors, function(x) return(x$conf.int[1]))),
+        es=unlist(lapply(tmpCors, function(x) return(x$estimate))),
+        hi=unlist(lapply(tmpCors, function(x) return(x$conf.int[2])))
+      )
+    );
+
+    # return(ufs::associationsToDiamondPlotDf(res$intermediate$dat,
+    #                                         determinants,
+    #                                         currentTarget,
+    #                                         esMetric = 'r',
+    #                                         conf.level=conf.level$associations));
+
   }, simplify=FALSE);
   names(res$intermediate$assocDat) <- targets;
 
   ### Get R squared values
-  tryCatch(
-    res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
-      return(lm_rSq_ci(stats::formula(paste(currentTarget,
-	  									 '~',
-											 paste(determinants,
-  										       collapse=" + "))),
-                       data=res$intermediate$dat,
-                       conf.level=conf.level$associations));
-    }), error=function(e) {
-      stop("Encountered an error when trying to compute the R square of targets ",
-           ufs::vecTxtQ(targets), " predicted by ", ufs::vecTxtQ(determinants),
-           ". The error is:\n\n", e$message);
-    });
-
+  if (rsq) {
+    tryCatch(
+      res$intermediate$Rsq <- lapply(targets, function(currentTarget) {
+        return(lm_rSq_ci(stats::formula(paste(currentTarget,
+  	  									 '~',
+  											 paste(determinants,
+    										       collapse=" + "))),
+                         data=res$intermediate$dat,
+                         conf.level=conf.level$associations));
+      }), error=function(e) {
+        stop("Encountered an error when trying to compute the R square of targets ",
+             ufs::vecTxtQ(targets), " predicted by ", ufs::vecTxtQ(determinants),
+             ". The error is:\n\n", e$message);
+      });
+  }
 
   res$intermediate$meansDat <-
     res$intermediate$meansDat[res$intermediate$sortOrder, ];
@@ -418,12 +462,20 @@ CIBER <- function(data,
                                     hjust = 0, vjust = 0));
   currentXpos <- sum(grid::unit(0.2, "lines"),
                      grid::grobWidth(titleGrobs[[1]]));
-  newGrob <- grid::textGrob(label = paste0(titleVarLabels[1], " (R\U00B2 = ",
-                                           ufs::formatCI(res$intermediate$Rsq[[1]], noZero=TRUE), ")"),
-                      x = currentXpos,
-                      y = grid::unit(.8, "lines"),
-                      hjust = 0, vjust = 0,
-                      gp = grid::gpar(col = strokeColors[targets[1]]));
+  if (rsq) {
+    newGrob <- grid::textGrob(label = paste0(titleVarLabels[1], " (R\U00B2 = ",
+                                             ufs::formatCI(res$intermediate$Rsq[[1]], noZero=TRUE), ")"),
+                        x = currentXpos,
+                        y = grid::unit(.8, "lines"),
+                        hjust = 0, vjust = 0,
+                        gp = grid::gpar(col = strokeColors[targets[1]]));
+  } else {
+    newGrob <- grid::textGrob(label = titleVarLabels[1],
+                              x = currentXpos,
+                              y = grid::unit(.8, "lines"),
+                              hjust = 0, vjust = 0,
+                              gp = grid::gpar(col = strokeColors[targets[1]]));
+  }
   titleGrobs <- c(titleGrobs, list(newGrob));
   currentXpos <- sum(currentXpos,
                      grid::grobWidth(titleGrobs[[2]]));
@@ -438,13 +490,22 @@ CIBER <- function(data,
                        gp = grid::gpar(col = "#000000"));
       currentXpos <- sum(currentXpos,
                          grid::grobWidth(prefixGrob));
-      newGrob <-
-        grid::textGrob(label = paste0(titleVarLabels[i], " (R\U00B2 = ",
-                                      ufs::formatCI(res$intermediate$Rsq[[i]], noZero=TRUE), ")"),
-                       x = currentXpos,
-                       y = grid::unit(0.8, "lines"),
-                       hjust = 0, vjust = 0,
-                       gp = grid::gpar(col = strokeColors[targets[i]]));
+      if (rsq) {
+        newGrob <-
+          grid::textGrob(label = paste0(titleVarLabels[i], " (R\U00B2 = ",
+                                        ufs::formatCI(res$intermediate$Rsq[[i]], noZero=TRUE), ")"),
+                         x = currentXpos,
+                         y = grid::unit(0.8, "lines"),
+                         hjust = 0, vjust = 0,
+                         gp = grid::gpar(col = strokeColors[targets[i]]));
+      } else {
+        newGrob <-
+          grid::textGrob(label = titleVarLabels[i],
+                         x = currentXpos,
+                         y = grid::unit(0.8, "lines"),
+                         hjust = 0, vjust = 0,
+                         gp = grid::gpar(col = strokeColors[targets[i]]));
+      }
       currentXpos <- sum(currentXpos, grid::grobWidth(newGrob));
       titleGrobs <- c(titleGrobs, list(prefixGrob, newGrob));
     }
