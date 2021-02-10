@@ -22,6 +22,8 @@ abcd(
   silent = FALSE,
   returnGraphOnly = FALSE,
   returnSvgOnly = FALSE,
+  columnWarning = TRUE,
+  graphTheme = list(c("fontname", "Arial", "node")),
   regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/"))
 )
 
@@ -83,6 +85,14 @@ column names (at the bottom).}
 object or only either the \link[DiagrammeR:DiagrammeR]{DiagrammeR::DiagrammeR} graph or a one-value
 character vector containing a Scalable Vector Graphic as produced by
 \code{\link[DiagrammeRsvg:export_svg]{DiagrammeRsvg::export_svg()}}.}
+
+\item{columnWarning}{Can be used to suppress the warning if the number of
+columns is too large.}
+
+\item{graphTheme}{Specific settings to apply to the graph
+using \code{\link[=apply_graph_theme]{apply_graph_theme()}}; a list of vectors, where each vector has
+three elements: the setting, the value, and what to apply it to ('node',
+'edge', or 'graph').}
 
 \item{regExReplacements}{A list of pairs of regular
 expressions that will be applied to the specifications
@@ -184,6 +194,23 @@ data(abcd_specification_example_xtc);
 
 ### Create ABCD matrix (using 'print' to allow pkgdown() to print properly).
 print(behaviorchange::abcd(abcd_specification_example_xtc));
+
+### Other examples not executed during testing as creating ABCDs takes long
+
+\dontrun{
+### Change the appearance; note that many attributes are specified
+### for specific elements, and element-level settings always override
+### the global settings that can be specified here.
+print(
+  behaviorchange::abcd(
+    abcd_specification_example_xtc,
+    graphTheme = list(
+      c("fontname", "Courier New", "node")
+    )
+  )
+);
+}
+
 }
 \references{
 Crutzen, R., & Peters, G.-J. Y. (2018). Evolutionary

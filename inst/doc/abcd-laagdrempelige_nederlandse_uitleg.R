@@ -3,19 +3,20 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 );
-require('magrittr', quiet=TRUE);
 require('webshot', quiet=TRUE);
 
 ## ----raa, echo=FALSE, fig.width=3, fig.height=2, fig.cap="Figuur 1: De reasoned action approach."----
 
+
+raaGraph <- DiagrammeR::create_graph();
+raaGraph <- DiagrammeR::add_node(raaGraph, label="Gedrag");
+raaGraph <- DiagrammeR::add_node(raaGraph, label="Intentie", to=1);
+raaGraph <- DiagrammeR::add_node(raaGraph, label="Attitude", to=2);
+raaGraph <- DiagrammeR::add_node(raaGraph, label="Waargenomen norm", to=2);
+raaGraph <- DiagrammeR::add_node(raaGraph, label="Waargenomen gedragscontrole", to=2);
 raaGraph <-
-  DiagrammeR::create_graph() %>%
-  DiagrammeR::add_node(label="Gedrag") %>%
-  DiagrammeR::add_node(label="Intentie", to=1) %>%
-  DiagrammeR::add_node(label="Attitude", to=2) %>%
-  DiagrammeR::add_node(label="Waargenomen norm", to=2) %>%
-  DiagrammeR::add_node(label="Waargenomen gedragscontrole", to=2) %>%
-  behaviorchange::apply_graph_theme(c("layout", "dot", "graph"),
+  behaviorchange::apply_graph_theme(raaGraph,
+                                    c("layout", "dot", "graph"),
                                     c("rankdir", "LR", "graph"),
                                     c("outputorder", "nodesfirst", "graph"),
                                     c("fixedsize", "false", "node"),

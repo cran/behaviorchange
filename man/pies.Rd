@@ -27,9 +27,9 @@ the columns with control and experimental data.}
 
 \item{d}{Cohen's d.}
 
-\item{cer}{The control even rate (see \code{\link[behaviorchange:nnt]{behaviorchange::nnt()}}).}
+\item{cer}{The control even rate (see \code{\link[=nnt]{nnt()}}).}
 
-\item{r, threshold, mean, sd}{Arguments for the \code{\link[behaviorchange:nnt]{behaviorchange::nnt()}}
+\item{r, threshold, mean, sd}{Arguments for the \code{\link[=nnt]{nnt()}}
 function.}
 
 \item{n}{The sample size.}

@@ -69,7 +69,7 @@ complecs <- function(input,
 
   if (file.exists(input)) {
     ### Read the file
-    if (!requireNamespace('openxlsx')) {
+    if (!requireNamespace("openxlsx", quietly=TRUE)) {
       stop("To read Excel files, you need to have openxlsx installed!");
     }
     wb <- openxlsx::loadWorkbook(input);
@@ -84,20 +84,26 @@ complecs <- function(input,
     names(worksheetData) <- worksheetNames;
 
   } else if ((length(input) == 1) && (grepl('^http.?://', input))) {
+
+    if (!requireNamespace("googlesheets4", quietly=TRUE)) {
+      stop("To read Excel files, you need to have openxlsx installed!");
+    }
+
+    ### Indicate that we want to access a public sheet
+    googlesheets4::gs4_deauth();
+
     ### Read the google sheets workbook
     registeredWS <-
-      googlesheets::gs_url(input,
-                           verbose=FALSE);
+      googlesheets4::gs4_get(input);
 
     ### Read the list of worksheets
     worksheetNames <-
-      googlesheets::gs_ws_ls(registeredWS);
+      googlesheets4::sheet_names(registeredWS);
 
     worksheetData <-
       lapply(worksheetNames,
              function(i) {
-               googlesheets::gs_read(registeredWS, ws=i,
-                                     verbose=FALSE);
+               googlesheets4::read_sheet(registeredWS, sheet=i);
              });
     names(worksheetData) <- worksheetNames;
 

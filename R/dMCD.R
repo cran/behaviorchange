@@ -203,14 +203,22 @@ dMCD <- function(cer,
           ggplot2::geom_vline(xintercept = cer,
                               color=resultValueLineColor,
                               size = resultValueLineSize) +
-          ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name="",
-                                                                   breaks=cer,
-                                                                   labels=paste0("CER=",
-                                                                                 round(cer, 3)))) +
-          ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name="",
-                                                                   breaks=d,
-                                                                   labels=paste0("d=",
-                                                                                 round(d, 2))));
+          ggplot2::scale_x_continuous(
+            sec.axis = ggplot2::dup_axis(
+              name="",
+              breaks=cer,
+              labels=paste0("CER=",
+                            round(cer, 3))
+            )
+          ) +
+          ggplot2::scale_y_continuous(
+            sec.axis = ggplot2::dup_axis(
+              name="",
+              breaks=d,
+              labels=paste0("d=",
+                            round(d, 2))
+            )
+          );
       }
 
       lineLayer <-

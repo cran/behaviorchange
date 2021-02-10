@@ -575,6 +575,10 @@ CIBER <- function(data,
     }
   }
 
-  invisible(ufs::ifelseObj(returnPlotOnly, res$output$plot, res));
+  if (returnPlotOnly) {
+    return(invisible(res$output$plot));
+  } else {
+    return(invisible(res));
+  }
 
 }

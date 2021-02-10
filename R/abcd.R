@@ -109,6 +109,12 @@
 #'   object or only either the [DiagrammeR::DiagrammeR] graph or a one-value
 #'   character vector containing a Scalable Vector Graphic as produced by
 #'   [DiagrammeRsvg::export_svg()].
+#' @param columnWarning Can be used to suppress the warning if the number of
+#' columns is too large.
+#' @param graphTheme Specific settings to apply to the graph
+#' using [apply_graph_theme()]; a list of vectors, where each vector has
+#' three elements: the setting, the value, and what to apply it to ('node',
+#' 'edge', or 'graph').
 #' @param regExReplacements A list of pairs of regular
 #'   expressions that will be applied to the specifications
 #'   before generating the ABCD. This can be used to sanitize
@@ -151,6 +157,23 @@
 #'
 #' ### Create ABCD matrix (using 'print' to allow pkgdown() to print properly).
 #' print(behaviorchange::abcd(abcd_specification_example_xtc));
+#'
+#' ### Other examples not executed during testing as creating ABCDs takes long
+#'
+#' \dontrun{
+#' ### Change the appearance; note that many attributes are specified
+#' ### for specific elements, and element-level settings always override
+#' ### the global settings that can be specified here.
+#' print(
+#'   behaviorchange::abcd(
+#'     abcd_specification_example_xtc,
+#'     graphTheme = list(
+#'       c("fontname", "Courier New", "node")
+#'     )
+#'   )
+#' );
+#' }
+#'
 #' @rdname abcd
 #' @export
 abcd <- function(specs,
@@ -169,6 +192,8 @@ abcd <- function(specs,
                  silent = FALSE,
                  returnGraphOnly = FALSE,
                  returnSvgOnly = FALSE,
+                 columnWarning = TRUE,
+                 graphTheme = list(c("fontname", "Arial", "node")),
                  regExReplacements = list(c("\\\"", "`"),
                                           c("\\'", "`"),
                                           c("\\\\", "/"))) {
@@ -207,8 +232,9 @@ abcd <- function(specs,
   ### Import sheets, if sheets identifier (gs_url) was provided
   if (!loadedDatasheet && !is.null(gs_url)) {
     tryCatch({
-      gsObject <- googlesheets::gs_url(gs_url);
-      datasheet <- googlesheets::gs_read(gsObject);
+      googlesheets4::gs4_deauth();
+      gsObject <- googlesheets4::gs4_get(gs_url);
+      datasheet <- googlesheets4::read_sheet(gsObject);
       loadedDatasheet <- TRUE;
       if (!silent) {
         cat("Successfully read the data from Google sheets.\n");
@@ -236,10 +262,20 @@ abcd <- function(specs,
       stop("Did not manage to load the specifications!");
     }
 
-    datasheet <- utils::read.csv(file, stringsAsFactors = FALSE);
+    if (grepl("\\.xls", file)) {
+      if (requireNamespace("openxlsx", quietly=TRUE)) {
+        datasheet <- openxlsx::read.xlsx(file);
+      } else {
+        stop("To read Excel files, you need to have `openxlsx` installed. ",
+             "You can install it with:\n\n  install.packages('openxlsx');\n");
+      }
+    } else {
+      datasheet <- utils::read.csv(file, stringsAsFactors = FALSE);
+    }
 
     if (!silent) {
-      cat("Succesfully read the ABCD specifications from local files.\n");
+      cat("Succesfully read the ABCD specifications from local file '",
+          file, "'.\n", sep="");
     }
 
   }
@@ -290,10 +326,12 @@ abcd <- function(specs,
 
   ### Check for problematic numbers of columns
   if (useCols > length(specCols)) {
-    warning("The specification contains ", useCols,
-            "columns, but I can use at most  ",
-            (length(specCols) - length(omitColOrder)),
-            "columns: ingnoring the right-most columns.");
+    if (columnWarning) {
+      warning("The specification contains ", useCols,
+              "columns, but I can use at most  ",
+              (length(specCols) - length(omitColOrder)),
+              "columns: ingnoring the right-most columns.");
+    }
     useCols <- length(specCols);
   } else if (useCols < (length(specCols) - length(omitColOrder))) {
     stop("The specification contains ", useCols,
@@ -350,7 +388,13 @@ abcd <- function(specs,
       return(paste0(strwrap(xx, maxLabelLength), collapse="\n")))));
 
   if ('cnds' %in% usedCols) {
-    cnds <- unique(datasheet[, which(usedCols=='cnds')]);
+    cnds <-
+      unique(
+        datasheet[, c(which(usedCols=='cnds'),
+                      which(usedCols == 'bcps'),
+                      which(usedCols == 'apps')
+                      )]
+      );
     cnds <- sapply(cnds, function(x)
       return(sapply(x, function(xx)
         return(paste0(strwrap(xx, maxLabelLength), collapse="\n")))));
@@ -651,18 +695,52 @@ abcd <- function(specs,
                              edges_df = final_edgeDf,
                              graph_name = title);
 
+  defaultGraphTheme <- list(
+    c("fontname", "Arial", "graph"),
+    c("fontname", "Arial", "node"),
+    c("fontname", "Arial", "edge"),
+    c("layout", "dot", "graph"),
+    c("rankdir", "LR", "graph"),
+    c("outputorder", "nodesfirst", "graph")
+  );
+
+  names(defaultGraphTheme) <-
+    unlist(
+      lapply(
+        defaultGraphTheme,
+        function(x) paste0(x[1], "_", x[3])
+      )
+    );
+
+  names(graphTheme) <-
+    unlist(
+      lapply(
+        graphTheme,
+        function(x) paste0(x[1], "_", x[3])
+      )
+    );
+
+  ### Complement with default settings that were not overridden
+  graphTheme <-
+    unname(
+      c(graphTheme,
+        defaultGraphTheme[
+          setdiff(
+            names(defaultGraphTheme),
+            names(graphTheme)
+          )
+        ]
+      )
+    );
+
   graph <-
-    DiagrammeR::add_global_graph_attrs(graph,
-                                       "layout", "dot",
-                                       "graph");
-  graph <-
-    DiagrammeR::add_global_graph_attrs(graph,
-                                       "rankdir", "LR",
-                                       "graph");
-  graph <-
-    DiagrammeR::add_global_graph_attrs(graph,
-                                       "outputorder", "nodesfirst",
-                                       "graph");
+    do.call(
+      apply_graph_theme,
+      c(
+        list(graph = graph),
+        graphTheme
+      )
+    );
 
   if (!is.null(outputFile)) {
     for (currentFile in outputFile) {

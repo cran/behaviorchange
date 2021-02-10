@@ -215,7 +215,7 @@ behaviorchange::ggNNC(behaviorchange::erDataSeq(er=.9),
 \references{
 Gruijters, S. L., & Peters, G. Y. (2019). Gauging the
 impact of behavior change interventions: A tutorial on the Numbers
-Needed to Treat. \emph{PsyArXiv.} doi:\href{https://doi.org/10.31234/osf.io/2bau7}{10.31234/osf.io/2bau7}
+Needed to Treat. \emph{PsyArXiv.} \doi{10.31234/osf.io/2bau7}
 }
 \seealso{
 \code{\link[=nnc]{nnc()}}
