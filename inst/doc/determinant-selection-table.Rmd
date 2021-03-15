@@ -1,0 +1,62 @@
+---
+title: "The Determinant Selection Table"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Determinant Selection Table}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ""
+)
+```
+
+To select determinants it is important to inspect the univariate distributions, ideally while looking at the raw data, while simultaneously inspecting bivariate associations with the ultimate target of the intervention (usually a target behavior or proxy thereof). For this purpose, Confidence Interval-Based Estimation of Relevance plots have been developed ([`behaviorchange::CIBER()`](https://r-packages.gitlab.io/behaviorchange/reference/CIBER.html)).
+
+However, sometimes too many determinants have to be compared, and it can be helpful to reduce the available information to facilitate retaining an overview. For this goal, the Potential for Change Index can be used. However, keep in mind that the practice of reducing relatively rich data to single quantitative estimates obfuscates many features of the determinant structures, and so should never be used without also inspecting the raw data.
+
+The `behaviorchange` package has a function that allows you to quickly produce a table with the Potential for Change Indices for a series of (sub-)determinants. This table can be created with the [`behaviorchange::determinant_selection_table()`](https://r-packages.gitlab.io/behaviorchange/reference/potential_for_change.html) command.
+
+We will first load an example dataset:
+
+```{r}
+dat <- get(data("BBC_pp15.1", package="behaviorchange"));
+```
+
+Then, for convenience, we will select all expectations (sometimes also called beliefs) relating to the effects of using a high dose of MDMA, and store those variable names in a vector:
+
+```{r}
+subdets <-
+  grep(
+    "highDose_AttBeliefs_",
+    names(dat),
+    value=TRUE
+  );
+```
+
+Then we can produce the Determinant Selection Table, using the intention measure as target:
+
+```{r}
+behaviorchange::determinant_selection_table(
+  data=dat,
+  determinants = subdets,
+  target = 'highDose_intention'
+);
+```
+
+We can also easily sort by one of the columns to pass that column number as `sortBy`. For example, we can sort by the Potential for Change Index (which is in column 6) like this:
+
+```{r}
+behaviorchange::determinant_selection_table(
+  data=dat,
+  determinants = subdets,
+  target = 'highDose_intention',
+  sortBy=6
+);
+```
+

@@ -197,7 +197,7 @@ Elke rij in de tabel geeft een 'ketting' weer die de aannames van een stukje van
 
 Een voorbeeld van zo'n ABCD matrix staat in Google Sheets op https://docs.google.com/spreadsheets/d/1EKVqtG1kmf0ZxEvFUOBqUmakXTd9Ye3aSyZucBqiyRM/edit?usp=sharing. Deze specificatie staat in Tabel 1.
 
-Zo'n specificatie kan worden geopend in de speciale module "behaviorchange - Tools for Behavior Change Researchers and Professionals", die in het evenees gratis programma "jamovi" kan worden geinstalleerd (zie https://www.jamovi.org). In dit programma kan de ABCD matrix worden bewerkt en kan de ABCD zelf worden geproduceerd en opgeslagen als PDF. 
+Zo'n specificatie kan worden geopend in de speciale module "behaviorchange - Tools for Behavior Change Researchers and Professionals", die in het eveneens gratis programma "jamovi" kan worden geinstalleerd (zie https://www.jamovi.org). In dit programma kan de ABCD matrix worden bewerkt en kan de ABCD zelf worden geproduceerd en opgeslagen als PDF.
 
 Ook bestaat er een online app op [https://a-bc.eu/apps/abcd](https://matherion.shinyapps.io/ABCD---Shiny-App/), waar een Google Sheets URL in kan worden gecopypaste. De app laat dan eerst de ingelezen ABCD specificatie zien, waarna met de 'Diagram' knop de ABCD diagram kan worden gegenereerd.
 

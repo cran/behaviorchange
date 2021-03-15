@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>The Determinant Selection Table</title>
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The Determinant Selection Table</h1>
+
+
+
+<p>To select determinants it is important to inspect the univariate distributions, ideally while looking at the raw data, while simultaneously inspecting bivariate associations with the ultimate target of the intervention (usually a target behavior or proxy thereof). For this purpose, Confidence Interval-Based Estimation of Relevance plots have been developed (<a href="https://r-packages.gitlab.io/behaviorchange/reference/CIBER.html"><code>behaviorchange::CIBER()</code></a>).</p>
+<p>However, sometimes too many determinants have to be compared, and it can be helpful to reduce the available information to facilitate retaining an overview. For this goal, the Potential for Change Index can be used. However, keep in mind that the practice of reducing relatively rich data to single quantitative estimates obfuscates many features of the determinant structures, and so should never be used without also inspecting the raw data.</p>
+<p>The <code>behaviorchange</code> package has a function that allows you to quickly produce a table with the Potential for Change Indices for a series of (sub-)determinants. This table can be created with the <a href="https://r-packages.gitlab.io/behaviorchange/reference/potential_for_change.html"><code>behaviorchange::determinant_selection_table()</code></a> command.</p>
+<p>We will first load an example dataset:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">dat &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">data</span>(<span class="st">&quot;BBC_pp15.1&quot;</span>, <span class="dt">package=</span><span class="st">&quot;behaviorchange&quot;</span>));</a></code></pre></div>
+<p>Then, for convenience, we will select all expectations (sometimes also called beliefs) relating to the effects of using a high dose of MDMA, and store those variable names in a vector:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">subdets &lt;-</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="st">  </span><span class="kw">grep</span>(</a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="st">&quot;highDose_AttBeliefs_&quot;</span>,</a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="kw">names</span>(dat),</a>
+<a class="sourceLine" id="cb2-5" title="5">    <span class="dt">value=</span><span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb2-6" title="6">  );</a></code></pre></div>
+<p>Then we can produce the Determinant Selection Table, using the intention measure as target:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">behaviorchange<span class="op">::</span><span class="kw">determinant_selection_table</span>(</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">data=</span>dat,</a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">determinants =</span> subdets,</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">target =</span> <span class="st">&#39;highDose_intention&#39;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">);</a></code></pre></div>
+<div class="behaviorchange-determinant-selection-table-start" style="display:block;clear:both;">
+
+</div>
+<div class="behaviorchange-determinant-selection-table-container">
+
+
+
+
+<p>Determinant Selection Table</p>
+<table class="table" style="font-family: arial; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+(Sub-)determinant
+</th>
+<th style="text-align:left;">
+Lower bound
+</th>
+<th style="text-align:left;">
+Current
+</th>
+<th style="text-align:left;">
+Upper bound
+</th>
+<th style="text-align:left;">
+Weight
+</th>
+<th style="text-align:left;">
+Potential for Change Index
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_long</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.269</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.18</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(92, 200, 99, 1) !important;padding: 5px; font-size: 9px;">0.288</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_intensity</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2.042</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.118</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(149, 216, 64, 1) !important;padding: 5px; font-size: 9px;">0.108</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_intoxicated</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2.136</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.035</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(178, 221, 45, 1) !important;padding: 5px; font-size: 8px;">-0.025</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_energy</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.72</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.141</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(83, 197, 105, 1) !important;padding: 5px; font-size: 9px;">0.319</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_euphoria</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.836</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.385</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(36, 135, 142, 1) !important;padding: 5px; font-size: 12px;">0.829</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_insight</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.15</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.289</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(40, 125, 142, 1) !important;padding: 5px; font-size: 12px;">0.91</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_connection</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.357</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.306</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(35, 139, 141, 1) !important;padding: 5px; font-size: 12px;">0.802</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_contact</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.338</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.322</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(37, 132, 142, 1) !important;padding: 5px; font-size: 12px;">0.85</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_sex</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.254</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.246</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(34, 140, 141, 1) !important;padding: 5px; font-size: 12px;">0.787</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_coping</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.901</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.078</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(129, 211, 77, 1) !important;padding: 5px; font-size: 9px;">0.17</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_isolated</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.573</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.149</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(72, 193, 110, 1) !important;padding: 5px; font-size: 10px;">-0.359</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_boundaries</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.061</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.125</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(102, 203, 93, 1) !important;padding: 5px; font-size: 9px;">0.257</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_music</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.118</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.221</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(59, 187, 117, 1) !important;padding: 5px; font-size: 10px;">0.417</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_hallucinate</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.382</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.052</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(157, 217, 59, 1) !important;padding: 5px; font-size: 8px;">-0.084</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_timeAwareness</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.66</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.06</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(159, 218, 58, 1) !important;padding: 5px; font-size: 8px;">0.081</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_memory</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1.061</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.276</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(52, 97, 141, 1) !important;padding: 5px; font-size: 13px;">1.121</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_health</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1.844</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.268</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(46, 110, 142, 1) !important;padding: 5px; font-size: 13px;">1.029</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_better</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.094</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.551</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(68, 1, 84, 1) !important;padding: 5px; font-size: 16px;">1.704</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_physicalSideEffects</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.198</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.34</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(31, 162, 135, 1) !important;padding: 5px; font-size: 11px;">-0.613</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_psychicSideEffects</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.09</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.336</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(31, 159, 136, 1) !important;padding: 5px; font-size: 11px;">-0.641</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_regret</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.637</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.421</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(44, 113, 142, 1) !important;padding: 5px; font-size: 13px;">-0.994</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="behaviorchange-determinant-selection-table-end" style="display:block;clear:both;">
+
+</div>
+<p>We can also easily sort by one of the columns to pass that column number as <code>sortBy</code>. For example, we can sort by the Potential for Change Index (which is in column 6) like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">behaviorchange<span class="op">::</span><span class="kw">determinant_selection_table</span>(</a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">data=</span>dat,</a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">determinants =</span> subdets,</a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="dt">target =</span> <span class="st">&#39;highDose_intention&#39;</span>,</a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="dt">sortBy=</span><span class="dv">6</span></a>
+<a class="sourceLine" id="cb4-6" title="6">);</a></code></pre></div>
+<div class="behaviorchange-determinant-selection-table-start" style="display:block;clear:both;">
+
+</div>
+<div class="behaviorchange-determinant-selection-table-container">
+
+
+
+
+<p>Determinant Selection Table</p>
+<table class="table" style="font-family: arial; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+(Sub-)determinant
+</th>
+<th style="text-align:left;">
+Lower bound
+</th>
+<th style="text-align:left;">
+Current
+</th>
+<th style="text-align:left;">
+Upper bound
+</th>
+<th style="text-align:left;">
+Weight
+</th>
+<th style="text-align:left;">
+Potential for Change Index
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_better</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.094</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.551</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(68, 1, 84, 1) !important;padding: 5px; font-size: 16px;">1.704</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_memory</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1.061</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.276</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(52, 97, 141, 1) !important;padding: 5px; font-size: 13px;">1.121</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_health</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1.844</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.268</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(46, 110, 142, 1) !important;padding: 5px; font-size: 13px;">1.029</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_insight</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.15</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.289</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(40, 125, 142, 1) !important;padding: 5px; font-size: 12px;">0.91</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_contact</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.338</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.322</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(37, 132, 142, 1) !important;padding: 5px; font-size: 12px;">0.85</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_euphoria</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.836</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.385</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(36, 135, 142, 1) !important;padding: 5px; font-size: 12px;">0.829</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_connection</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.357</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.306</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(35, 139, 141, 1) !important;padding: 5px; font-size: 12px;">0.802</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_sex</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.254</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.246</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(34, 140, 141, 1) !important;padding: 5px; font-size: 12px;">0.787</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_music</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.118</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.221</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(59, 187, 117, 1) !important;padding: 5px; font-size: 10px;">0.417</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_energy</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.72</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.141</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(83, 197, 105, 1) !important;padding: 5px; font-size: 9px;">0.319</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_long</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.269</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.18</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(92, 200, 99, 1) !important;padding: 5px; font-size: 9px;">0.288</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_boundaries</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.061</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.125</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(102, 203, 93, 1) !important;padding: 5px; font-size: 9px;">0.257</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_coping</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.901</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.078</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(129, 211, 77, 1) !important;padding: 5px; font-size: 9px;">0.17</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_intensity</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2.042</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.118</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(149, 216, 64, 1) !important;padding: 5px; font-size: 9px;">0.108</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_timeAwareness</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.66</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.06</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(159, 218, 58, 1) !important;padding: 5px; font-size: 8px;">0.081</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_intoxicated</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-1</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">2.136</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.035</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(178, 221, 45, 1) !important;padding: 5px; font-size: 8px;">-0.025</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_hallucinate</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-2</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.382</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.052</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(157, 217, 59, 1) !important;padding: 5px; font-size: 8px;">-0.084</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_isolated</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.573</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.149</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(72, 193, 110, 1) !important;padding: 5px; font-size: 10px;">-0.359</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_physicalSideEffects</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.198</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.34</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(31, 162, 135, 1) !important;padding: 5px; font-size: 11px;">-0.613</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_psychicSideEffects</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">1.09</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.336</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(31, 159, 136, 1) !important;padding: 5px; font-size: 11px;">-0.641</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">highDose_AttBeliefs_regret</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">0.637</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">3</span>
+</td>
+<td style="text-align:left;">
+<span style="     padding: 5px; ">-0.421</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: rgba(44, 113, 142, 1) !important;padding: 5px; font-size: 13px;">-0.994</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="behaviorchange-determinant-selection-table-end" style="display:block;clear:both;">
+
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

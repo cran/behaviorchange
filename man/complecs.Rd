@@ -80,6 +80,26 @@ COMPLECS is a recursive acronym for COMPLECS Organises Multiple Players & Linked
 Environments using Connected Specifications.
 }
 \examples{
-complecs(paste0("https://docs.google.com/spreadsheets/d/",
-         "1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk"));
+### Path in the package with example COMPLECS
+exampleCOMPLECS <-
+  system.file(
+    "extdata",
+    "COMPLECS-spec-template.xlsx",
+    package = "behaviorchange"
+  );
+
+behaviorchange::complecs(
+  exampleCOMPLECS
+);
+
+\dontrun{
+### Loading that COMPLECS from a google sheet - but note that
+### this requires an internet connection!
+behaviorchange::complecs(
+  paste0(
+    "https://docs.google.com/spreadsheets/d/",
+    "1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk"
+  )
+);
+}
 }

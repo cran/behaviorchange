@@ -124,9 +124,17 @@ opts$defaults <-
                                     # entity_type_style = "entity_type_style",
                                     # entity_type_text = "entity_type_text"),
        complecs_connectionTypesCols = c(connection_type_id = "connection_type_id",
-                                        connection_type_label = "connection_type_label")
+                                        connection_type_label = "connection_type_label"),
                                         # connection_type_stroke = "connection_type_stroke",
                                         # connection_type_style = "connection_type_style",
                                         # connection_type_dir = "connection_type_dir")
+
+       ### Where to print tables; 'console', 'viewer', and/or
+       ### one or more filenames in existing directories
+       tableOutput = c("console", "viewer"),
+
+       ### Whether you want extra information, as for debugging
+       debugging = FALSE
+
   )
 
