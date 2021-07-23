@@ -208,7 +208,7 @@ determinant_selection_table <-  function(data,
   if (is.null(potentialScale)) {
     potentialScale <-
       c(0,
-        abs(max(res[["p_delta"]], na.rm=TRUE)));
+        max(abs(res[["p_delta"]]), na.rm=TRUE));
   }
 
   if ((!is.numeric(potentialScale) || (length(potentialScale) != 2))) {

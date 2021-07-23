@@ -8,10 +8,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{ABCD: Laagdrempelige Nederlandse Uitleg}
   %\VignetteEngine{knitr::rmarkdown}
-header-includes:
-  - \usepackage{pdflscape}
-  - \newcommand{\blandscape}{\begin{landscape}}
-  - \newcommand{\elandscape}{\end{landscape}}
+# header-includes:
+#   - \usepackage{pdflscape}
+#   - \newcommand{\blandscape}{\begin{landscape}}
+#   - \newcommand{\elandscape}{\end{landscape}}
 editor_options: 
   chunk_output_type: console
 ---
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 );
-require('webshot', quiet=TRUE);
+#require('webshot', quiet=TRUE);
 ```
 
 ABCD's zijn figuren die helpen om interventies (ook wel "campagnes" of "programma's" genoemd) te maken of evalueren. ABCD is een Engelstalig acroniem van "Acyclic Behavior Change Diagram": kortom, een gedragsveranderingsdiagram waarin geen 'cycli' zitten, oftewel, waarin alle pijlen dezelfde kant op wijzen (in dit geval naar rechts). ABCD's maken de aannames, die de basis vormen van een interventie, zichtbaar.
@@ -55,7 +55,6 @@ Een veel gebruikte theorie is bijvoorbeeld de 'Reasoned Action Approach' (RAA), 
 De RAA stelt dat beredeneerd gedrag vooral wordt bepaald door of mensen de intentie hebben dat gedrag uit te voeren. Die intentie wordt dan weer voorspeld door hoe mensen over het gedrag denken. Die gedachtes zijn gegroepeerd in drie clusters, die 'attitude', 'waargenomen norm', en 'waargenomen gedragscontrole' heten. In de psychologie noemen we zulke clusters van vergelijkbare gedachten meestal 'variabelen' of  'constructen'. De variabelen in de RAA zijn ge&iuml;llustreerd in Figuur 1.
 
 ```{r raa, echo=FALSE, fig.width=3, fig.height=2, fig.cap="Figuur 1: De reasoned action approach."}
-
 
 raaGraph <- DiagrammeR::create_graph();
 raaGraph <- DiagrammeR::add_node(raaGraph, label="Gedrag");
@@ -248,7 +247,9 @@ Het tweede deel is de diagram zelf (de 'D' in ABCD). Dit is een visualisatie van
 
 De ABCD diagram voor het voorbeeld hierboven ziet er zo uit:
 
-![De ABCD voor het XTC voorbeeld](abcd_specs_dutch_xtc.png){ width=100% }
+```{r abcd-example, echo=FALSE, fig.cap="De ABCD voor het XTC voorbeeld", out.width="100%"}
+knitr::include_graphics("abcd_specs_dutch_xtc.png");
+```
 
 ```{r abcd-diagram, echo=FALSE, fig.width=14, fig.height=7, eval=FALSE}
 abcd_specs_dutch_xtc_graph <-

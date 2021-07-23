@@ -12,15 +12,29 @@ googleSheetsURL <-
 #  behaviorchange::complecs(googleSheetsURL);
 
 ## ---- echo=FALSE, results='asis', message=FALSE-------------------------------
+
 cat(
   behaviorchange::complecs(
-    system.file(package="behaviorchange",
-      "extdata",
-      "COMPLECS-spec-template.xlsx"
+    readRDS(
+      system.file(package="behaviorchange",
+        "extdata",
+        "COMPLECS-spec-example.Rds"
+      )
     ),
     returnSvgOnly = TRUE
   )
 );
+
+# cat(
+#   behaviorchange::complecs(
+#     system.file(package="behaviorchange",
+#       "extdata",
+#       "COMPLECS-spec-example.xlsx"
+#     ),
+#     returnSvgOnly = TRUE
+#   )
+# );
+
 #cat(behaviorchange::complecs(googleSheetsURL,
 #                             returnSvgOnly = TRUE));
 

@@ -112,7 +112,8 @@ opts$defaults <-
 
        complecs_entityCols = c(entity_id = "entity_id",
                                entity_label = "entity_label",
-                               entity_type_id = "entity_type_id"),
+                               entity_type_id = "entity_type_id",
+                               parent_id = "parent_id"),
        complecs_connectionsCols = c(from_entity_id = "from_entity_id",
                                     to_entity_id = "to_entity_id",
                                     connection_type_id = "connection_type_id"),
@@ -129,9 +130,32 @@ opts$defaults <-
                                         # connection_type_style = "connection_type_style",
                                         # connection_type_dir = "connection_type_dir")
 
+
+
+       defaultGraphTheme = list(
+         c("fontname", "Arial", "graph"),
+         c("fontname", "Arial", "node"),
+         c("fontname", "Arial", "edge"),
+         c("layout", "dot", "graph"),
+         c("rankdir", "LR", "graph"),
+         c("outputorder", "edgesfirst", "graph"),
+         c("fixedsize", "false", "node"),
+         c("headclip", "false", "edge"),
+         c("tailclip", "false", "edge")
+       ),
+
+       diagrammerSanitization = list(c("\\\"", "`"),
+                                     c("\\'", "`"),
+                                     c("\\\\", "/"),
+                                     c("[^a-zA-Z0-9;)(,._/`-]", " ")),
+
+
+
        ### Where to print tables; 'console', 'viewer', and/or
        ### one or more filenames in existing directories
        tableOutput = c("console", "viewer"),
+
+       silent = TRUE,
 
        ### Whether you want extra information, as for debugging
        debugging = FALSE

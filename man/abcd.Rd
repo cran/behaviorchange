@@ -24,7 +24,7 @@ abcd(
   returnSvgOnly = FALSE,
   columnWarning = TRUE,
   graphTheme = list(c("fontname", "Arial", "node")),
-  regExReplacements = list(c("\\\\\\"", "`"), c("\\\\'", "`"), c("\\\\\\\\", "/"))
+  regExReplacements = opts$get("diagrammerSanitization")
 )
 
 \method{print}{abcdiagram}(

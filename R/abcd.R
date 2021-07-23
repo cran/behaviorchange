@@ -194,9 +194,7 @@ abcd <- function(specs,
                  returnSvgOnly = FALSE,
                  columnWarning = TRUE,
                  graphTheme = list(c("fontname", "Arial", "node")),
-                 regExReplacements = list(c("\\\"", "`"),
-                                          c("\\'", "`"),
-                                          c("\\\\", "/"))) {
+                 regExReplacements = opts$get("diagrammerSanitization")) {
 
   if (length(specCols) < 7) {
     stop("An ABCD matrix must always have at least seven columns.");
@@ -686,51 +684,18 @@ abcd <- function(specs,
                             edge_dfs);
   }
 
-  ######################################################################
+  ###---------------------------------------------------------------------------
   ### Create final graph, set attributes, and return the result
-  ######################################################################
+  ###---------------------------------------------------------------------------
 
   graph <-
     DiagrammeR::create_graph(nodes_df = final_nodeDf,
                              edges_df = final_edgeDf,
                              graph_name = title);
 
-  defaultGraphTheme <- list(
-    c("fontname", "Arial", "graph"),
-    c("fontname", "Arial", "node"),
-    c("fontname", "Arial", "edge"),
-    c("layout", "dot", "graph"),
-    c("rankdir", "LR", "graph"),
-    c("outputorder", "nodesfirst", "graph")
-  );
-
-  names(defaultGraphTheme) <-
-    unlist(
-      lapply(
-        defaultGraphTheme,
-        function(x) paste0(x[1], "_", x[3])
-      )
-    );
-
-  names(graphTheme) <-
-    unlist(
-      lapply(
-        graphTheme,
-        function(x) paste0(x[1], "_", x[3])
-      )
-    );
-
-  ### Complement with default settings that were not overridden
   graphTheme <-
-    unname(
-      c(graphTheme,
-        defaultGraphTheme[
-          setdiff(
-            names(defaultGraphTheme),
-            names(graphTheme)
-          )
-        ]
-      )
+    supplementDefaultGraphTheme(
+      graphTheme
     );
 
   graph <-

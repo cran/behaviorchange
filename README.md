@@ -2,7 +2,7 @@
 <!-- badges: start -->
 
 [![Pipeline
-status](https://gitlab.com/r-packages/behaviorchange/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/commits/prod)
+status](https://gitlab.com/r-packages/behaviorchange/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/-/commits/prod)
 [![Coverage
 status](https://codecov.io/gl/r-packages/behaviorchange/branch/prod/graph/badge.svg)](https://codecov.io/gl/r-packages/behaviorchange?branch=prod)
 [![Version on
@@ -21,9 +21,7 @@ The pkgdown website for this project is located at
 <https://r-packages.gitlab.io/behaviorchange>.
 
 <!--------------------------------------------->
-
 <!-- Start of a custom bit for every package -->
-
 <!--------------------------------------------->
 
 ## jamovi
@@ -38,9 +36,7 @@ change. The in-progress version is already available from
 <https://bookofbehaviorchange.com>.
 
 <!--------------------------------------------->
-
 <!--  End of a custom bit for every package  -->
-
 <!--------------------------------------------->
 
 ## Installation

@@ -3,10 +3,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 );
-require('webshot', quiet=TRUE);
+#require('webshot', quiet=TRUE);
 
 ## ----raa, echo=FALSE, fig.width=3, fig.height=2, fig.cap="Figuur 1: De reasoned action approach."----
-
 
 raaGraph <- DiagrammeR::create_graph();
 raaGraph <- DiagrammeR::add_node(raaGraph, label="Gedrag");
@@ -83,6 +82,9 @@ if (knitr::is_latex_output()) {
 } else {
   knitr::kable(abcd_specs_dutch_xtc);
 }
+
+## ----abcd-example, echo=FALSE, fig.cap="De ABCD voor het XTC voorbeeld", out.width="100%"----
+knitr::include_graphics("abcd_specs_dutch_xtc.png");
 
 ## ----abcd-diagram, echo=FALSE, fig.width=14, fig.height=7, eval=FALSE---------
 #  abcd_specs_dutch_xtc_graph <-

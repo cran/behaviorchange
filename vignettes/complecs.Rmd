@@ -22,7 +22,7 @@ When developing a behavior change intervention, it is first necessary to obtain 
 
 COMPLECS^[COMPLECS is a recursive acronym for COMPLECS Organises Multiple Players & Linked Environments using Connected Specifications.] was developed to help to keep an overview during this process. It allows adding new information in a piece-wise manner, and then combines everything into one visualisation.
 
-COMPLECS reads the specifications from a spreadsheet. This spreadsheet can be provided either as an URL to Google Sheets (useful if you want to collaborate wiht multiple people) or as the path to an Excel file.
+COMPLECS reads the specifications from a spreadsheet. This spreadsheet can be provided either as an URL to Google Sheets (useful if you want to collaborate with multiple people) or as the path to an Excel file.
 
 # The anatomy of a COMPLECS specification
 
@@ -38,16 +38,13 @@ In the **`connection_types` worksheet**, you specify the possible connection typ
 
 # Preparing Google Sheets for data export
 
-If you want to use a Google Sheet, make sure you make it public in two ways (it has to be public in *both* ways for the R `googlesheets` package to be able to read the information):
-
-- First, it has to be shared in the regular way, by clicking the Share button at the top-right and clicking "Get shareable link".
-- Second, it has to be "published to the web". You do this by opening the "File" menu and the selecting "Publish to the web". In the modal dialog that appears, normally, you should be facing the left of two tabs, labelled "Link", and in the two drop-down menus, "Entire document" and "Web page" should already be selected by default. If that is the case, you can simply click "Publish" and then confirm this choice in the dialog that appears. If not, select those options and then publish.
+If you want to use a Google Sheet, make sure you make it public in two ways (it has to be public in *both* ways for the R `googlesheets` package to be able to read the information). To do this, click the Share button at the top-right and clicking "Get link", making sure the settings allow anybody with the link to view the spreadsheet.
 
 # Generating the COMPLECS overview
 
 Once you specified everyting, you can generate the overview. To do this, you can use the `complecs` function in the `behaviorchange` package ([this function's manual page is located here](https://r-packages.gitlab.io/behaviorchange/reference/complecs.html)). The function only requires one argument: the URL to a Google Sheet, or the path to an Excel file. If you use the function like this, the produced COMPLECS overview will simply be shown. However, you will usually want to save the overview to a file. To do that, you can use `outputFile` to specify a path and filename of a file you want to write to.
 
-As an example, let us use the default COMPLECS specification template located at https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk. Let's first store that long URL in a convenient variable:
+As an example, let us use the COMPLECS specification example located at https://docs.google.com/spreadsheets/d/1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk. Let's first store that long URL in a convenient variable:
 
 ```{r, echo=TRUE}
 googleSheetsURL <-
@@ -61,15 +58,29 @@ behaviorchange::complecs(googleSheetsURL);
 ```
 
 ```{r, echo=FALSE, results='asis', message=FALSE}
+
 cat(
   behaviorchange::complecs(
-    system.file(package="behaviorchange",
-      "extdata",
-      "COMPLECS-spec-template.xlsx"
+    readRDS(
+      system.file(package="behaviorchange",
+        "extdata",
+        "COMPLECS-spec-example.Rds"
+      )
     ),
     returnSvgOnly = TRUE
   )
 );
+
+# cat(
+#   behaviorchange::complecs(
+#     system.file(package="behaviorchange",
+#       "extdata",
+#       "COMPLECS-spec-example.xlsx"
+#     ),
+#     returnSvgOnly = TRUE
+#   )
+# );
+
 #cat(behaviorchange::complecs(googleSheetsURL,
 #                             returnSvgOnly = TRUE));
 ```
@@ -81,3 +92,4 @@ behaviorchange::complecs(googleSheetsURL,
                          outputFile = "~/complecs-overview-example.pdf");
 ```
 
+(The tilde here stands for your so-called 'home directory', for example your document folder.)
