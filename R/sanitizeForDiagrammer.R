@@ -4,6 +4,8 @@ sanitizeForDiagrammer <- function(dat,
 
   newData <- dat;
 
+  columns <- columns[columns %in% names(dat)];
+
   newData[, columns] <-
     lapply(
       dat[, columns, drop=FALSE],

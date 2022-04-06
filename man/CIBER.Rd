@@ -34,6 +34,7 @@ CIBER(
   associationsAlpha = 0.5,
   returnPlotOnly = TRUE,
   drawPlot = TRUE,
+  jitterWidth = 0.45,
   baseSize = 0.8,
   dotSize = 2.5 * baseSize,
   baseFontSize = 10 * baseSize,
@@ -203,6 +204,8 @@ signifies complete transparency (i.e. invisibility) and 1 signifies complete
 (including all intermediate objects) or only the plot.}
 
 \item{drawPlot}{Whether the draw the plot, or only return it.}
+
+\item{jitterWidth}{How much to jitter the data points in the left hand plot.}
 
 \item{baseSize}{This can be used to efficiently change the size of most plot
 elements.}

@@ -1,0 +1,30 @@
+citHeader("To cite behaviorchange in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "The behaviorchange Package: Tools for Behavior Change Researchers and Professionals",
+  author   = c(
+    person(given = "Gjalt-Jorn Ygram",
+           family = "Peters",
+           role = c("aut", "cre"),
+           email = "gjalt-jorn@a-bc.eu",
+           comment = c(ORCID = "0000-0002-0336-9589")),
+    person(given = "Rik",
+           family = "Crutzen",
+           role = c("ctb"),
+           email = "rik@a-bc.eu",
+           comment = c(ORCID = "0000-0002-3731-6610")),
+    person(given = "Stefan",
+           family = "Gruijters",
+           role = c("ctb"),
+           email = "mail@stefangruijters.nl",
+           comment = c(ORCID = "0000-0003-0141-0071"))
+  ),
+  year     = "2022",
+  url      = "https://r-packages.gitlab.io/behaviorchange",
+  textVersion = paste(
+    "Peters G, Crutzen R, Gruijters S (2022). _The behaviorchange Package: Tools for
+Behavior Change Researchers and Professionals_. <URL:
+https://r-packages.gitlab.io/behaviorchange>."
+  )
+)

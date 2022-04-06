@@ -19,18 +19,16 @@
 #'   option has not been manually specified.}
 #' }
 #'
-#' The following options can be set:
+#' To see the full list of options and their default values,
+#' use `behaviorchange::opts$default()`. Some examples are:
 #'
 #' \describe{
 #'
-#'   \item{}{The name of the column
-#'   with the effect size values.}
+#'   \item{aabbcc}{A color theme for [behaviorchange::abcd()].}
 #'
-#'   \item{}{The name of the column
-#'   with the effect size variance.}
+#'   \item{complecs_*}{The worksheet and columns names for [behaviorchange::complecs()].}
 #'
-#'   \item{}{The name of the column
-#'   with the missing values.}
+#'   \item{silent}{Whether to be chatty or silent.}
 #'
 #' }
 #'
@@ -103,7 +101,23 @@ opts$reset <- function(...) {
 
 opts$defaults <-
   list(
-       ###
+       ### An Accessible Book of Behavior Change Color palette (AABBCC palette)
+       aabbcc =
+         list(
+           ultimate_goal = c(fill = "#000000", stroke = "#000000", text = "#FFFFFF"),
+           problem = c(fill = "#404040", stroke = "#000000", text = "#FFFFFF"),
+           environmental_condition = c(fill = "#443399", stroke = "#000000", text = "#FFFFFF"),
+           target_behavior = c(fill = "#84315e", stroke = "#000000", text = "#FFFFFF"),
+           sub_behavior = c(fill = "#a4519e", stroke = "#000000", text = "#FFFFFF"),
+           determinant = c(fill = "#158415", stroke = "#000000", text = "#FFFFFF"),
+           sub_determinant = c(fill = "#1f9e82", stroke = "#1f9e82", text = "#FFFFFF"),
+           application = c(fill = "#3f7ab5", stroke = "#000000", text = "#FFFFFF"),
+           condition_for_effectiveness = c(fill = "#d0edfe", stroke = "#000000", text = "#000000"),
+           bcp = c(fill = "#8ee9ff", stroke = "#000000", text = "#000000"),
+           target_individual = c(fill = "#ffeea8", stroke = "#000000", text = "#000000"),
+           environmental_agent = c(fill = "#ffeded", stroke = "#000000", text = "#000000"),
+           implementer = c(fill = "#edebfc", stroke = "#000000", text = "#000000")
+         ),
 
        complecs_entitySheet = "entities",
        complecs_connectionsSheet = "connections",
@@ -125,7 +139,8 @@ opts$defaults <-
                                     # entity_type_style = "entity_type_style",
                                     # entity_type_text = "entity_type_text"),
        complecs_connectionTypesCols = c(connection_type_id = "connection_type_id",
-                                        connection_type_label = "connection_type_label"),
+                                        connection_type_label = "connection_type_label",
+                                        connection_label = "label"),
                                         # connection_type_stroke = "connection_type_stroke",
                                         # connection_type_style = "connection_type_style",
                                         # connection_type_dir = "connection_type_dir")
@@ -140,7 +155,7 @@ opts$defaults <-
          c("rankdir", "LR", "graph"),
          c("outputorder", "edgesfirst", "graph"),
          c("fixedsize", "false", "node"),
-         c("headclip", "false", "edge"),
+         c("headclip", "true", "edge"),
          c("tailclip", "false", "edge")
        ),
 

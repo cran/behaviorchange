@@ -1,12 +1,24 @@
-#' Create a COMPLECS graph
+#' Represent a COMPLECS specification as a PRECEDE model
 #'
-#' COMPLECS was developed to help make sense of complex systems. It reads data from a
-#' number of worksheets in a spreadsheet and generates a diagram according to those
-#' specifications. Originally, COMPLECS was developed to visualise a problem during
-#' the needs assessment phase of intervention development.
+#' This function reads in a complecs specification and draw a PRECEDE model,
+#' with a number of assumptions (see Details section).
 #'
-#' COMPLECS is a recursive acronym for COMPLECS Organises Multiple Players & Linked
-#' Environments using Connected Specifications.
+#' Only entities with the following entity types are used from the COMPLECS
+#' specification:
+#'
+#' - `person`
+#' - `organization`
+#' - `environmental_condition`
+#' - `behavior`
+#' - `determinant`
+#' - `outcome`
+#'
+#' Furthermore, it will be assumed that the only direct connections from
+#' `behavior` entities to `outcome` entities belong to the focal population;
+#' therefore, if behaviors of environmental actors are important for an
+#' outcome, those behaviors' effects must be represented as
+#' `environmental_condition` entities - otherwise the relevant `person`s or
+#' `organizations`s will be erroneously considered as focal population members.
 #'
 #' @param input Either a link to a Google Sheet, or a path to an Excel file.
 #' @param title The title of the COMPLECS graph.
@@ -22,8 +34,8 @@
 #' filename) to write the graph to.
 #' @param outputWidth,outputHeight If not `NULL`, a way to override the width and
 #' height when calling `complecs` to generate a COMPLECS overview.
-#' @param width,height If not `NULL`, a way to override the width and
-#' height when calling `print` to print a COMPLECS overview.
+#   #' @param width,height If not `NULL`, a way to override the width and
+#   #' height when calling `print` to print a COMPLECS overview.
 #' @param returnDotOnly Whether to only return the produced DOT code.
 #' @param returnSvgOnly Whether to only return the SVG in a character vector.
 #' @param returnGraphOnly Whether to only return the produced graph.
@@ -32,10 +44,10 @@
 #'   expressions that will be applied to the specifications
 #'   before generating the ABCD. This can be used to sanitize
 #'   problematic characters (e.g. ', " and \).
-#' @param x The object to print (i.e. a result of a call to `complecs`).
+#  #' @param x The object to print (i.e. a result of a call to `complecs`).
 #' @param silent Whether to be chatty or silent.
-#' @param ... Any additional arguments for the [print()] method are passed
-#' to [DiagrammeR::render_graph()].
+#   #' @param ... Any additional arguments for the [print()] method are passed
+#   #' to [DiagrammeR::render_graph()].
 #'
 #' @return A `complecs` object that includes the graph and the graph in SVG in
 #' `output$graph` and `output$graphSvg`.
@@ -50,40 +62,44 @@
 #'     package = "behaviorchange"
 #'   );
 #'
-#' behaviorchange::complecs(
+#' behaviorchange::complecs_to_precede(
 #'   exampleCOMPLECS
 #' );
 #'
 #' ### Loading that COMPLECS from a google sheet - but note that
 #' ### this requires an internet connection!
-#' behaviorchange::complecs(
+#' behaviorchange::complecs_to_precede(
 #'   paste0(
 #'     "https://docs.google.com/spreadsheets/d/",
 #'     "1WMO15xroy4a0RfpuZ8GhT-NfDoxwS34w9PrWp8rGjjk"
 #'   )
 #' );
 #' }
-complecs <- function(input,
-                     title = "COMPLECS overview",
-                     layout = "fdp",
-                     graph_styling = list(c("outputorder", "edgesfirst", "graph"),
-                                          c("overlap", "false", "graph"),
-                                          c("fixedsize", "false", "node"),
-                                          c("fontname", "Arial", "graph"),
-                                          c("fontname", "Arial", "node"),
-                                          c("fontname", "Arial", "edge"),
-                                          c("headclip", "true", "edge"),
-                                          c("tailclip", "false", "edge")),
-                     directed = TRUE,
-                     outputFile = NULL,
-                     outputWidth=1600,
-                     outputHeight=NULL,
-                     returnDotOnly = FALSE,
-                     returnSvgOnly = FALSE,
-                     returnGraphOnly = TRUE,
-                     maxLabelLength=20,
-                     regExReplacements = opts$get("diagrammerSanitization"),
-                     silent = opts$get("silent")) {
+complecs_to_precede <- function(input,
+                                title = "PRECEDE diagram",
+                                layout = "fdp",
+                                graph_styling = list(c("outputorder", "edgesfirst", "graph"),
+                                                     c("rankdir", "LR", "graph"),
+                                                     c("overlap", "false", "graph"),
+                                                     c("fixedsize", "false", "node"),
+                                                     c("fontname", "Arial", "graph"),
+                                                     c("fontname", "Arial", "node"),
+                                                     c("fillcolor", "White", "node"),
+                                                     c("shape", "box", "node"),
+                                                     c("style", "filled", "node"),
+                                                     c("fontname", "Arial", "edge"),
+                                                     c("headclip", "true", "edge"),
+                                                     c("tailclip", "false", "edge")),
+                                directed = TRUE,
+                                outputFile = NULL,
+                                outputWidth=1600,
+                                outputHeight=NULL,
+                                returnDotOnly = FALSE,
+                                returnSvgOnly = FALSE,
+                                returnGraphOnly = TRUE,
+                                maxLabelLength=60,
+                                regExReplacements = opts$get("diagrammerSanitization"),
+                                silent = opts$get("silent")) {
 
   entitySheet <- opts$get("complecs_entitySheet");
   connectionsSheet <- opts$get("complecs_connectionsSheet");
@@ -303,83 +319,191 @@ complecs <- function(input,
         silent=silent);
   }
 
-  msg("Merging entity and type information with ",
-      "entity and connection specifications.\n", silent=silent);
+  msg("Selecting entity types that can be collapsed, discarding the rest.\n",
+      silent=silent);
 
-  ### Merge columns from type dataframes into regular dataframes
+  selectedEntityIds <-
+    entities[
+      entities[, entityCols['entity_type_id']] %in%
+        c("person",
+          "organization",
+          "environmental_condition",
+          "behavior",
+          "determinant",
+          "outcome"),
+      entityCols['entity_id']
+    ];
 
-  mergedEntities <-
-    merge(x = entities,
-          y = entityTypes,
-          by.x = entityCols['entity_type_id'],
-          by.y = entityTypesCols['entity_type_id']);
-  mergedConnections <-
-    merge(x = connections,
-          y = connectionTypes,
-          by.x = connectionsCols['connection_type_id'],
-          by.y = connectionTypesCols['connection_type_id']);
+  selectedEntities <-
+    entities[
+      entities[, entityCols['entity_id']] %in% selectedEntityIds
+      ,
+    ]
 
-  ### Wrap labels in node_df
+  selectedConnections <-
+    connections[
+      (connections[, connectionsCols['from_entity_id']] %in% selectedEntityIds) &
+      (connections[, connectionsCols['to_entity_id']] %in% selectedEntityIds)
+      ,
+    ];
 
-  mergedEntities[[entityCols['entity_label']]] <-
-    wrapVector(
-      mergedEntities[[entityCols['entity_label']]],
-      maxLabelLength
+  msg("Collapsing entity specifications in the PRECEDE boxes.\n",
+      silent=silent);
+
+  outcomeIds <-
+    selectedEntities[
+      entities[, entityCols['entity_type_id']] %in%
+        c("outcome"),
+      entityCols['entity_id']
+    ];
+
+  entityIds_linkedToOutcomes <-
+    selectedConnections[
+      selectedConnections[, connectionsCols['to_entity_id']] %in% outcomeIds,
+      connectionsCols['from_entity_id']
+    ];
+
+  ### Behaviors directly linked to outcomes (i.e. target behaviors).
+
+  behaviorIds_linkedToOutcomes <-
+    selectedEntities[
+      (selectedEntities[, entityCols['entity_id']] %in% entityIds_linkedToOutcomes) &
+        (selectedEntities[, entityCols['entity_type_id']] == "behavior"),
+      entityCols['entity_id']
+    ];
+
+  persons_encompassingTargetBehaviors <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% behaviorIds_linkedToOutcomes,
+      entityCols['parent_id']
+    ];
+
+  ### Entities that are linked to outcomes but that aren't behaviors (e.g.
+  ### environmental conditions).
+
+  otherEntities_linkedToOutcomes <-
+    setdiff(entityIds_linkedToOutcomes,
+            behaviorIds_linkedToOutcomes);
+
+  ### Determinants linked to target behaviors
+
+  entityIds_linkedToTargetBehaviors <-
+    selectedConnections[
+      selectedConnections[, connectionsCols['to_entity_id']] %in% behaviorIds_linkedToOutcomes,
+      connectionsCols['from_entity_id']
+    ];
+
+  determinants_linkedToTargetBehaviors <-
+    selectedEntities[
+      (selectedEntities[, entityCols['entity_id']] %in% entityIds_linkedToTargetBehaviors) &
+        (selectedEntities[, entityCols['entity_type_id']] == "determinant"),
+      entityCols['entity_id']
+    ];
+
+  persons_encompassingTargetDeterminants <-
+    selectedEntities[
+      (selectedEntities[, entityCols['entity_id']] %in% determinants_linkedToTargetBehaviors),
+      entityCols['parent_id']
+    ];
+
+  ### Determinants linked to environmental conditions
+
+  determinants_linkedToEnvironmentalConditions <-
+    setdiff(
+      selectedEntities[
+        selectedEntities[, entityCols['entity_type_id']] == "determinant",
+        entityCols['entity_id']
+      ],
+      determinants_linkedToTargetBehaviors
     );
 
-  ### Get names of specified attributes
+  ### Behaviors linked to environmental conditions
 
-  entityAttributes <-
-    setdiff(names(mergedEntities),
-            c(entityCols['entity_id'],
-              entityCols['entity_type_id'],
-              entityCols['entity_label'],
-              entityTypesCols['entity_type_id'],
-              entityTypesCols['entity_type_label']));
+  behaviors_linkedToEnvironmentalConditions <-
+    setdiff(
+      selectedEntities[
+        selectedEntities[, entityCols['entity_type_id']] == "behavior",
+        entityCols['entity_id']
+      ],
+      behaviorIds_linkedToOutcomes
+    );
 
-  connectionAttributes <-
-    setdiff(names(mergedConnections),
-            c(connectionsCols["from_entity_id"],
-              connectionsCols["to_entity_id"],
-              connectionsCols["connection_type_id"]));
+  ### Environmental conditions
 
-  ### Check for parent entities
+  environmentalConditions <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_type_id']] == "environmental_condition",
+      entityCols['entity_id']
+    ];
 
-  if (!(entityCols['parent_id'] %in% names(mergedEntities))) {
-    msg("No parent entities specified.\n", silent=silent);
-    parentIds <- NULL;
-    noParentId <- rep(TRUE, nrow(mergedEntities));
-  } else {
+  ### All other entities
+  allOtherEntities <-
+    setdiff(
+      selectedEntities[, entityCols['entity_id']],
+      c(
+        outcomeIds,
+        behaviorIds_linkedToOutcomes,
+        determinants_linkedToTargetBehaviors,
+        determinants_linkedToEnvironmentalConditions,
+        behaviors_linkedToEnvironmentalConditions,
+        environmentalConditions,
+        unique(c(persons_encompassingTargetBehaviors,
+                 persons_encompassingTargetDeterminants))
+      )
+    );
 
-    entityAttributes <-
-      setdiff(entityAttributes,
-              entityCols['parent_id']);
+  outcomeBox_entityIds <-
+    outcomeIds;
+  targetBehaviorBox_entityIds <-
+    behaviorIds_linkedToOutcomes;
+  targetDeterminantBox_entityIds <-
+    determinants_linkedToTargetBehaviors;
+  environmentalFactorBox_entityIds <-
+    unique(c(
+      behaviors_linkedToEnvironmentalConditions,
+      environmentalConditions,
+      allOtherEntities));
+  environmentalDeterminantBox_entityIds <-
+    determinants_linkedToEnvironmentalConditions;
 
-    if (all(is.na(mergedEntities[, entityCols['parent_id']])) |
-      all(nchar(trimws(mergedEntities[, entityCols['parent_id']])) == 0)) {
+  ### Get human-readable labels
+  outcomeBox_Labels <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% outcomeBox_entityIds,
+      entityCols['entity_label']];
+  targetBehaviorBox_Labels <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% targetBehaviorBox_entityIds,
+      entityCols['entity_label']];
+  targetDeterminantBox_Labels <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% targetDeterminantBox_entityIds,
+      entityCols['entity_label']];
+  environmentalFactorBox_Labels <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% environmentalFactorBox_entityIds,
+      entityCols['entity_label']];
+  environmentalDeterminantBox_Labels <-
+    selectedEntities[
+      selectedEntities[, entityCols['entity_id']] %in% environmentalDeterminantBox_entityIds,
+      entityCols['entity_label']];
 
-      msg("No parent entities specified.\n", silent=silent);
-      parentIds <- NULL;
-      noParentId <- rep(TRUE, nrow(mergedEntities));
+  ### Wrap labels
+  outcomeBox_Labels <- wrapVector(outcomeBox_Labels, maxLabelLength, sep="    \n");
+  targetBehaviorBox_Labels <- wrapVector(targetBehaviorBox_Labels, maxLabelLength, sep="    \n");
+  targetDeterminantBox_Labels <- wrapVector(targetDeterminantBox_Labels, maxLabelLength, sep="    \n");
+  environmentalFactorBox_Labels <- wrapVector(environmentalFactorBox_Labels, maxLabelLength, sep="    \n");
+  environmentalDeterminantBox_Labels <- wrapVector(environmentalDeterminantBox_Labels, maxLabelLength, sep="    \n");
 
-    } else {
+  ### Collapse entity labels into one string (i.e. the node labels)
+  outcomeBox <- paste0(outcomeBox_Labels, collapse="\n");
+  targetBehaviorBox <- paste0(targetBehaviorBox_Labels, collapse="\n");
+  targetDeterminantBox <- paste0(targetDeterminantBox_Labels, collapse="\n");
+  environmentalFactorBox <- paste0(environmentalFactorBox_Labels, collapse="\n");
+  environmentalDeterminantBox <- paste0(environmentalDeterminantBox_Labels, collapse="\n");
 
-      parentIds <- unique(mergedEntities[, entityCols['parent_id']]);
-
-      noParentId <-
-        !((!is.na(mergedEntities[, entityCols['parent_id']])) &
-         (nchar(trimws(mergedEntities[, entityCols['parent_id']])) > 0)) &
-        !(mergedEntities[, entityCols['entity_id']] %in%
-            mergedEntities[, entityCols['parent_id']]);
-
-      parentIds <-
-        parentIds[!is.na(parentIds)];
-
-      msg("Identified ", length(parentIds),
-          " parent entities.\n", silent=silent);
-    }
-
-  }
+  msg("Collapsed entity specifications in the PRECEDE boxes.\n",
+      silent=silent);
 
   ###---------------------------------------------------------------------------
 
@@ -391,9 +515,9 @@ complecs <- function(input,
     "graph"
   );
 
-  dot_code <- paste0(dot_code, " COMPLECS {\n\n  compound = true;\n");
+  dot_code <- paste0(dot_code, " PRECEDE {\n\n");
 
-  dot_code <- paste0(dot_code, "  layout=", layout, ";\n");
+  dot_code <- paste0(dot_code, "  layout=dot;\n");
 
   dot_code <- paste0(dot_code,
                      "  labelloc=\"t\";\n",
@@ -413,177 +537,81 @@ complecs <- function(input,
     }
   }
 
-  ### Nodes in subgraphs
-
-  if (!is.null(parentIds)) {
-    for (currentParent in parentIds) {
-
-      currentParentRow <-
-        which(mergedEntities[, entityCols['entity_id']] == currentParent);
-
-      dot_code <-
-        paste0(
-          dot_code,
-          "\n",
-          "  subgraph cluster_", currentParent, " {\n\n"
-        );
-
-      dot_code <-
-        paste0(
-          dot_code,
-          "    label = \"",
-          mergedEntities[currentParentRow, entityCols['entity_label']],
-          "\";\n",
-          paste0("    ", entityAttributes, " = \"",
-                 mergedEntities[currentParentRow, entityAttributes],
-                 "\"",
-                 collapse=";\n"),
-          ";\n\n"
-        );
-
-      for (currentRow in which(mergedEntities[, entityCols['parent_id']] == currentParent)) {
-
-        dot_code <-
-          paste0(
-            dot_code,
-            "    ",
-            mergedEntities[currentRow, entityCols['entity_id']],
-            " [label=\"",
-            mergedEntities[currentRow, entityCols['entity_label']],
-            "\", ",
-            paste0(entityAttributes, " = \"",
-                   mergedEntities[currentRow, entityAttributes],
-                   "\"",
-                   collapse=","),
-            "]\n\n"
-          );
-
-      }
-
-      dot_code <-
-        paste0(
-          dot_code,
-          "  }\n"
-        );
-
-    }
-  }
-
   dot_code <- paste0(dot_code, "\n");
 
-  ### Regular nodes
+  ### Add PRECEDE boxes
 
-  for (currentRow in which(noParentId)) {
+  dot_code <-
+    paste0(
+      dot_code,
+      "  outcomeBox [label=\"",
+      outcomeBox,
+      "\"];\n\n"
+    );
 
-    dot_code <-
-      paste0(
-        dot_code,
-        "  ",
-        mergedEntities[currentRow, entityCols['entity_id']],
-        " [label=\"",
-        mergedEntities[currentRow, entityCols['entity_label']],
-        "\", ",
-        paste0(entityAttributes, "=\"",
-               mergedEntities[currentRow, entityAttributes],
-               "\"",
-               collapse=","),
-        "]\n\n"
-      );
+  dot_code <-
+    paste0(
+      dot_code,
+      "  targetBehaviorBox [label=\"",
+      targetBehaviorBox,
+      "\"];\n\n"
+    );
 
-  }
+  dot_code <-
+    paste0(
+      dot_code,
+      "  targetDeterminantBox [label=\"",
+      targetDeterminantBox,
+      "\"];\n\n"
+    );
+
+  dot_code <-
+    paste0(
+      dot_code,
+      "  environmentalFactorBox [label=\"",
+      environmentalFactorBox,
+      "\"];\n\n"
+    );
+
+  dot_code <-
+    paste0(
+      dot_code,
+      "  environmentalDeterminantBox [label=\"",
+      environmentalDeterminantBox,
+      "\"];\n\n"
+    );
 
   ### Connections
 
-  ### First fix NAs
-  mergedConnections[, connectionTypesCols['connection_label']] <-
-    ifelse(
-      is.na(mergedConnections[, connectionTypesCols['connection_label']]),
-      "",
-      mergedConnections[, connectionTypesCols['connection_label']]
+  dot_code <-
+    paste0(
+      dot_code,
+      "  targetDeterminantBox -> targetBehaviorBox;\n",
+      "  targetBehaviorBox -> outcomeBox;\n",
+      "  environmentalDeterminantBox -> environmentalFactorBox;\n",
+      "  environmentalFactorBox -> targetBehaviorBox;\n",
+      "  environmentalFactorBox -> outcomeBox;\n"
     );
 
-  for (currentRow in 1:nrow(mergedConnections)) {
+  ### Set ranks
 
-    dot_code <-
-      paste0(
-        dot_code,
-        "  ",
-        mergedConnections[currentRow, connectionsCols['from_entity_id']],
-        " -> ",
-        mergedConnections[currentRow, connectionsCols['to_entity_id']],
-        " [label=\"",
-        mergedConnections[currentRow, connectionTypesCols['connection_label']],
-        "\", ",
-        paste0(connectionAttributes, "=\"",
-               mergedConnections[currentRow, connectionAttributes],
-               "\"",
-               collapse=","),
-        "]\n\n"
-      );
+  dot_code <-
+    paste0(
+      dot_code,
+      "\n  {rank = min; targetDeterminantBox; environmentalDeterminantBox;}",
+      "\n  {rank = same; targetBehaviorBox; environmentalFactorBox;}\n",
+      "\n  {rank = max; outcomeBox;}\n"
+    );
 
-  }
+  ### Close graph
 
   dot_code <- paste0(dot_code, "\n}\n");
 
-  ###---------------------------------------------------------------------------
+  # exampleCOMPLECS <-system.file("extdata","COMPLECS-spec-example.xlsx",package = "behaviorchange");
 
-  # msg("Creating node and edge data frames.\n", silent=silent);
-  #
-  ### Convert merged dataframes into lists
-  # entitiesAsList <-
-  #   c(list(n = length(mergedEntities[, entityCols['entity_type_id']]),
-  #          type = mergedEntities[, entityCols['entity_type_id']],
-  #          label = mergedEntities[, entityCols['entity_label']]),
-  #     as.list(mergedEntities[, entityAttributes]));
-  #
-  # nodes_df <-
-  #   do.call(DiagrammeR::create_node_df,
-  #           entitiesAsList);
-  #
-  # ### Create a vector to conveniently convert entity_ids to the node_df ids
-  # node_ids <- stats::setNames(nodes_df$id,
-  #                             nm=nodes_df$entity_id);
-  #
-  # connectionsAsList <-
-  #   c(list(from = node_ids[mergedConnections[, "from_entity_id"]],
-  #          to = node_ids[mergedConnections[, "to_entity_id"]],
-  #          rel = mergedConnections[, connectionsCols["connection_type_id"]]),
-  #     as.list(mergedConnections[, connectionAttributes]));
-  #
-  # edges_df <-
-  #   do.call(DiagrammeR::create_edge_df,
-  #           connectionsAsList);
-  #
-  # ### Wrap labels in node_df
-  # nodes_df$label <-
-  #   wrapVector(
-  #     nodes_df$label,
-  #     maxLabelLength
-  #   );
-  #
-  # res$intermediate$nodes_df <-
-  #   nodes_df;
-  # res$intermediate$edges_df <-
-  #   edges_df;
-  #
-  # msg("Creating graph.\n", silent=silent);
-  #
-  # ### Combine node and edge dataframes into a graph
-  # graph <-
-  #   DiagrammeR::create_graph(nodes_df = nodes_df,
-  #                            edges_df = edges_df,
-  #                            graph_name = title,
-  #                            directed = directed);
-  #
-  # graph <-
-  #   do.call(apply_graph_theme,
-  #           c(list(graph = graph,
-  #                  directed = directed),
-  #             list(c("layout", layout, "graph")),
-  #             graph_styling));
-  #
-  # ### From DiagrammeR::export_graph
-  # dot_code <- DiagrammeR::generate_dot(graph);
+  # devtools::load_all(); behaviorchange::complecs_to_precede(exampleCOMPLECS);
+
+  ###---------------------------------------------------------------------------
 
   if (returnDotOnly) {
     return(dot_code);

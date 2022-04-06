@@ -18,13 +18,15 @@ abcd(
   nodeFontSize = 10,
   edgeFontSize = 8,
   colNameFontSize = nodeFontSize,
+  grayscale = FALSE,
+  colorTheme = behaviorchange::opts$get("aabbcc"),
   penWidth = 1,
   silent = FALSE,
   returnGraphOnly = FALSE,
   returnSvgOnly = FALSE,
   columnWarning = TRUE,
   graphTheme = list(c("fontname", "Arial", "node")),
-  regExReplacements = opts$get("diagrammerSanitization")
+  regExReplacements = behaviorchange::opts$get("diagrammerSanitization")
 )
 
 \method{print}{abcdiagram}(
@@ -75,6 +77,16 @@ labels.}
 \item{nodeFontSize, edgeFontSize, colNameFontSize}{Font sizes of the nodes (i.e.
 the text in boxes), edges (basically the conditions for effectiveness) and the
 column names (at the bottom).}
+
+\item{grayscale}{Whether to use the \code{colorTheme} or produce a grayscale ABCD.}
+
+\item{colorTheme}{The color theme, a named list containing the colors,
+each a character vector with three HTML (hex) color values. The list elements
+have to be named \code{bcp}, \code{condition_for_effectiveness}, \code{application},
+\code{sub_determinant}, \code{determinant}, \code{sub_behavior}, and \code{target_behavior}, and
+each must contain a named vector with two elements named \code{fill}, \code{stroke},
+and \code{text}, containing the color codes for the fill, stroke, and text,
+respectively; see \code{behaviorchange::opts$get("aabbcc")} for an example.}
 
 \item{penWidth}{The width of the pen to draw the strokes.}
 

@@ -4,7 +4,7 @@
 [![Pipeline
 status](https://gitlab.com/r-packages/behaviorchange/badges/prod/pipeline.svg)](https://gitlab.com/r-packages/behaviorchange/-/commits/prod)
 [![Coverage
-status](https://codecov.io/gl/r-packages/behaviorchange/branch/prod/graph/badge.svg)](https://codecov.io/gl/r-packages/behaviorchange?branch=prod)
+status](https://codecov.io/gl/r-packages/behaviorchange/branch/prod/graph/badge.svg)](https://app.codecov.io/gl/r-packages/behaviorchange?branch=prod)
 [![Version on
 CRAN](https://www.r-pkg.org/badges/version/behaviorchange?color=brightgreen)](https://cran.r-project.org/package=behaviorchange)
 [![Monthly downloads on

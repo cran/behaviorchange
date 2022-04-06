@@ -34,18 +34,16 @@ to set, in the format \code{option = value}, for example,
 option has not been manually specified.}
 }
 
-The following options can be set:
+To see the full list of options and their default values,
+use \code{behaviorchange::opts$default()}. Some examples are:
 
 \describe{
 
-\item{}{The name of the column
-with the effect size values.}
+\item{aabbcc}{A color theme for \code{\link[=abcd]{abcd()}}.}
 
-\item{}{The name of the column
-with the effect size variance.}
+\item{complecs_*}{The worksheet and columns names for \code{\link[=complecs]{complecs()}}.}
 
-\item{}{The name of the column
-with the missing values.}
+\item{silent}{Whether to be chatty or silent.}
 
 }
 }

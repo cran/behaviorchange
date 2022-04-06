@@ -102,6 +102,14 @@
 #' @param nodeFontSize,edgeFontSize,colNameFontSize Font sizes of the nodes (i.e.
 #' the text in boxes), edges (basically the conditions for effectiveness) and the
 #' column names (at the bottom).
+#' @param grayscale Whether to use the `colorTheme` or produce a grayscale ABCD.
+#' @param colorTheme The color theme, a named list containing the colors,
+#' each a character vector with three HTML (hex) color values. The list elements
+#' have to be named `bcp`, `condition_for_effectiveness`, `application`,
+#' `sub_determinant`, `determinant`, `sub_behavior`, and `target_behavior`, and
+#' each must contain a named vector with two elements named `fill`, `stroke`,
+#' and `text`, containing the color codes for the fill, stroke, and text,
+#' respectively; see `behaviorchange::opts$get("aabbcc")` for an example.
 #' @param penWidth The width of the pen to draw the strokes.
 #' @param silent Whether to suppress (`TRUE`) or show
 #'   (`FALSE`) more detailed information.
@@ -188,13 +196,16 @@ abcd <- function(specs,
                  nodeFontSize = 10,
                  edgeFontSize = 8,
                  colNameFontSize = nodeFontSize,
+                 grayscale = FALSE,
+                 colorTheme = behaviorchange::opts$get("aabbcc"),
                  penWidth = 1,
                  silent = FALSE,
                  returnGraphOnly = FALSE,
                  returnSvgOnly = FALSE,
                  columnWarning = TRUE,
                  graphTheme = list(c("fontname", "Arial", "node")),
-                 regExReplacements = opts$get("diagrammerSanitization")) {
+                 regExReplacements =
+                   behaviorchange::opts$get("diagrammerSanitization")) {
 
   if (length(specCols) < 7) {
     stop("An ABCD matrix must always have at least seven columns.");
@@ -495,37 +506,55 @@ abcd <- function(specs,
     pob_beh_edges <- unique(datasheet_ids[, 5:6]);
   }
 
-  ######################################################################
+  ###---------------------------------------------------------------------------
   ### Start on the node data frames
-  ######################################################################
+  ###---------------------------------------------------------------------------
+
+  if (grayscale) {
+    colorTheme <-
+      list(
+        target_behavior = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000"),
+        sub_behavior = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000"),
+        determinant = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000"),
+        sub_determinant = c(fill = "#EEEEEE", stroke = "#EEEEEE", text = "#000000"),
+        application = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000"),
+        condition_for_effectiveness = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000"),
+        bcp = c(fill = "#FFFFFF", stroke = "#000000", text = "#000000")
+      )
+  }
 
   nodeAttributes <- list(bcps = list(shape = 'box',
-                                     color = "#000000",
-                                     fillcolor = "#FFFFFF",
+                                     color = colorTheme$bcp['stroke'],
+                                     fillcolor = colorTheme$bcp['fill'],
+                                     fontcolor = colorTheme$bcp['text'],
                                      style="rounded,filled",
                                      fontsize=nodeFontSize,
                                      penwidth=penWidth),
                          apps = list(shape = 'box',
-                                     color = "#000000",
-                                     fillcolor = "#FFFFFF",
+                                     color = colorTheme$application['stroke'],
+                                     fillcolor = colorTheme$application['fill'],
+                                     fontcolor = colorTheme$application['text'],
                                      style="filled",
                                      fontsize=nodeFontSize,
                                      penwidth=penWidth),
                          sdts = list(shape = 'box',
-                                     color = "#EEEEEE",
-                                     fillcolor = "#EEEEEE",
+                                     color = colorTheme$sub_determinant['stroke'],
+                                     fillcolor = colorTheme$sub_determinant['fill'],
+                                     fontcolor = colorTheme$sub_determinant['text'],
                                      style="filled",
                                      fontsize=nodeFontSize,
                                      penwidth=penWidth),
                          dets = list(shape = 'ellipse',
-                                     color = "#000000",
-                                     fillcolor = "#FFFFFF",
+                                     color = colorTheme$determinant['stroke'],
+                                     fillcolor = colorTheme$determinant['fill'],
+                                     fontcolor = colorTheme$determinant['text'],
                                      style = "filled",
                                      fontsize=nodeFontSize,
                                      penwidth=penWidth),
                          pobs = list(shape = 'box',
-                                     color = "#000000",
-                                     fillcolor = "#FFFFFF",
+                                     color = colorTheme$sub_behavior['stroke'],
+                                     fillcolor = colorTheme$sub_behavior['fill'],
+                                     fontcolor = colorTheme$sub_behavior['text'],
                                      style="rounded,filled",
                                      fontsize=nodeFontSize,
                                      penwidth=penWidth));
@@ -534,8 +563,9 @@ abcd <- function(specs,
     nodeAttributes <-
       c(nodeAttributes,
         list(behs = list(shape = 'box',
-                         color = "#000000",
-                         fillcolor = "#FFFFFF",
+                         color = colorTheme$target_behavior['stroke'],
+                         fillcolor = colorTheme$target_behavior['fill'],
+                         fontcolor = colorTheme$target_behavior['text'],
                          style="rounded,filled",
                          fontsize=nodeFontSize,
                          penwidth = penWidth)));
@@ -552,7 +582,7 @@ abcd <- function(specs,
                                                fillcolor=nodeAttributes[[i]]$fillcolor,
                                                penwidth=nodeAttributes[[i]]$penwidth,
                                                fontsize=nodeAttributes[[i]]$fontsize,
-                                               fontcolor="#000000",
+                                               fontcolor=nodeAttributes[[i]]$fontcolor,
                                                fixedsize=FALSE,
                                                shape=nodeAttributes[[i]]$shape));
            });

@@ -94,6 +94,7 @@
 #' @param returnPlotOnly Whether to return the entire object that is generated
 #' (including all intermediate objects) or only the plot.
 #' @param drawPlot Whether the draw the plot, or only return it.
+#' @param jitterWidth How much to jitter the data points in the left hand plot.
 #' @param baseSize This can be used to efficiently change the size of most plot
 #' elements.
 #' @param dotSize This is the size of the points used to show the individual
@@ -166,6 +167,7 @@ CIBER <- function(data,
                   associationsAlpha = .5,
                   returnPlotOnly = TRUE,
                   drawPlot = TRUE,
+                  jitterWidth = .45,
                   baseSize = .8,
                   dotSize = 2.5 * baseSize,
                   baseFontSize=10*baseSize,
@@ -388,6 +390,7 @@ CIBER <- function(data,
                            dotSize = dotSize,
                            baseFontSize = baseFontSize,
                            theme = theme,
+                           jitterWidth = jitterWidth,
                            jitterHeight = .3,
                            xbreaks=xbreaks,
                            ...);

@@ -19,6 +19,7 @@ determinant_selection_table(
   determinantLabels = NULL,
   targetLabel = NULL,
   sortBy = NULL,
+  sortByAbs = TRUE,
   decreasing = TRUE,
   digits = 3,
   increasesAreImprovements = TRUE,
@@ -109,6 +110,9 @@ same order as the \code{determinants} vector.}
 \item{sortBy}{The column to sort the results by; if not \code{NULL}, a number
 from 1-6 that corresponds to the six columns of the Determinant Selection
 Table.}
+
+\item{sortByAbs}{Whether to sort by raw values (\code{FALSE}) or their
+absolute value (\code{TRUE}).}
 
 \item{decreasing}{Whether to sort in decreasing (\code{TRUE}) or increasing
 (\code{FALSE}) order.}

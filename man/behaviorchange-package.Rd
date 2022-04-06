@@ -6,27 +6,7 @@
 \alias{behaviorchange-package}
 \title{behaviorchange: Tools for Behavior Change Researchers and Professionals}
 \description{
-Contains specialised analyses and
-    visualisation tools for behavior change science.
-    These facilitate conducting determinant studies
-    (for example, using confidence interval-based
-    estimation of relevance, CIBER, or CIBERlite
-    plots, see Crutzen, Noijen & Peters (2017)
-    <doi:10.3389/fpubh.2017.00165>),
-    systematically developing, reporting,
-    and analysing interventions (for example, using
-    Acyclic Behavior Change Diagrams), and reporting
-    about intervention effectiveness (for example, using
-    the Numbers Needed for Change, see Gruijters & Peters
-    (2017) <doi:10.31234/osf.io/2bau7>), and computing the
-    required sample size (using the Meaningful Change
-    Definition, see Gruijters & Peters (2019)
-    <doi:10.31234/osf.io/jc295>).
-    This package is especially useful for
-    researchers in the field of behavior change or
-    health psychology and to behavior change
-    professionals such as intervention developers and
-    prevention workers.
+Contains specialised analyses and visualisation tools for behavior change science. These facilitate conducting determinant studies (for example, using confidence interval-based estimation of relevance, CIBER, or CIBERlite plots, see Crutzen, Noijen & Peters (2017) <doi:10.3389/fpubh.2017.00165>), systematically developing, reporting, and analysing interventions (for example, using Acyclic Behavior Change Diagrams), and reporting about intervention effectiveness (for example, using the Numbers Needed for Change, see Gruijters & Peters (2017) <doi:10.31234/osf.io/2bau7>), and computing the required sample size (using the Meaningful Change Definition, see Gruijters & Peters (2020) <doi:10.1080/08870446.2020.1841762>). This package is especially useful for researchers in the field of behavior change or health psychology and to behavior change professionals such as intervention developers and prevention workers.
 }
 \details{
 Contains specialised analyses and
@@ -55,11 +35,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@a-bc.eu} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID})
+\strong{Maintainer}: Gjalt-Jorn Peters \email{gjalt-jorn@behaviorchange.eu} (\href{https://orcid.org/0000-0002-0336-9589}{ORCID})
 
 Other contributors:
 \itemize{
-  \item Rik Crutzen \email{rik@a-bc.eu} (\href{https://orcid.org/0000-0002-3731-6610}{ORCID}) [contributor]
+  \item Rik Crutzen \email{rik.crutzen@maastrichtuniversity.nl} (\href{https://orcid.org/0000-0002-3731-6610}{ORCID}) [contributor]
   \item Stefan Gruijters \email{mail@stefangruijters.nl} (\href{https://orcid.org/0000-0003-0141-0071}{ORCID}) [contributor]
 }
 

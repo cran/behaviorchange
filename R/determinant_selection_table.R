@@ -6,6 +6,8 @@
 #' @param sortBy The column to sort the results by; if not `NULL`, a number
 #' from 1-6 that corresponds to the six columns of the Determinant Selection
 #' Table.
+#' @param sortByAbs Whether to sort by raw values (`FALSE`) or their
+#' absolute value (`TRUE`).
 #' @param decreasing Whether to sort in decreasing (`TRUE`) or increasing
 #' (`FALSE`) order.
 #' @param digits The number of digits to round to.
@@ -37,6 +39,7 @@ determinant_selection_table <-  function(data,
                                          determinantLabels = NULL,
                                          targetLabel = NULL,
                                          sortBy = NULL,
+                                         sortByAbs = TRUE,
                                          decreasing = TRUE,
                                          digits = 3,
                                          increasesAreImprovements = TRUE,
@@ -196,13 +199,23 @@ determinant_selection_table <-  function(data,
       "p_delta");
 
   if (!is.null(sortBy)) {
-    res <-
-      res[
-        order(
-          res[, sortBy],
-          decreasing = decreasing
-        ),
-      ];
+    if (sortByAbs) {
+      res <-
+        res[
+          order(
+            abs(res[, sortBy]),
+            decreasing = decreasing
+          ),
+        ];
+    } else {
+      res <-
+        res[
+          order(
+            res[, sortBy],
+            decreasing = decreasing
+          ),
+        ];
+    }
   }
 
   if (is.null(potentialScale)) {
