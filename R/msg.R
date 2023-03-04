@@ -1,5 +1,5 @@
 msg <- function(...,
-                silent = rock::opts$get("silent")) {
+                silent = behaviorchange::opts$get("silent")) {
   if (!silent) {
     cat0(...);
   }

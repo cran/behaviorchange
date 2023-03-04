@@ -9,9 +9,6 @@ vignette: >
   %\VignetteIndexEntry{ABCD: Laagdrempelige Nederlandse Uitleg}
   %\VignetteEngine{knitr::rmarkdown}
 # header-includes:
-#   - \usepackage{pdflscape}
-#   - \newcommand{\blandscape}{\begin{landscape}}
-#   - \newcommand{\elandscape}{\end{landscape}}
 editor_options: 
   chunk_output_type: console
 ---

@@ -106,7 +106,7 @@ binaryCIBER <- function(data,
   res$intermediate$determinantsDat <- data[, determinants];
   res$intermediate$dat <- data[, c(determinants, targets)];
 
-  if (class(data) != 'data.frame') {
+  if (!inherits(data, 'data.frame')) {
     stop("After having extracted the determinants (",
          ufs::vecTxtQ(determinants), ") and the targets (",
          ufs::vecTxtQ(targets), ") from the provided data frame, '",
